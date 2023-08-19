@@ -1,0 +1,35 @@
+#!/bin/bash
+
+NORMAL='\033[0m'
+BOLD='\033[1m'
+DIM='\033[2m'
+BLINK='\033[5m'
+
+WHITE='\033[0;97m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+
+usage="${WHITE}Usage: $0 [--cflags] [--libs]"
+
+if [ "$#" -lt 1 ]; then
+    >&2 echo -e "${RED}${BOLD}Error: Too few arguments passed"
+    >&2 echo -e ${usage}
+    exit 1
+fi
+
+while test $# -gt 0; do
+  case $1 in
+    --cflags)
+      echo -o main ./src/AnimatedSprite.cpp ./src/Asteroid.cpp ./src/EventHandler.cpp ./src/Gem.cpp ./src/IMGSprite.cpp ./src/main.cpp ./src/Player.cpp \
+      ./src/Sound.cpp ./src/Sprite.cpp ./src/Text.cpp ./src/Time.cpp -I./include -Wall -Wextra -Wpedantic
+      ;;
+
+    --libs)
+      echo -lSDL2main -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+      ;;
+  esac
+  shift
+done
+
+exit 1

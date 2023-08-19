@@ -1,0 +1,45 @@
+------------ General ------------
+
+Window Width = 1440
+Window Height = 810
+Countdown = 5
+Countdown Interval = 1
+
+------------ Text ------------
+
+Font Path = /usr/share/fonts/msttcore/comicbd.ttf
+Font Color = #00FF64
+Start Text = Starten: "Enter"\nSchließen: "Q"
+Start Text Size = 100
+Score Text Size = 70
+
+------------ Player ------------
+
+Player Scale = 1
+Player Radius = 30
+Player Frame Width = 68
+Player Frame Height = 80
+Player IMG Frames = 6
+Player IMG Types = 4
+Player Animations Per Second = 15
+Player Acceleration = 200
+Player Max Velocity = 600
+Player Friction = 200
+Player Effect Duration Seconds = 1
+Player Rotation Speed = 144
+Player Max Velocity Boost = 20
+Player Acceleration Boost = 20
+
+------------ Gem ------------
+
+Gem Scale = 1
+Gem Radius = 30
+Gem Frame Width = 52
+Gem Frame Height = 64
+Gem IMG Frames = 16
+Gem IMG Types = 8
+Gem Blink Duration = 2000
+Gem Lifetime Duration = 4500
+Gem Blink Factor = 2
+Gem Maximum Brightness = 255
+Gem Minimum Brightness = 151

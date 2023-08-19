@@ -1,0 +1,126 @@
+#include "AnimatedSprite.hpp"
+
+//*non-static(public)
+
+AnimatedSprite::AnimatedSprite(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second) : IMGSprite::IMGSprite(renderer, path, scale, radius),
+																																																																			  FRAME_WIDTH(frame_width),
+																																																																			  FRAME_HEIGHT(frame_height),
+																																																																			  IMG_FRAMES(img_frames),
+																																																																			  IMG_TYPES(img_types),
+																																																																			  ANIMATIONS_PER_SECOND(animations_per_second),
+																																																																			  IMGPartRect({0, 0, (int)frame_width, (int)frame_height}),
+																																																																			  nextTickTime(animations_per_second > 0 ? SDL_GetTicks64() + 1000 / animations_per_second : SDL_GetTicks64())
+{
+	this->SetRectSize(frame_width * scale, frame_height * scale);
+
+	return;
+}
+
+AnimatedSprite::~AnimatedSprite() = default;
+
+unsigned int AnimatedSprite::GetFrameWidth() const
+{
+	return FRAME_WIDTH;
+}
+
+unsigned int AnimatedSprite::GetFrameHeight() const
+{
+	return FRAME_HEIGHT;
+}
+
+unsigned int AnimatedSprite::GetIMGFrames() const
+{
+	return IMG_FRAMES;
+}
+
+unsigned int AnimatedSprite::GetIMGTypes() const
+{
+	return IMG_TYPES;
+}
+
+unsigned int AnimatedSprite::GetAnimationsPerSecond() const
+{
+	return ANIMATIONS_PER_SECOND;
+}
+
+unsigned int AnimatedSprite::GetAnimationFrame() const
+{
+	return animationFrame;
+}
+
+void AnimatedSprite::SetAnimationFrame(unsigned int frame)
+{
+	if (frame > IMG_FRAMES)
+	{
+		return;
+	}
+
+	IMGPartRect.x = (frame - 1) * FRAME_WIDTH;
+	animationFrame = frame;
+
+	return;
+}
+
+unsigned int AnimatedSprite::GetAnimationType() const
+{
+	return animationType;
+}
+
+void AnimatedSprite::SetAnimationType(unsigned int type)
+{
+	if (type > IMG_TYPES)
+	{
+		return;
+	}
+
+	IMGPartRect.y = (type - 1) * FRAME_HEIGHT;
+	animationType = type;
+
+	return;
+}
+
+SDL_Rect AnimatedSprite::GetIMGPartRect() const
+{
+	return IMGPartRect;
+}
+
+Uint64 AnimatedSprite::GetNextTickTime() const
+{
+	return nextTickTime;
+}
+
+void AnimatedSprite::SetNextTickTime(Uint64 new_time)
+{
+	nextTickTime = new_time;
+
+	return;
+}
+
+void AnimatedSprite::Animate(Uint64 current_ticks)
+{
+	if (current_ticks < nextTickTime)
+	{
+		return;
+	}
+
+	if (animationFrame == IMG_FRAMES)
+	{
+		this->SetAnimationFrame(1);
+	}
+	else
+	{
+		this->SetAnimationFrame(animationFrame + 1);
+	}
+
+	this->SetNextTickTime(current_ticks + 1000 / ANIMATIONS_PER_SECOND);
+
+	return;
+}
+
+void AnimatedSprite::Render()
+{
+	SDL_FRect destrect = Rect;
+	SDL_RenderCopyF(destRenderer, Texture, &IMGPartRect, &destrect);
+
+	return;
+}

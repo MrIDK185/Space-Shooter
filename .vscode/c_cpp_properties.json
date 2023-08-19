@@ -1,0 +1,39 @@
+{
+	"configurations": [
+		{
+			"name": "linux-clang-x64",
+			"includePath": [
+				"${workspaceFolder}/include",
+				"/home/hendrik/SDL/include"
+			],
+			"defines": [
+				"_DEBUG",
+				"UNICODE",
+				"_UNICODE"
+			],
+			"windowsSdkVersion": "10.0.22000.0",
+			"compilerPath": "/usr/bin/clang",
+			"cStandard": "c17",
+			"cppStandard": "c++20",
+			"intelliSenseMode": "linux-clang-x64",
+			"compilerArgs": [
+				"-I./include",
+				"-Wall",
+				"-Wextra",
+				"-Wpedantic",
+				"-I/home/hendrik/SDL/include",
+				"-I/home/hendrik/SDL/include/SDL2",
+				"-D_REENTRANT",
+				"-L/home/hendrik/SDL/lib",
+				"-Wl,-rpath,/home/hendrik/SDL/lib",
+				"-Wl,--enable-new-dtags",
+				"-lSDL2",
+				"-lSDL2main",
+				"-lSDL2_image ",
+				"-lSDL2_mixer",
+				"-lSDL2_ttf"
+			]
+		}
+	],
+	"version": 4
+}

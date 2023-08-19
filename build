@@ -1,0 +1,59 @@
+#!/bin/bash
+
+NORMAL='\033[0m'
+BOLD='\033[1m'
+DIM='\033[2m'
+BLINK='\033[5m'
+
+WHITE='\033[0;97m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+
+usage="${WHITE}Usage: $0 [debug] [release]"
+
+CC=clang++
+
+if [ "$#" -lt 1 ]; then
+    >&2 echo -e "${RED}${BOLD}Error: Too few arguments passed"
+	>&2 echo -e ${usage}
+    exit 1
+
+elif [ "$#" -gt 1 ]; then
+    >&2 echo -e "${RED}${BOLD}Error: Too many arguments passed"
+	>&2 echo -e ${usage}
+    exit 1
+
+elif [ "$1" = "debug" ]; then
+    echo -e "${WHITE}Starting build(Debug)..." && echo $'\n'
+    ${CC} `./project-config --cflags` `sdl2-config --cflags` -ggdb3 `sdl2-config --libs` `./project-config --libs`
+	if [ "$?" == 0 ]; then
+	    echo -e "${GREEN}${BOLD}Build successful"
+		exit 0
+	else
+	    >&2 echo $'\n' && >&2 echo -e "${RED}${BOLD}Build failed"
+	    exit 1
+
+	fi
+
+elif [ "$1" = "release" ]; then
+    echo -e "${WHITE}Starting build(Release)..." && echo $'\n'
+    ${CC} `./project-config --cflags` `sdl2-config --cflags` -s -O2 -m64 `sdl2-config --libs` `./project-config --libs`
+    if [ "$?" == 0 ]; then
+	    echo -e "${GREEN}${BOLD}Build successful"
+		exit 0
+	else
+	    >&2 echo $'\n' && >&2 echo -e "${RED}${BOLD}Build failed"
+	    exit 1
+
+    fi
+
+else
+    >&2 echo -e "${RED}${BOLD}Error: Unkonwn argument \"${YELLOW}${BOLD}$1${RED}${BOLD}\""
+	>&2 echo -e ${usage}
+    exit 1
+
+fi
+
+exit 1
