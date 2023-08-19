@@ -39,6 +39,7 @@ void GameTitleScreen(Configuration &config);
 //* Game handling
 void HandlePlayers(float delta_time_seconds, Uint64 current_ticks, const Configuration &config);
 void HandleGems(Uint64 current_ticks, unsigned int blink_factor, unsigned int max_brightness, unsigned int min_brightness, Configuration &config);
+void HandleAsteroids(const Configuration &config);
 void CheckCollisions(Uint64 current_ticks, Configuration &config);
 
 //* Rendering
@@ -418,7 +419,7 @@ void CreateObjects(Configuration &config)
 
 	config.IMGSpriteMap["gameBackground"] = std::make_shared<IMGSprite>(config.Renderer, "assets/images/background.png", 1, 0);
 
-	config.asteroidGroup.push_back(std::make_shared<Asteroid>(config.Renderer, "assets/images/asteroid1.png", 1, 60));
+	config.asteroidGroup.push_back(std::make_shared<Asteroid>(config.Renderer, "assets/images/asteroid1.png", 1, 60, 200, config));
 
 	std::cout << "Initializing Gem default values...\n";
 	Gem::InitDefaultValues(config.Renderer, "assets/images/gems.png", config.gemScale, config.gemRadius, config.gemFrameWidth, config.gemFrameHeight, config.gemIMGFrames, config.gemIMGTypes, 0, config.gemBlinkDuration, config.gemLifetimeDuration);
@@ -468,6 +469,7 @@ void GameStarted(Configuration &config)
 
 	HandlePlayers(config.gameClock.deltaTimeSeconds, config.currentTicks, config);
 	HandleGems(config.currentTicks, config.gemBlinkFactor, config.gemMaximumBrightness, config.gemMinimumBrightness, config);
+	HandleAsteroids(config);
 	CheckCollisions(config.currentTicks, config);
 	AnimateMap<Player>(&config.playerMap, config.currentTicks);
 
@@ -568,6 +570,16 @@ void HandleGems(Uint64 current_ticks, unsigned int blink_factor, unsigned int ma
 	return;
 }
 
+void HandleAsteroids(const Configuration &config)
+{
+	for (const std::shared_ptr<Asteroid> &asteroid : config.asteroidGroup)
+	{
+		asteroid->Move();
+	}
+
+	return;
+}
+
 void CheckCollisions(Uint64 current_ticks, Configuration &config)
 {
 	for (const auto &[name, player] : config.playerMap)
@@ -598,6 +610,7 @@ void CheckCollisions(Uint64 current_ticks, Configuration &config)
 
 			player->SetCollectionTicks(current_ticks);
 		}
+
 		for (const std::shared_ptr<Asteroid> &asteroid : config.asteroidGroup)
 		{
 			if (!asteroid->Collideswith(player))

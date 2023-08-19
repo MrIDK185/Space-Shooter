@@ -2,6 +2,7 @@
 #define ASTEROID_HPP
 
 #include "IMGSprite.hpp"
+#include "Globals.hpp"
 
 class Asteroid : public IMGSprite
 {
@@ -10,12 +11,18 @@ private:
 
 	unsigned int Angle;
 
+	float Velocity;
+
+	Configuration &Config;
+
 public:
 	//* non-static
 
-	Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius);
+	Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity, Configuration &config);
 
 	~Asteroid() override;
+
+	void Move();
 
 	void Render() override;
 };

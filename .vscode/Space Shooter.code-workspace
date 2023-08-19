@@ -76,7 +76,13 @@
 			"format": "cpp",
 			"span": "cpp",
 			"variant": "cpp",
-			"hash_map": "cpp"
+			"hash_map": "cpp",
+			"__nullptr": "cpp",
+			"any": "cpp",
+			"complex": "cpp",
+			"forward_list": "cpp",
+			"unordered_set": "cpp",
+			"typeindex": "cpp"
 		},
 		"prettier.tabWidth": 4,
 		"editor.insertSpaces": false,
