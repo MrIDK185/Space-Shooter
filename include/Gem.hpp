@@ -77,9 +77,9 @@ public:
 
 	void SetTicks(Uint64 current_ticks);
 
-	void Blink(unsigned int factor, unsigned int max_brightness, unsigned int min_brightness);
+	void Blink();
 
-	void Randomize(Uint64 current_ticks);
+	void Randomize(Uint64 current_ticks = 0);
 };
 
 #endif //! GEM_HPP

@@ -139,28 +139,28 @@ void Gem::SetTicks(Uint64 current_ticks)
 	return;
 }
 
-void Gem::Blink(unsigned int factor, unsigned int max_brightness, unsigned int min_brightness)
+void Gem::Blink()
 {
 	Uint8 brightness_value;
 	SDL_GetTextureColorMod(Texture, &brightness_value, nullptr, nullptr);
 	Uint8 next_brightness_value = brightness_value;
 
-	if (brightness_value >= max_brightness)
+	if (brightness_value >= Config.gemMaximumBrightness)
 	{
 		brightnessChange = "Down";
 	}
-	if (brightness_value <= min_brightness)
+	if (brightness_value <= Config.gemMinimumBrightness)
 	{
 		brightnessChange = "Up";
 	}
 
 	if (brightnessChange == "Up")
 	{
-		next_brightness_value = brightness_value + factor;
+		next_brightness_value = brightness_value + Config.gemBlinkFactor;
 	}
 	else if (brightnessChange == "Down")
 	{
-		next_brightness_value = brightness_value - factor;
+		next_brightness_value = brightness_value - Config.gemBlinkFactor;
 	}
 
 	SDL_SetTextureColorMod(Texture, next_brightness_value, next_brightness_value, next_brightness_value);
@@ -170,6 +170,11 @@ void Gem::Blink(unsigned int factor, unsigned int max_brightness, unsigned int m
 
 void Gem::Randomize(Uint64 current_ticks)
 {
+	if (current_ticks <= 0)
+	{
+		current_ticks = Config.currentTicks;
+	}
+
 	SDL_Rect sprite_rect = IMGPartRect;
 
 	std::random_device rd;

@@ -37,10 +37,10 @@ void GameStarted(Configuration &config);
 void GameTitleScreen(Configuration &config);
 
 //* Game handling
-void HandlePlayers(float delta_time_seconds, Uint64 current_ticks, const Configuration &config);
-void HandleGems(Uint64 current_ticks, unsigned int blink_factor, unsigned int max_brightness, unsigned int min_brightness, Configuration &config);
+void HandlePlayers(const Configuration &config);
+void HandleGems(Configuration &config);
 void HandleAsteroids(const Configuration &config);
-void CheckCollisions(Uint64 current_ticks, Configuration &config);
+void CheckCollisions(Configuration &config);
 
 //* Rendering
 template <typename valueType>
@@ -467,10 +467,10 @@ void GameStarted(Configuration &config)
 		config.startSoundPlaying = false;
 	}
 
-	HandlePlayers(config.gameClock.deltaTimeSeconds, config.currentTicks, config);
-	HandleGems(config.currentTicks, config.gemBlinkFactor, config.gemMaximumBrightness, config.gemMinimumBrightness, config);
+	HandlePlayers(config);
+	HandleGems(config);
 	HandleAsteroids(config);
-	CheckCollisions(config.currentTicks, config);
+	CheckCollisions(config);
 	AnimateMap<Player>(&config.playerMap, config.currentTicks);
 
 	SDL_RenderClear(config.Renderer);
@@ -534,26 +534,26 @@ void GameTitleScreen(Configuration &config)
 }
 
 //* Game handling
-void HandlePlayers(float delta_time_seconds, Uint64 current_ticks, const Configuration &config)
+void HandlePlayers(const Configuration &config)
 {
 	for (const auto &[name, player] : config.playerMap)
 	{
-		player->CheckType(current_ticks);
-		player->HandleKeys(delta_time_seconds);
+		player->CheckType(config.currentTicks);
+		player->HandleKeys(config.gameClock.deltaTimeSeconds);
 	}
 
 	return;
 }
 
-void HandleGems(Uint64 current_ticks, unsigned int blink_factor, unsigned int max_brightness, unsigned int min_brightness, Configuration &config)
+void HandleGems(Configuration &config)
 {
 	for (const std::shared_ptr<Gem> &gem : config.gemGroup)
 	{
-		if (current_ticks >= gem->GetBlinkTicks())
+		if (config.currentTicks >= gem->GetBlinkTicks())
 		{
-			gem->Blink(blink_factor, max_brightness, min_brightness);
+			gem->Blink();
 		}
-		if (current_ticks >= gem->GetLifetimeTicks())
+		if (config.currentTicks >= gem->GetLifetimeTicks())
 		{
 			config.Score -= 1;
 			config.chunkMap.at("gemMissed")->PlayChunk();
@@ -563,7 +563,7 @@ void HandleGems(Uint64 current_ticks, unsigned int blink_factor, unsigned int ma
 
 			config.textMap.at("scoreText")->SetRectPos(static_cast<float>(config.SCREEN_RESOLUTION_WIDTH) - config.textMap.at("scoreText")->GetRect().w, 0);
 
-			gem->Randomize(current_ticks);
+			gem->Randomize();
 		}
 	}
 
@@ -580,7 +580,7 @@ void HandleAsteroids(const Configuration &config)
 	return;
 }
 
-void CheckCollisions(Uint64 current_ticks, Configuration &config)
+void CheckCollisions(Configuration &config)
 {
 	for (const auto &[name, player] : config.playerMap)
 	{
@@ -599,7 +599,7 @@ void CheckCollisions(Uint64 current_ticks, Configuration &config)
 
 			config.textMap.at("scoreText")->SetRectPos(static_cast<float>(config.SCREEN_RESOLUTION_WIDTH) - config.textMap.at("scoreText")->GetRect().w, 0);
 
-			gem->Randomize(current_ticks);
+			gem->Randomize();
 
 			if (!player->GetGemCollected())
 			{
@@ -608,7 +608,7 @@ void CheckCollisions(Uint64 current_ticks, Configuration &config)
 				player->SetGemCollected(true);
 			}
 
-			player->SetCollectionTicks(current_ticks);
+			player->SetCollectionTicks(config.currentTicks);
 		}
 
 		for (const std::shared_ptr<Asteroid> &asteroid : config.asteroidGroup)
