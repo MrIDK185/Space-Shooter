@@ -28,7 +28,7 @@ void Quit(Configuration &config);
 //* Initialization
 int InitializeSystems(Configuration &config);
 void SetupGame(Configuration &config);
-void ImportSettings(std::string &filepath, Configuration &config);
+void ImportSettings(const std::string &filepath, Configuration &config);
 void CreateObjects(Configuration &config);
 
 //* Game modes
