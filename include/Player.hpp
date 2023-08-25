@@ -86,7 +86,7 @@ public:
 
 	void CheckType(Uint64 current_ticks);
 
-	void HandleKeys(float delta_time_seconds);
+	void HandleKeys();
 
 	void Render() override;
 };

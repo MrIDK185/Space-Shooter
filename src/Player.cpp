@@ -159,13 +159,12 @@ void Player::CheckType(Uint64 current_ticks)
 	return;
 }
 
-void Player::HandleKeys(float delta_time_seconds)
+void Player::HandleKeys()
 {
-	SDL_FRect rect = Rect;
-	float pos_x = rect.x;
-	float pos_y = rect.y;
-	float width = rect.w;
-	float height = rect.h;
+	float pos_x = Rect.x;
+	float pos_y = Rect.y;
+	float width = Rect.w;
+	float height = Rect.h;
 
 	float angle = Angle;
 
@@ -197,25 +196,25 @@ void Player::HandleKeys(float delta_time_seconds)
 
 	if (Config.Keyboard[SDL_SCANCODE_LEFT])
 	{
-		angle -= rotationSpeed * delta_time_seconds;
+		angle -= rotationSpeed * Config.gameClock.deltaTimeSeconds;
 	}
 	if (Config.Keyboard[SDL_SCANCODE_RIGHT])
 	{
-		angle += rotationSpeed * delta_time_seconds;
+		angle += rotationSpeed * Config.gameClock.deltaTimeSeconds;
 	}
 	if (Config.Keyboard[SDL_SCANCODE_UP])
 	{
-		Velocity += Acceleration * delta_time_seconds;
+		Velocity += Acceleration * Config.gameClock.deltaTimeSeconds;
 		gemCollected == false ? this->SetAnimationType(3) : this->SetAnimationType(4);
 	}
 	else
 	{
-		Velocity -= Friction * delta_time_seconds;
+		Velocity -= Friction * Config.gameClock.deltaTimeSeconds;
 		gemCollected == false ? this->SetAnimationType(1) : this->SetAnimationType(2);
 	}
 	if (Config.Keyboard[SDL_SCANCODE_DOWN])
 	{
-		Velocity -= Acceleration * delta_time_seconds;
+		Velocity -= Acceleration * Config.gameClock.deltaTimeSeconds;
 	}
 
 	if (Velocity < 0)
@@ -227,8 +226,8 @@ void Player::HandleKeys(float delta_time_seconds)
 		Velocity = maxVelocity;
 	}
 
-	pos_x += std::sin(angle * M_PI / 180) * Velocity * delta_time_seconds;
-	pos_y -= std::cos(angle * M_PI / 180) * Velocity * delta_time_seconds;
+	pos_x += std::sin(angle * M_PI / 180) * Velocity * Config.gameClock.deltaTimeSeconds;
+	pos_y -= std::cos(angle * M_PI / 180) * Velocity * Config.gameClock.deltaTimeSeconds;
 
 	this->SetRectPos(pos_x, pos_y);
 	Angle = angle;

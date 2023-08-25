@@ -28,7 +28,7 @@ void Quit(Configuration &config);
 //* Initialization
 int InitializeSystems(Configuration &config);
 void SetupGame(Configuration &config);
-void ImportSettings(const std::string &filepath, Configuration &config);
+void ImportSettings(std::string &filepath, Configuration &config);
 void CreateObjects(Configuration &config);
 
 //* Game modes
@@ -37,9 +37,9 @@ void GameStarted(Configuration &config);
 void GameTitleScreen(Configuration &config);
 
 //* Game handling
-void HandlePlayers(const Configuration &config);
+void HandlePlayers(Configuration &config);
 void HandleGems(Configuration &config);
-void HandleAsteroids(const Configuration &config);
+void HandleAsteroids(Configuration &config);
 void CheckCollisions(Configuration &config);
 
 //* Rendering
@@ -534,12 +534,12 @@ void GameTitleScreen(Configuration &config)
 }
 
 //* Game handling
-void HandlePlayers(const Configuration &config)
+void HandlePlayers(Configuration &config)
 {
 	for (const auto &[name, player] : config.playerMap)
 	{
 		player->CheckType(config.currentTicks);
-		player->HandleKeys(config.gameClock.deltaTimeSeconds);
+		player->HandleKeys();
 	}
 
 	return;
@@ -570,7 +570,7 @@ void HandleGems(Configuration &config)
 	return;
 }
 
-void HandleAsteroids(const Configuration &config)
+void HandleAsteroids(Configuration &config)
 {
 	for (const std::shared_ptr<Asteroid> &asteroid : config.asteroidGroup)
 	{

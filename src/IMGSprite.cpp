@@ -27,8 +27,7 @@ float IMGSprite::GetScale() const
 
 void IMGSprite::SetScale(float factor)
 {
-	SDL_FRect rect = Rect;
-	this->SetRectSize(rect.w * factor, rect.h * factor);
+	this->SetRectSize(Rect.w * factor, Rect.h * factor);
 
 	Scale = factor;
 
