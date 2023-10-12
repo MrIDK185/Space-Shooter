@@ -6,7 +6,7 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 typedef struct SDL_Window SDL_Window;
 typedef struct SDL_Renderer SDL_Renderer;
@@ -102,12 +102,11 @@ public:
 	Uint64 currentTicks = 0;
 
 	/*------------ Game Objects ------------*/
-
-	std::map<std::string, std::shared_ptr<IMGSprite>> IMGSpriteMap;
-	std::map<std::string, std::shared_ptr<Player>> playerMap;
-	std::map<std::string, std::shared_ptr<Text>> textMap;
-	std::map<std::string, std::shared_ptr<soundChunk>> chunkMap;
-	std::map<std::string, std::shared_ptr<soundMusic>> musicMap;
+	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSpriteMap;
+	std::unordered_map<std::string, std::shared_ptr<Player>> playerMap;
+	std::unordered_map<std::string, std::shared_ptr<Text>> textMap;
+	std::unordered_map<std::string, std::shared_ptr<soundChunk>> chunkMap;
+	std::unordered_map<std::string, std::shared_ptr<soundMusic>> musicMap;
 
 	std::vector<std::shared_ptr<Gem>> gemGroup;
 	std::vector<std::shared_ptr<Asteroid>> asteroidGroup;

@@ -6,27 +6,25 @@
 
 void Text::SetText()
 {
-	size_t size = wcslen(Message);
-	Uint16 uc_arr[size + 1];
+	size_t array_size = wcslen(Message) + 1;
+	Uint16 *unicodeMessage = new Uint16[array_size];
 
-	for (unsigned int idx = 0; idx < size; idx++)
+	for (unsigned int idx = 0; idx < array_size; idx++)
 	{
-		uc_arr[idx] = static_cast<Uint16>(Message[idx]);
+		unicodeMessage[idx] = static_cast<Uint16>(Message[idx]);
 	}
-	uc_arr[size] = static_cast<Uint16>(L'\0');
-
-	const Uint16 *unicodeMessage = static_cast<const Uint16 *>(uc_arr);
 
 	SDL_Surface *messageSurface = TTF_RenderUNICODE_Blended_Wrapped(Font, unicodeMessage, fontColor, 0);
 	Texture = SDL_CreateTextureFromSurface(destRenderer, messageSurface);
 
 	int width, height;
-	SDL_QueryTexture(this->GetTexture(), nullptr, nullptr, &width, &height);
+	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
 	this->SetRectSize(width, height);
 
 	SDL_FreeSurface(messageSurface);
 	messageSurface = nullptr;
 
+	delete[] unicodeMessage;
 	unicodeMessage = nullptr;
 
 	return;

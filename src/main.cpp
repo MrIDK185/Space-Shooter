@@ -2,7 +2,7 @@
 
 #include "Globals.hpp"
 #include "EventHandler.hpp"
-#include <Asteroid.hpp>
+#include "Asteroid.hpp"
 #include "Player.hpp"
 #include "Gem.hpp"
 #include "Text.hpp"
@@ -44,11 +44,11 @@ void CheckCollisions(Configuration &config);
 
 //* Rendering
 template <typename valueType>
-void RenderMap(std::map<std::string, std::shared_ptr<valueType>> *map);
+void RenderMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map);
 template <typename elementType>
 void RenderVector(std::vector<std::shared_ptr<elementType>> *vector);
 template <typename valueType>
-void AnimateMap(std::map<std::string, std::shared_ptr<valueType>> *map, Uint64 current_ticks);
+void AnimateMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map, Uint64 current_ticks);
 
 int main()
 {
@@ -62,7 +62,7 @@ int main()
 	SetupGame(config);
 
 	std::cout << "------- Startup successful --------\n\n";
-	auto gameEvents = EventHandler(config);
+	EventHandler gameEvents = EventHandler(config);
 
 	while (config.Running)
 	{
@@ -234,7 +234,7 @@ void SetupGame(Configuration &config)
 	std::cout << "Creating main window...\n";
 	config.Window = SDL_CreateWindow("Space Shooter", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, config.WINDOW_WIDTH, config.WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
 	std::cout << "Creating main renderer...\n\n";
-	config.Renderer = SDL_CreateRenderer(config.Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	config.Renderer = SDL_CreateRenderer(config.Window, -1, SDL_RENDERER_ACCELERATED);
 
 	std::cout << "Creating objects...\n";
 	CreateObjects(config);
@@ -263,7 +263,7 @@ std::pair<std::string, std::string> SplitKeyValue(std::string_view string)
 
 void ImportSettings(const std::string &filepath, Configuration &config)
 {
-	std::map<std::string, int> intMap = {
+	std::unordered_map<std::string, int> intMap = {
 		{"Window Width", config.WINDOW_WIDTH},
 		{"Window Height", config.WINDOW_HEIGHT},
 
@@ -293,7 +293,7 @@ void ImportSettings(const std::string &filepath, Configuration &config)
 		{"Gem Minimum Brightness", config.gemMinimumBrightness},
 	};
 
-	std::map<std::string, float> floatMap = {
+	std::unordered_map<std::string, float> floatMap = {
 		{"Player Acceleration", config.playerAcceleration},
 		{"Player Max Velocity", config.playerMaxVelocity},
 		{"Player Friction", config.playerFriction},
@@ -305,11 +305,11 @@ void ImportSettings(const std::string &filepath, Configuration &config)
 		{"Gem Blink Factor", config.gemBlinkFactor},
 	};
 
-	std::map<std::string, std::string> stringMap = {
+	std::unordered_map<std::string, std::string> stringMap = {
 		{"Font Path", config.fontPath},
 	};
 
-	std::map<std::string, std::wstring> wstringMap = {
+	std::unordered_map<std::string, std::wstring> wstringMap = {
 		{"Start Text", config.startText},
 	};
 
@@ -632,7 +632,7 @@ void CheckCollisions(Configuration &config)
 
 //* Rendering
 template <typename valueType>
-void RenderMap(std::map<std::string, std::shared_ptr<valueType>> *map)
+void RenderMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map)
 {
 	for (const auto &[name, element] : *map)
 	{
@@ -650,7 +650,7 @@ void RenderVector(std::vector<std::shared_ptr<elementType>> *vector)
 }
 
 template <typename valueType>
-void AnimateMap(std::map<std::string, std::shared_ptr<valueType>> *map, Uint64 current_ticks)
+void AnimateMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map, Uint64 current_ticks)
 {
 	for (const auto &[name, element] : *map)
 	{
