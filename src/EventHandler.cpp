@@ -1,4 +1,4 @@
-#include "Globals.hpp"
+#include "Configuration.hpp"
 #include "Text.hpp"
 #include "Time.hpp"
 #include "EventHandler.hpp"

@@ -1,4 +1,4 @@
-#include "Globals.hpp"
+#include "Configuration.hpp"
 #include "Gem.hpp"
 
 #include <random>

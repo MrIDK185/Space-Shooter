@@ -1,6 +1,8 @@
 #ifndef EVENT_HANDLER_HPP
 #define EVENT_HANDLER_HPP
 
+#include "Configuration.hpp"
+
 #include <SDL2/SDL.h>
 
 struct EventHandler

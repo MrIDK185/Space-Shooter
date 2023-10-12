@@ -1,6 +1,6 @@
 #define SDL_MAIN_HANDLED
 
-#include "Globals.hpp"
+#include "Configuration.hpp"
 #include "EventHandler.hpp"
 #include "Asteroid.hpp"
 #include "Player.hpp"
@@ -28,7 +28,7 @@ void Quit(Configuration &config);
 //* Initialization
 int InitializeSystems(Configuration &config);
 void SetupGame(Configuration &config);
-void ImportSettings(const std::string &filepath, Configuration &config);
+void ImportSettings(Configuration &config);
 void CreateObjects(Configuration &config);
 
 //* Game modes
@@ -216,7 +216,7 @@ int InitializeSystems(Configuration &config)
 void SetupGame(Configuration &config)
 {
 	std::cout << "Importing settings...\n";
-	ImportSettings("config/settings.txt", config);
+	ImportSettings(config);
 
 	SDL_GetWindowSizeInPixels(config.Window, &config.WINDOW_WIDTH, &config.WINDOW_HEIGHT);
 	SDL_DisplayMode display_mode;
@@ -261,7 +261,7 @@ std::pair<std::string, std::string> SplitKeyValue(std::string_view string)
 	return std::pair<std::string, std::string>(key, value);
 }
 
-void ImportSettings(const std::string &filepath, Configuration &config)
+void ImportSettings(Configuration &config)
 {
 	std::unordered_map<std::string, int> intMap = {
 		{"Window Width", config.WINDOW_WIDTH},
@@ -314,7 +314,7 @@ void ImportSettings(const std::string &filepath, Configuration &config)
 	};
 
 	std::cout << "Opening settings file...\n";
-	std::ifstream file(filepath, std::ios_base::in);
+	std::ifstream file("config/settings.txt", std::ios_base::in);
 	std::string line;
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
