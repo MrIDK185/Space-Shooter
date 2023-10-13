@@ -386,11 +386,11 @@ void Game::CreateObjects()
 
 	IMGSpriteMap["gameBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background.png", 1, 0);
 
-	asteroidGroup.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200, config));
+	asteroidGroup.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200, screenWidth, screenHeight));
 
 	std::cout << "Initializing Gem default values...\n";
 	Gem::InitDefaultValues(Renderer, "assets/images/gems.png", Config.GEM_SCALE, Config.GEM_RADIUS, Config.GEM_FRAME_WIDTH, Config.GEM_FRAME_HEIGHT, Config.GEM_IMG_FRAMES, Config.GEM_IMG_TYPES, 0, Config.GEM_BLINK_DURATION, Config.GEM_LIFETIME_DURATION);
-	gemGroup.push_back(Gem::NewGem(config));
+	gemGroup.push_back(Gem::NewGem(screenWidth, screenHeight));
 
 	std::cout << "Initializing Player default values...\n\n";
 	Player::InitDefaultValues(Renderer, Config.PLAYER_SCALE, Config.PLAYER_RADIUS, Config.PLAYER_FRAME_WIDTH, Config.PLAYER_FRAME_HEIGHT, Config.PLAYER_IMG_FRAMES, Config.PLAYER_IMG_TYPES, Config.PLAYER_ANIMATIONS_PER_SECOND, Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION, Config.PLAYER_EFFECT_DURATION_SECONDS, Config.PLAYER_ROTATION_SPEED);
@@ -518,7 +518,7 @@ void Game::HandleGems()
 	{
 		if (currentTicks >= gem->GetBlinkTicks())
 		{
-			gem->Blink();
+			gem->Blink(Config.GEM_MINIMUM_BRIGHTNESS, Config.GEM_MAXIMUM_BRIGHTNESS, Config.GEM_BLINK_FACTOR);
 		}
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{
@@ -530,7 +530,7 @@ void Game::HandleGems()
 
 			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 
-			gem->Randomize();
+			gem->Randomize(screenWidth, screenHeight, currentTicks);
 		}
 	}
 
@@ -541,7 +541,7 @@ void Game::HandleAsteroids()
 {
 	for (const std::shared_ptr<Asteroid> &asteroid : asteroidGroup)
 	{
-		asteroid->Move();
+		asteroid->Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
 	}
 
 	return;
@@ -566,7 +566,7 @@ void Game::CheckCollisions()
 
 			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 
-			gem->Randomize();
+			gem->Randomize(screenWidth, screenHeight, currentTicks);
 
 			if (!player->GetGemCollected())
 			{

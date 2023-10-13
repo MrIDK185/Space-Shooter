@@ -38,8 +38,6 @@ private:
 		blinkDuration,
 		lifetimeDuration;
 
-	Configuration &Config;
-
 public:
 	//*static
 
@@ -47,11 +45,11 @@ public:
 
 	static void CleanDefaultValues();
 
-	static std::shared_ptr<Gem> NewGem(Configuration &config);
+	static std::shared_ptr<Gem> NewGem(int screen_width, int screen_height);
 
 	//*non-static
 
-	Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration, Configuration &config);
+	Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration, int screen_width, int screen_height);
 
 	~Gem() override;
 
@@ -77,9 +75,9 @@ public:
 
 	void SetTicks(Uint64 current_ticks);
 
-	void Blink();
+	void Blink(int gem_minimum_brightness, int gem_maximum_brightness, int gem_blink_factor);
 
-	void Randomize(Uint64 current_ticks = 0);
+	void Randomize(int screen_width, int screen_height, Uint64 current_ticks = 0);
 };
 
 #endif //! GEM_HPP

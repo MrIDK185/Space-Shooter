@@ -50,19 +50,18 @@ void Gem::CleanDefaultValues()
 	return;
 }
 
-std::shared_ptr<Gem> Gem::NewGem(Configuration &config)
+std::shared_ptr<Gem> Gem::NewGem(int screen_width, int screen_height)
 {
-	return std::make_shared<Gem>(D_RENDERER, D_PATH, D_SCALE, D_RADIUS, D_FRAME_WIDTH, D_FRAME_HEIGHT, D_IMG_FRAMES, D_IMG_TYPES, D_ANIMATIONS_PER_SECOND, D_BLINKDURATION, D_LIFETIMEDURATION, config);
+	return std::make_shared<Gem>(D_RENDERER, D_PATH, D_SCALE, D_RADIUS, D_FRAME_WIDTH, D_FRAME_HEIGHT, D_IMG_FRAMES, D_IMG_TYPES, D_ANIMATIONS_PER_SECOND, D_BLINKDURATION, D_LIFETIMEDURATION, screen_width, screen_height);
 }
 
 //*non-static(public)
 
-Gem::Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration, Configuration &config) : AnimatedSprite(renderer, path, scale, radius, frame_width, frame_height, img_frames, img_types, animations_per_second),
-																																																																																			blinkDuration(blink_duration),
-																																																																																			lifetimeDuration(lifetime_duration),
-																																																																																			Config(config)
+Gem::Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration, int screen_width, int screen_height) : AnimatedSprite(renderer, path, scale, radius, frame_width, frame_height, img_frames, img_types, animations_per_second),
+																																																																																						  blinkDuration(blink_duration),
+																																																																																						  lifetimeDuration(lifetime_duration)
 {
-	this->Randomize(SDL_GetTicks64());
+	this->Randomize(screen_width, screen_height, SDL_GetTicks64());
 
 	return;
 }
@@ -139,28 +138,28 @@ void Gem::SetTicks(Uint64 current_ticks)
 	return;
 }
 
-void Gem::Blink()
+void Gem::Blink(int gem_minimum_brightness, int gem_maximum_brightness, int gem_blink_factor)
 {
 	Uint8 brightness_value;
 	SDL_GetTextureColorMod(Texture, &brightness_value, nullptr, nullptr);
 	Uint8 next_brightness_value = brightness_value;
 
-	if (brightness_value >= Config.gemMaximumBrightness)
+	if (brightness_value >= gem_maximum_brightness)
 	{
 		brightnessChange = "Down";
 	}
-	if (brightness_value <= Config.gemMinimumBrightness)
+	if (brightness_value <= gem_minimum_brightness)
 	{
 		brightnessChange = "Up";
 	}
 
 	if (brightnessChange == "Up")
 	{
-		next_brightness_value = brightness_value + Config.gemBlinkFactor;
+		next_brightness_value = brightness_value + gem_blink_factor;
 	}
 	else if (brightnessChange == "Down")
 	{
-		next_brightness_value = brightness_value - Config.gemBlinkFactor;
+		next_brightness_value = brightness_value - gem_blink_factor;
 	}
 
 	SDL_SetTextureColorMod(Texture, next_brightness_value, next_brightness_value, next_brightness_value);
@@ -168,13 +167,8 @@ void Gem::Blink()
 	return;
 }
 
-void Gem::Randomize(Uint64 current_ticks)
+void Gem::Randomize(int screen_width, int screen_height, Uint64 current_ticks)
 {
-	if (current_ticks <= 0)
-	{
-		current_ticks = Config.currentTicks;
-	}
-
 	SDL_Rect sprite_rect = IMGPartRect;
 
 	std::random_device rd;
@@ -182,8 +176,8 @@ void Gem::Randomize(Uint64 current_ticks)
 
 	std::uniform_int_distribution<> random_type(1, IMG_TYPES);
 	std::uniform_int_distribution<> random_frame(1, IMG_FRAMES);
-	std::uniform_int_distribution<> random_x(0, Config.SCREEN_RESOLUTION_WIDTH - sprite_rect.w);
-	std::uniform_int_distribution<> random_y(0, Config.SCREEN_RESOLUTION_HEIGHT - sprite_rect.h);
+	std::uniform_int_distribution<> random_x(0, screen_width - sprite_rect.w);
+	std::uniform_int_distribution<> random_y(0, screen_height - sprite_rect.h);
 
 	int new_type = random_type(gen);
 	int new_frame = random_frame(gen);
