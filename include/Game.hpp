@@ -1,8 +1,8 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "EventHandler.hpp"
 #include "Configuration.hpp"
+#include "EventHandler.hpp"
 #include "Time.hpp"
 
 #include <string>
@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <memory>
 
+typedef unsigned char uint8_t;
 typedef uint8_t Uint8;
 
 class IMGSprite;
@@ -27,6 +28,10 @@ struct Game
 	SDL_Renderer *Renderer = nullptr;
 	const Uint8 *Keyboard = nullptr;
 
+	int
+		screenWidth = 1920,
+		screenHeight = 1080;
+
 	Configuration Config;
 	EventHandler gameEvents;
 
@@ -34,18 +39,21 @@ struct Game
 	SecondTimer startTimer;
 	Uint64 currentTicks = 0;
 
-	enum gameState
+	typedef enum
 	{
 		GAME_STARTED,
 		GAME_PAUSED,
 		TITLE_SCREEN
-	};
+	} gameState;
 
-	enum soundState
+	typedef enum
 	{
 		UNMUTED,
 		MUTED
-	};
+	} soundState;
+
+	gameState currentGameState = TITLE_SCREEN;
+	soundState currentSoundState = UNMUTED;
 
 	bool
 		Running = true,
@@ -54,6 +62,7 @@ struct Game
 
 	int
 		Score = 0,
+		Countdown = 3,
 		currentChunkVolume = 0,
 		lastChunkVolume = 0;
 
@@ -65,6 +74,9 @@ struct Game
 
 	std::vector<std::shared_ptr<Gem>> gemGroup;
 	std::vector<std::shared_ptr<Asteroid>> asteroidGroup;
+
+	//* Main loop
+	int Run();
 
 	//* Error-handling
 	void ShowErrorMessage();
@@ -96,10 +108,7 @@ struct Game
 	template <typename elementType>
 	void RenderVector(std::vector<std::shared_ptr<elementType>> *vector);
 	template <typename valueType>
-	void AnimateMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map, Uint64 current_ticks);
-
-	//* Main loop
-	int Run();
+	void AnimateMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map);
 
 	//* Constructor/Destructor
 	Game() = default;

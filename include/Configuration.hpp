@@ -3,6 +3,7 @@
 
 #include <string>
 
+typedef unsigned int uint32_t;
 typedef uint32_t Uint32;
 
 struct Configuration
@@ -12,25 +13,23 @@ public:
 
 	/*------------ Window ------------*/
 
-	const int
+	int
 		START_WINDOW_WIDTH = 1440,
-		START_WINDOW_HEIGHT = 810,
-		SCREEN_RESOLUTION_WIDTH = 1920,
-		SCREEN_RESOLUTION_HEIGHT = 1080;
+		START_WINDOW_HEIGHT = 810;
 
 	/*------------ Text ------------*/
 
-	const std::string FONT_PATH = "/usr/share/fonts/msttcore/comicbd.ttf";
-	const std::wstring START_TEXT = L"Starten: \"Enter\"\nSchließen: \"Q\"";
+	std::string FONT_PATH = "/usr/share/fonts/msttcore/comicbd.ttf";
+	std::wstring START_TEXT = L"Starten: \"Enter\"\nSchließen: \"Q\"";
 
-	const int
+	int
 		FONT_COLOR_HEX = 0xFFFFFF,
 		START_TEXT_SIZE = 100,
 		SCORE_TEXT_SIZE = 70;
 
 	/*------------ Player ------------*/
 
-	const float
+	float
 		PLAYER_ACCELEARION = 200,
 		PLAYER_MAX_VELOCITY = 600,
 		PLAYER_MAX_VELOCITY_BOOST = 10,
@@ -39,7 +38,7 @@ public:
 		PLAYER_FRICTION = 200,
 		PLAYER_RADIUS = 30;
 
-	const int
+	int
 		PLAYER_FRAME_WIDTH = 68,
 		PLAYER_FRAME_HEIGHT = 80,
 		PLAYER_IMG_FRAMES = 6,
@@ -50,11 +49,11 @@ public:
 
 	/*------------ Gem ------------*/
 
-	const float
+	float
 		GEM_SCALE = 1,
 		GEM_RADIUS = 30;
 
-	const int
+	int
 		GEM_FRAME_WIDTH = 52,
 		GEM_FRAME_HEIGHT = 64,
 		GEM_IMG_FRAMES = 16,
@@ -67,8 +66,8 @@ public:
 
 	/*------------ Time ------------*/
 
-	const int
-		COUNTDOWN_START = 3,
+	int
+		COUNTDOWN_DURATION = 3,
 		COUNTDOWN_INTERVAL = 1;
 
 	/*--- Constructor/Destructor ---*/
