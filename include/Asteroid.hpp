@@ -13,16 +13,14 @@ private:
 
 	float Velocity;
 
-	Configuration &Config;
-
 public:
 	//* non-static
 
-	Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity, Configuration &config);
+	Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity, int screen_width, int screen_height);
 
 	~Asteroid() override;
 
-	void Move();
+	void Move(int screen_width, int screen_height, float delta_time_seconds);
 
 	void Render() override;
 };

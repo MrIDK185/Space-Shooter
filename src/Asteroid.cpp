@@ -2,9 +2,8 @@
 
 #include <random>
 
-Asteroid::Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity, Configuration &config) : IMGSprite::IMGSprite(renderer, path, scale, radius),
-																																 Velocity(velocity),
-																																 Config(config)
+Asteroid::Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity, int screen_width, int screen_height) : IMGSprite::IMGSprite(renderer, path, scale, radius),
+																																			   Velocity(velocity)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -13,13 +12,13 @@ Asteroid::Asteroid(SDL_Renderer *renderer, const char *path, float scale, float 
 
 	Angle = static_cast<unsigned int>(random_angle(gen));
 
-	std::uniform_int_distribution<> random_x_pos(0, Config.SCREEN_RESOLUTION_WIDTH - Rect.w);
-	std::uniform_int_distribution<> random_y_pos(0, Config.SCREEN_RESOLUTION_HEIGHT - Rect.h);
+	std::uniform_int_distribution<> random_x_pos(0, screen_width - Rect.w);
+	std::uniform_int_distribution<> random_y_pos(0, screen_height - Rect.h);
 
 	this->SetRectPos(random_x_pos(gen), random_y_pos(gen));
 }
 
-void Asteroid::Move()
+void Asteroid::Move(int screen_width, int screen_height, float delta_time_seconds)
 {
 	SDL_FRect rect = this->GetRect();
 	float pos_x = rect.x;
@@ -29,23 +28,23 @@ void Asteroid::Move()
 
 	if (pos_x <= -width)
 	{
-		pos_x = Config.SCREEN_RESOLUTION_WIDTH;
+		pos_x = screen_width;
 	}
-	else if (pos_x >= Config.SCREEN_RESOLUTION_WIDTH)
+	else if (pos_x >= screen_width)
 	{
 		pos_x = -width;
 	}
 	if (pos_y <= -height)
 	{
-		pos_y = Config.SCREEN_RESOLUTION_HEIGHT;
+		pos_y = screen_height;
 	}
-	else if (pos_y >= Config.SCREEN_RESOLUTION_HEIGHT)
+	else if (pos_y >= screen_height)
 	{
 		pos_y = -height;
 	}
 
-	pos_x += std::sin(Angle * M_PI / 180) * Velocity * Config.gameClock.deltaTimeSeconds;
-	pos_y -= std::cos(Angle * M_PI / 180) * Velocity * Config.gameClock.deltaTimeSeconds;
+	pos_x += std::sin(Angle * M_PI / 180) * Velocity * delta_time_seconds;
+	pos_y -= std::cos(Angle * M_PI / 180) * Velocity * delta_time_seconds;
 
 	this->SetRectPos(pos_x, pos_y);
 
