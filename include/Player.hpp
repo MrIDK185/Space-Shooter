@@ -41,8 +41,6 @@ private:
 	Uint64 collectionTicks = 0;
 	bool gemCollected = false;
 
-	Configuration &Config;
-
 public:
 	//*static
 
@@ -52,7 +50,7 @@ public:
 
 	//*non-static
 
-	Player(const char *path, Configuration &config);
+	Player(const char *path);
 
 	~Player() override;
 
@@ -86,7 +84,7 @@ public:
 
 	void CheckType(Uint64 current_ticks);
 
-	void HandleKeys();
+	void HandleKeys(int screen_width, int screen_height, Uint64 delta_time_seconds, const Uint8 *keyboard);
 
 	void Render() override;
 };

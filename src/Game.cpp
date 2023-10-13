@@ -394,7 +394,7 @@ void Game::CreateObjects()
 
 	std::cout << "Initializing Player default values...\n\n";
 	Player::InitDefaultValues(Renderer, Config.PLAYER_SCALE, Config.PLAYER_RADIUS, Config.PLAYER_FRAME_WIDTH, Config.PLAYER_FRAME_HEIGHT, Config.PLAYER_IMG_FRAMES, Config.PLAYER_IMG_TYPES, Config.PLAYER_ANIMATIONS_PER_SECOND, Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION, Config.PLAYER_EFFECT_DURATION_SECONDS, Config.PLAYER_ROTATION_SPEED);
-	playerMap["Player1"] = std::make_shared<Player>("assets/images/player.png", config);
+	playerMap["Player1"] = std::make_shared<Player>("assets/images/player.png");
 	SDL_Rect player_rect = playerMap.at("Player1")->GetIMGPartRect();
 	playerMap.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2), static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 
@@ -506,7 +506,7 @@ void Game::HandlePlayers()
 	for (const auto &[name, player] : playerMap)
 	{
 		player->CheckType(currentTicks);
-		player->HandleKeys();
+		player->HandleKeys(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
 	}
 
 	return;

@@ -51,13 +51,12 @@ void Player::CleanDefaultValues()
 
 //*non-static(public)
 
-Player::Player(const char *path, Configuration &config) : AnimatedSprite(D_RENDERER, path, D_SCALE, D_RADIUS, D_FRAME_WIDTH, D_FRAME_HEIGHT, D_IMG_FRAMES, D_IMG_TYPES, D_ANIMATIONS_PER_SECOND),
-														  Acceleration(D_ACCELERATION),
-														  maxVelocity(D_MAX_VELOCITY),
-														  Friction(D_FRICTION),
-														  effectDuration(D_EFFECT_DURATION_SECONDS * 1000),
-														  rotationSpeed(D_ROTATION_SPEED),
-														  Config(config)
+Player::Player(const char *path) : AnimatedSprite(D_RENDERER, path, D_SCALE, D_RADIUS, D_FRAME_WIDTH, D_FRAME_HEIGHT, D_IMG_FRAMES, D_IMG_TYPES, D_ANIMATIONS_PER_SECOND),
+								   Acceleration(D_ACCELERATION),
+								   maxVelocity(D_MAX_VELOCITY),
+								   Friction(D_FRICTION),
+								   effectDuration(D_EFFECT_DURATION_SECONDS * 1000),
+								   rotationSpeed(D_ROTATION_SPEED)
 {
 }
 
@@ -159,7 +158,7 @@ void Player::CheckType(Uint64 current_ticks)
 	return;
 }
 
-void Player::HandleKeys()
+void Player::HandleKeys(int screen_width, int screen_height, Uint64 delta_time_seconds, const Uint8 *keyboard)
 {
 	float pos_x = Rect.x;
 	float pos_y = Rect.y;
@@ -170,17 +169,17 @@ void Player::HandleKeys()
 
 	if (pos_x <= -width)
 	{
-		pos_x = Config.SCREEN_RESOLUTION_WIDTH;
+		pos_x = screen_width;
 	}
-	else if (pos_x >= Config.SCREEN_RESOLUTION_WIDTH)
+	else if (pos_x >= screen_width)
 	{
 		pos_x = -width;
 	}
 	if (pos_y <= -height)
 	{
-		pos_y = Config.SCREEN_RESOLUTION_HEIGHT;
+		pos_y = screen_height;
 	}
-	else if (pos_y >= Config.SCREEN_RESOLUTION_HEIGHT)
+	else if (pos_y >= screen_height)
 	{
 		pos_y = -height;
 	}
@@ -194,27 +193,27 @@ void Player::HandleKeys()
 		angle = 360 - angle;
 	}
 
-	if (Config.Keyboard[SDL_SCANCODE_LEFT])
+	if (keyboard[SDL_SCANCODE_LEFT])
 	{
-		angle -= rotationSpeed * Config.gameClock.deltaTimeSeconds;
+		angle -= rotationSpeed * delta_time_seconds;
 	}
-	if (Config.Keyboard[SDL_SCANCODE_RIGHT])
+	if (keyboard[SDL_SCANCODE_RIGHT])
 	{
-		angle += rotationSpeed * Config.gameClock.deltaTimeSeconds;
+		angle += rotationSpeed * delta_time_seconds;
 	}
-	if (Config.Keyboard[SDL_SCANCODE_UP])
+	if (keyboard[SDL_SCANCODE_UP])
 	{
-		Velocity += Acceleration * Config.gameClock.deltaTimeSeconds;
+		Velocity += Acceleration * delta_time_seconds;
 		gemCollected == false ? this->SetAnimationType(3) : this->SetAnimationType(4);
 	}
 	else
 	{
-		Velocity -= Friction * Config.gameClock.deltaTimeSeconds;
+		Velocity -= Friction * delta_time_seconds;
 		gemCollected == false ? this->SetAnimationType(1) : this->SetAnimationType(2);
 	}
-	if (Config.Keyboard[SDL_SCANCODE_DOWN])
+	if (keyboard[SDL_SCANCODE_DOWN])
 	{
-		Velocity -= Acceleration * Config.gameClock.deltaTimeSeconds;
+		Velocity -= Acceleration * delta_time_seconds;
 	}
 
 	if (Velocity < 0)
@@ -226,8 +225,8 @@ void Player::HandleKeys()
 		Velocity = maxVelocity;
 	}
 
-	pos_x += std::sin(angle * M_PI / 180) * Velocity * Config.gameClock.deltaTimeSeconds;
-	pos_y -= std::cos(angle * M_PI / 180) * Velocity * Config.gameClock.deltaTimeSeconds;
+	pos_x += std::sin(angle * M_PI / 180) * Velocity * delta_time_seconds;
+	pos_y -= std::cos(angle * M_PI / 180) * Velocity * delta_time_seconds;
 
 	this->SetRectPos(pos_x, pos_y);
 	Angle = angle;
