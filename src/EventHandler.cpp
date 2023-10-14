@@ -39,6 +39,7 @@ bool EventHandler::Handle_Return()
 		return false;
 	}
 
+	currentGame->Countdown = currentGame->Config.COUNTDOWN_DURATION;
 	std::wstring countdown_str = std::to_wstring(currentGame->Countdown);
 	currentGame->textMap.at("startText")->SetMessage(countdown_str.c_str());
 

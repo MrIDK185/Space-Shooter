@@ -8,7 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <codecvt>
-#include <boost/algorithm/string/trim.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -216,66 +216,58 @@ std::pair<std::string, std::string> SplitKeyValue(std::string_view string)
 
 	value = string.substr(index + 1, string.length() - (index + 1));
 	boost::algorithm::trim(value);
-	size_t idx = value.find("\\n");
-	if (idx != std::string::npos)
-	{
-		value.replace(idx, 2, "\n");
-	}
+	boost::replace_all(value, "\\n", "\n");
 
 	return std::pair<std::string, std::string>(key, value);
 }
 
 void Game::ImportSettings()
 {
-	std::unordered_map<std::string, int> intMap = {
-		{"Window Width", Config.START_WINDOW_WIDTH},
-		{"Window Height", Config.START_WINDOW_HEIGHT},
+	std::unordered_map<std::string, int *> intMap;
+	intMap["Window Width"] = &Config.START_WINDOW_WIDTH;
+	intMap["Window Height"] = &Config.START_WINDOW_HEIGHT;
 
-		{"Countdown Duration", Config.COUNTDOWN_DURATION},
-		{"Countdown Interval", Config.COUNTDOWN_INTERVAL},
+	intMap["Countdown Duration"] = &Config.COUNTDOWN_DURATION;
+	intMap["Countdown Interval"] = &Config.COUNTDOWN_INTERVAL;
 
-		{"Start Text Size", Config.START_TEXT_SIZE},
-		{"Score Text Size", Config.SCORE_TEXT_SIZE},
+	intMap["Start Text Size"] = &Config.START_TEXT_SIZE;
+	intMap["Score Text Size"] = &Config.SCORE_TEXT_SIZE;
 
-		{"Player Frame Width", Config.PLAYER_FRAME_WIDTH},
-		{"Player Frame Height", Config.PLAYER_FRAME_HEIGHT},
-		{"Player IMG Frames", Config.PLAYER_IMG_FRAMES},
-		{"Player IMG Types", Config.PLAYER_IMG_TYPES},
-		{"Player Animations Per Second", Config.PLAYER_ANIMATIONS_PER_SECOND},
-		{"Player Effect Duration Seconds", Config.PLAYER_EFFECT_DURATION_SECONDS},
-		{"Player Rotation Speed", Config.PLAYER_ROTATION_SPEED},
-		{"Player Max Velocity Boost", Config.PLAYER_MAX_VELOCITY_BOOST},
-		{"Player Acceleration Boost", Config.PLAYER_ACCELEARION_BOOST},
+	intMap["Player Frame Width"] = &Config.PLAYER_FRAME_WIDTH;
+	intMap["Player Frame Height"] = &Config.PLAYER_FRAME_HEIGHT;
+	intMap["Player IMG Frames"] = &Config.PLAYER_IMG_FRAMES;
+	intMap["Player IMG Types"] = &Config.PLAYER_IMG_TYPES;
+	intMap["Player Animations Per Second"] = &Config.PLAYER_ANIMATIONS_PER_SECOND;
+	intMap["Player Effect Duration Seconds"] = &Config.PLAYER_EFFECT_DURATION_SECONDS;
+	intMap["Player Rotation Speed"] = &Config.PLAYER_ROTATION_SPEED;
 
-		{"Gem Frame Width", Config.GEM_FRAME_WIDTH},
-		{"Gem Frame Height", Config.GEM_FRAME_HEIGHT},
-		{"Gem IMG Frames", Config.GEM_IMG_FRAMES},
-		{"Gem IMG Types", Config.GEM_IMG_TYPES},
-		{"Gem Blink Duration", Config.GEM_BLINK_DURATION},
-		{"Gem Lifetime Duration", Config.GEM_LIFETIME_DURATION},
-		{"Gem Maximum Brightness", Config.GEM_MAXIMUM_BRIGHTNESS},
-		{"Gem Minimum Brightness", Config.GEM_MINIMUM_BRIGHTNESS},
-	};
+	intMap["Gem Frame Width"] = &Config.GEM_FRAME_WIDTH;
+	intMap["Gem Frame Height"] = &Config.GEM_FRAME_HEIGHT;
+	intMap["Gem IMG Frames"] = &Config.GEM_IMG_FRAMES;
+	intMap["Gem IMG Types"] = &Config.GEM_IMG_TYPES;
+	intMap["Gem Blink Factor"] = &Config.GEM_BLINK_FACTOR;
+	intMap["Gem Blink Duration"] = &Config.GEM_BLINK_DURATION;
+	intMap["Gem Lifetime Duration"] = &Config.GEM_LIFETIME_DURATION;
+	intMap["Gem Maximum Brightness"] = &Config.GEM_MAXIMUM_BRIGHTNESS;
+	intMap["Gem Minimum Brightness"] = &Config.GEM_MINIMUM_BRIGHTNESS;
 
-	std::unordered_map<std::string, float> floatMap = {
-		{"Player Acceleration", Config.PLAYER_ACCELEARION},
-		{"Player Max Velocity", Config.PLAYER_MAX_VELOCITY},
-		{"Player Friction", Config.PLAYER_FRICTION},
-		{"Player Scale", Config.PLAYER_SCALE},
-		{"Player Radius", Config.PLAYER_RADIUS},
+	std::unordered_map<std::string, float *> floatMap;
+	floatMap["Player Max Velocity Boost"] = &Config.PLAYER_MAX_VELOCITY_BOOST;
+	floatMap["Player Acceleration Boost"] = &Config.PLAYER_ACCELEARION_BOOST;
+	floatMap["Player Acceleration"] = &Config.PLAYER_ACCELEARION;
+	floatMap["Player Max Velocity"] = &Config.PLAYER_MAX_VELOCITY;
+	floatMap["Player Friction"] = &Config.PLAYER_FRICTION;
+	floatMap["Player Scale"] = &Config.PLAYER_SCALE;
+	floatMap["Player Radius"] = &Config.PLAYER_RADIUS;
 
-		{"Gem Scale", Config.GEM_SCALE},
-		{"Gem Radius", Config.GEM_RADIUS},
-		{"Gem Blink Factor", Config.GEM_BLINK_FACTOR},
-	};
+	floatMap["Gem Scale"] = &Config.GEM_SCALE;
+	floatMap["Gem Radius"] = &Config.GEM_RADIUS;
 
-	std::unordered_map<std::string, std::string> stringMap = {
-		{"Font Path", Config.FONT_PATH},
-	};
+	std::unordered_map<std::string, std::string *> stringMap;
+	stringMap["Font Path"] = &Config.FONT_PATH;
 
-	std::unordered_map<std::string, std::wstring> wstringMap = {
-		{"Start Text", Config.START_TEXT},
-	};
+	std::unordered_map<std::string, std::wstring *> wstringMap;
+	wstringMap["Start Text"] = &Config.START_TEXT;
 
 	std::cout << "Opening settings file...\n";
 	std::ifstream file("config/settings.txt", std::ios_base::in);
@@ -318,7 +310,7 @@ void Game::ImportSettings()
 			if (itInt != intMap.end())
 			{
 				std::cout << "Initializing " << key << " ... \n";
-				itInt->second = std::stoi(value);
+				*(itInt->second) = std::stoi(value);
 				continue;
 			}
 
@@ -326,7 +318,7 @@ void Game::ImportSettings()
 			if (itFloat != floatMap.end())
 			{
 				std::cout << "Initializing " << key << " ... \n";
-				itFloat->second = std::stof(value);
+				*(itFloat->second) = std::stof(value);
 				continue;
 			}
 
@@ -334,7 +326,7 @@ void Game::ImportSettings()
 			if (itString != stringMap.end())
 			{
 				std::cout << "Initializing " << key << "...\n";
-				itString->second = value;
+				*(itString->second) = value;
 				continue;
 			}
 
@@ -342,7 +334,7 @@ void Game::ImportSettings()
 			if (itWString != wstringMap.end())
 			{
 				std::cout << "Initializing " << key << "...\n";
-				itWString->second = converter.from_bytes(value);
+				*(itWString->second) = converter.from_bytes(value);
 				continue;
 			}
 		}
