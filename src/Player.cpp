@@ -1,4 +1,3 @@
-#include "Configuration.hpp"
 #include "Player.hpp"
 
 //*static(private)

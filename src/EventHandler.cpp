@@ -1,5 +1,6 @@
-#include "Text.hpp"
 #include "EventHandler.hpp"
+#include "Game.hpp"
+#include "Text.hpp"
 
 #include <SDL2/SDL_mixer.h>
 

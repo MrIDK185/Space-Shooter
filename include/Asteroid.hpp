@@ -2,7 +2,6 @@
 #define ASTEROID_HPP
 
 #include "IMGSprite.hpp"
-#include "Configuration.hpp"
 
 class Asteroid : public IMGSprite
 {

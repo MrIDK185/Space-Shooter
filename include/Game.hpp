@@ -5,13 +5,9 @@
 #include "EventHandler.hpp"
 #include "Time.hpp"
 
-#include <string>
 #include <vector>
 #include <unordered_map>
 #include <memory>
-
-typedef unsigned char uint8_t;
-typedef uint8_t Uint8;
 
 typedef enum
 {
@@ -46,7 +42,7 @@ struct Game
 		screenHeight = 1080;
 
 	Configuration Config;
-	EventHandler gameEvents;
+	EventHandler gameEvents = EventHandler(this);
 
 	Clock gameClock;
 	SecondTimer startTimer;

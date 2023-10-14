@@ -3,7 +3,6 @@
 
 #include "Sprite.hpp"
 
-#include <string>
 #include <memory>
 
 class IMGSprite : public Sprite

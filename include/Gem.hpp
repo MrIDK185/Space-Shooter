@@ -3,6 +3,8 @@
 
 #include "AnimatedSprite.hpp"
 
+#include <string>
+
 class Gem : public AnimatedSprite
 {
 private:

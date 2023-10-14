@@ -1,5 +1,3 @@
-#define SDL_MAIN_HANDLED
-
 #include "Game.hpp"
 #include "Asteroid.hpp"
 #include "Player.hpp"

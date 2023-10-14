@@ -21,7 +21,7 @@ fi
 while test $# -gt 0; do
   case $1 in
     --cflags)
-      echo -o main ./src/AnimatedSprite.cpp ./src/Asteroid.cpp ./src/EventHandler.cpp ./src/Gem.cpp ./src/IMGSprite.cpp ./src/main.cpp ./src/Player.cpp \
+      echo -o main ./src/AnimatedSprite.cpp ./src/Asteroid.cpp ./src/EventHandler.cpp ./src/Game.cpp ./src/Gem.cpp ./src/IMGSprite.cpp ./src/main.cpp ./src/Player.cpp \
       ./src/Sound.cpp ./src/Sprite.cpp ./src/Text.cpp ./src/Time.cpp -I./include -Wall -Wextra -Wpedantic
       ;;
 

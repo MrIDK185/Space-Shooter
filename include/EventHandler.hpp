@@ -1,7 +1,9 @@
 #ifndef EVENT_HANDLER_HPP
 #define EVENT_HANDLER_HPP
 
-#include "Game.hpp"
+#include <SDL2/SDL.h>
+
+struct Game;
 
 struct EventHandler
 {
