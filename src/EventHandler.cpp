@@ -1,178 +1,173 @@
-#include "Configuration.hpp"
 #include "Text.hpp"
-#include "Time.hpp"
 #include "EventHandler.hpp"
 
 #include <SDL2/SDL_mixer.h>
 
 //* non-static(private)
 
-bool EventHandler::Handle_Quit()
+bool EventHandler::Handle_WindowQuit()
 {
 	if (Event.type != SDL_WINDOWEVENT || Event.window.event != SDL_WINDOWEVENT_CLOSE)
 	{
 		return false;
 	}
 
-	Config.Running = false;
+	currentGame->Running = false;
 
 	return true;
 }
 
 bool EventHandler::Handle_Q()
 {
-	if (Event.key.keysym.sym != SDLK_q)
-	{
-		return false;
-	}
-
-	Config.Running = false;
+	currentGame->Running = false;
 
 	return true;
 }
 
 bool EventHandler::Handle_Escape()
 {
-	if (Event.key.keysym.sym != SDLK_ESCAPE)
-	{
-		return false;
-	}
-
-	Config.gamePaused ? Config.gamePaused = false : Config.gamePaused = true;
+	currentGame->currentGameState = (currentGame->currentGameState == GAME_PAUSED ? GAME_STARTED : GAME_PAUSED);
 
 	return true;
 }
 
 bool EventHandler::Handle_Return()
 {
-	if (Event.key.keysym.sym != SDLK_RETURN || Config.gamePaused || Config.gameStarted || Config.startCountdown)
+	if (currentGame->currentGameState == GAME_STARTED || currentGame->currentGameState == GAME_PAUSED || currentGame->startCountdown)
 	{
 		return false;
 	}
 
-	std::wstring countdown_str = std::to_wstring(Config.Countdown);
-	Config.textMap.at("startText")->SetMessage(countdown_str.c_str());
+	std::wstring countdown_str = std::to_wstring(currentGame->Countdown);
+	currentGame->textMap.at("startText")->SetMessage(countdown_str.c_str());
 
-	SDL_FRect text_rect = Config.textMap.at("startText")->GetRect();
-	Config.textMap.at("startText")->SetRectPos(Config.SCREEN_RESOLUTION_WIDTH / 2 - text_rect.w / 2, Config.SCREEN_RESOLUTION_HEIGHT / 2 - text_rect.h / 2);
+	SDL_FRect text_rect = currentGame->textMap.at("startText")->GetRect();
+	currentGame->textMap.at("startText")->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
 
-	Config.startCountdown = true;
-	Config.startTimer.Start(Config.currentTicks);
+	currentGame->startCountdown = true;
+	currentGame->startTimer.Start(currentGame->currentTicks);
 
 	return true;
 }
 
 bool EventHandler::Handle_F11()
 {
-	if (Event.key.keysym.sym != SDLK_F11)
+	Uint32 window_flags = SDL_GetWindowFlags(currentGame->Window);
+	if ((window_flags & SDL_WINDOW_FULLSCREEN) != SDL_WINDOW_FULLSCREEN)
 	{
-		return false;
+		SDL_SetWindowFullscreen(currentGame->Window, SDL_WINDOW_FULLSCREEN);
+		SDL_ShowCursor(SDL_DISABLE);
+
+		return true;
 	}
 
-	Config.windowFlags = SDL_GetWindowFlags(Config.Window);
-	if ((Config.windowFlags & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN)
-	{
-		SDL_SetWindowFullscreen(Config.Window, 0);
-		SDL_ShowCursor(SDL_ENABLE);
-	}
-	else
-	{
-		SDL_SetWindowFullscreen(Config.Window, SDL_WINDOW_FULLSCREEN);
-		SDL_ShowCursor(SDL_DISABLE);
-	}
+	SDL_SetWindowFullscreen(currentGame->Window, 0);
+	SDL_ShowCursor(SDL_ENABLE);
 
 	return true;
 }
 
 bool EventHandler::Handle_KP_Plus()
 {
-	if (Event.key.keysym.sym != SDLK_KP_PLUS || Config.Muted)
+	if (currentGame->currentSoundState == MUTED)
 	{
 		return false;
 	}
 
-	Config.currentChunkVolume + 10 <= MIX_MAX_VOLUME ? Config.currentChunkVolume += 10 : Config.currentChunkVolume = MIX_MAX_VOLUME;
-	Mix_MasterVolume(Config.currentChunkVolume);
-	Mix_VolumeMusic(Config.currentChunkVolume / 5);
+	currentGame->currentChunkVolume + 10 <= MIX_MAX_VOLUME ? currentGame->currentChunkVolume += 10 : currentGame->currentChunkVolume = MIX_MAX_VOLUME;
+	Mix_MasterVolume(currentGame->currentChunkVolume);
+	Mix_VolumeMusic(currentGame->currentChunkVolume / 5);
 
 	return true;
 }
 
 bool EventHandler::Handle_KP_Minus()
 {
-	if (Event.key.keysym.sym != SDLK_KP_MINUS || Config.Muted)
+	if (currentGame->currentSoundState == MUTED)
 	{
 		return false;
 	}
 
-	Config.currentChunkVolume - 10 >= 0 ? Config.currentChunkVolume -= 10 : Config.currentChunkVolume = 0;
-	Mix_MasterVolume(Config.currentChunkVolume);
-	Mix_VolumeMusic(Config.currentChunkVolume / 5);
+	currentGame->currentChunkVolume - 10 >= 0 ? currentGame->currentChunkVolume -= 10 : currentGame->currentChunkVolume = 0;
+	Mix_MasterVolume(currentGame->currentChunkVolume);
+	Mix_VolumeMusic(currentGame->currentChunkVolume / 5);
 
 	return true;
 }
 
 bool EventHandler::Handle_M()
 {
-	if (Event.key.keysym.sym != SDLK_m)
+	if (currentGame->currentSoundState == UNMUTED)
 	{
-		return false;
-	}
-
-	if (Config.Muted)
-	{
-		Mix_MasterVolume(Config.lastChunkVolume);
-		Mix_VolumeMusic(Config.lastChunkVolume / 5);
-
-		Config.Muted = false;
-	}
-	else
-	{
-		Config.lastChunkVolume = Config.currentChunkVolume;
+		currentGame->lastChunkVolume = currentGame->currentChunkVolume;
 
 		Mix_MasterVolume(0);
 		Mix_VolumeMusic(0);
 
-		Config.Muted = true;
+		currentGame->currentSoundState = MUTED;
+
+		return true;
 	}
+
+	Mix_MasterVolume(currentGame->lastChunkVolume);
+	Mix_VolumeMusic(currentGame->lastChunkVolume / 5);
+
+	currentGame->currentSoundState = UNMUTED;
 
 	return true;
 }
 
 //* non-static(public)
 
-EventHandler::EventHandler(Configuration &config) : Config(config)
+EventHandler::EventHandler(Game *current_game) : currentGame(current_game)
 {
 }
 
 EventHandler::~EventHandler()
 {
+	currentGame = nullptr;
 }
 
 void EventHandler::HandleEvents()
 {
 	while (SDL_PollEvent(&Event))
 	{
-		if (this->Handle_Quit())
+		if (Handle_WindowQuit())
 		{
 			return;
 		}
 
 		if (Event.type != SDL_KEYDOWN)
 		{
-			return;
+			continue;
 		}
 
-		if (this->Handle_Q())
+		switch (Event.key.keysym.sym)
 		{
+		case SDLK_q:
+			Handle_Q();
 			return;
+		case SDLK_ESCAPE:
+			Handle_Escape();
+			break;
+		case SDLK_RETURN:
+			Handle_Return();
+			break;
+		case SDLK_F11:
+			Handle_F11();
+			break;
+		case SDLK_KP_PLUS:
+			Handle_KP_Plus();
+			break;
+		case SDLK_KP_MINUS:
+			Handle_KP_Minus();
+			break;
+		case SDLK_m:
+			Handle_M();
+			break;
+		default:
+			break;
 		}
-		this->Handle_Escape();
-		this->Handle_Return();
-		this->Handle_F11();
-		this->Handle_KP_Plus();
-		this->Handle_KP_Minus();
-		this->Handle_M();
 	}
 
 	return;

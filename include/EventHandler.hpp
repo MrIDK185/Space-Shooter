@@ -1,9 +1,7 @@
 #ifndef EVENT_HANDLER_HPP
 #define EVENT_HANDLER_HPP
 
-#include "Configuration.hpp"
-
-#include <SDL2/SDL.h>
+#include "Game.hpp"
 
 struct EventHandler
 {
@@ -11,9 +9,9 @@ private:
 	//* non-static
 
 	SDL_Event Event;
-	Configuration &Config;
+	Game *currentGame;
 
-	bool Handle_Quit();
+	bool Handle_WindowQuit();
 
 	bool Handle_Q();
 	bool Handle_Escape();
@@ -24,7 +22,7 @@ private:
 	bool Handle_M();
 
 public:
-	explicit EventHandler(Configuration &config);
+	explicit EventHandler(Game *current_game);
 	~EventHandler();
 
 	void HandleEvents();

@@ -13,6 +13,19 @@
 typedef unsigned char uint8_t;
 typedef uint8_t Uint8;
 
+typedef enum
+{
+	GAME_STARTED,
+	GAME_PAUSED,
+	TITLE_SCREEN
+} gameState;
+
+typedef enum
+{
+	UNMUTED,
+	MUTED
+} soundState;
+
 class IMGSprite;
 class Asteroid;
 class Gem;
@@ -38,19 +51,6 @@ struct Game
 	Clock gameClock;
 	SecondTimer startTimer;
 	Uint64 currentTicks = 0;
-
-	typedef enum
-	{
-		GAME_STARTED,
-		GAME_PAUSED,
-		TITLE_SCREEN
-	} gameState;
-
-	typedef enum
-	{
-		UNMUTED,
-		MUTED
-	} soundState;
 
 	gameState currentGameState = TITLE_SCREEN;
 	soundState currentSoundState = UNMUTED;
