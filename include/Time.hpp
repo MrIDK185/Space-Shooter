@@ -9,6 +9,7 @@ typedef uint64_t Uint64;
 
 struct Clock
 {
+public:
 	//*non-static
 
 	Uint64
@@ -17,16 +18,17 @@ struct Clock
 
 	float deltaTimeSeconds = 0;
 
+	void Tick();
+
 	Clock() = default;
 	~Clock() = default;
-
-	void Tick();
 };
 
 /*------------ SecondTimer ------------*/
 
 struct SecondTimer
 {
+public:
 	//*non-static
 
 	unsigned int
@@ -36,14 +38,14 @@ struct SecondTimer
 	Uint64 nextTicks = 0;
 	bool Started = false;
 
-	SecondTimer() = default;
-	~SecondTimer() = default;
-
 	void Start(Uint64 current_ticks);
 
 	void Stop();
 
 	bool Check(Uint64 current_ticks);
+
+	SecondTimer() = default;
+	~SecondTimer() = default;
 };
 
 #endif //! TIME_HPP
