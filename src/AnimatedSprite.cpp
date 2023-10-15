@@ -2,14 +2,17 @@
 
 //*non-static(public)
 
-AnimatedSprite::AnimatedSprite(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second) : IMGSprite::IMGSprite(renderer, path, scale, radius),
-																																																																			  FRAME_WIDTH(frame_width),
-																																																																			  FRAME_HEIGHT(frame_height),
-																																																																			  IMG_FRAMES(img_frames),
-																																																																			  IMG_TYPES(img_types),
-																																																																			  ANIMATIONS_PER_SECOND(animations_per_second),
-																																																																			  IMGPartRect({0, 0, (int)frame_width, (int)frame_height}),
-																																																																			  nextTickTime(animations_per_second > 0 ? SDL_GetTicks64() + 1000 / animations_per_second : SDL_GetTicks64())
+AnimatedSprite::AnimatedSprite(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
+							   const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
+							   const unsigned int animations_per_second)
+	: IMGSprite::IMGSprite(renderer, path, scale, radius),
+	  FRAME_WIDTH(frame_width),
+	  FRAME_HEIGHT(frame_height),
+	  IMG_FRAMES(img_frames),
+	  IMG_TYPES(img_types),
+	  ANIMATIONS_PER_SECOND(animations_per_second),
+	  IMGPartRect({0, 0, (int)frame_width, (int)frame_height}),
+	  nextTickTime(animations_per_second > 0 ? SDL_GetTicks64() + 1000 / animations_per_second : 0)
 {
 	SetRectSize(frame_width * scale, frame_height * scale);
 
@@ -119,8 +122,7 @@ void AnimatedSprite::Animate(Uint64 current_ticks)
 
 void AnimatedSprite::Render() const
 {
-	SDL_FRect destrect = Rect;
-	SDL_RenderCopyF(destRenderer, Texture, &IMGPartRect, &destrect);
+	SDL_RenderCopyF(destRenderer, Texture, &IMGPartRect, &Rect);
 
 	return;
 }

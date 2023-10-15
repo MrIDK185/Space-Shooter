@@ -25,7 +25,9 @@ protected:
 public:
 	//* non-static
 
-	AnimatedSprite(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second);
+	AnimatedSprite(SDL_Renderer *renderer, const char *path, float scale, float radius,
+				   const unsigned int frame_width, const unsigned int frame_height,
+				   const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second);
 
 	~AnimatedSprite() override;
 
