@@ -17,6 +17,9 @@ struct Clock
 
 	float deltaTimeSeconds = 0;
 
+	Clock() = default;
+	~Clock() = default;
+
 	void Tick();
 };
 
@@ -32,6 +35,9 @@ struct SecondTimer
 
 	Uint64 nextTicks = 0;
 	bool Started = false;
+
+	SecondTimer() = default;
+	~SecondTimer() = default;
 
 	void Start(Uint64 current_ticks);
 

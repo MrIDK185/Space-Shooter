@@ -5,7 +5,7 @@
 
 struct Game;
 
-struct EventHandler
+class EventHandler
 {
 private:
 	//* non-static
