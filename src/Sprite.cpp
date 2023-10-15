@@ -17,7 +17,7 @@ void Sprite::Init()
 
 Sprite::Sprite(SDL_Renderer *renderer) : destRenderer(renderer)
 {
-	this->Init();
+	Init();
 
 	return;
 }

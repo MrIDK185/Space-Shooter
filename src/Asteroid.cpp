@@ -15,12 +15,12 @@ Asteroid::Asteroid(SDL_Renderer *renderer, const char *path, float scale, float 
 	std::uniform_int_distribution<> random_x_pos(0, screen_width - Rect.w);
 	std::uniform_int_distribution<> random_y_pos(0, screen_height - Rect.h);
 
-	this->SetRectPos(random_x_pos(gen), random_y_pos(gen));
+	SetRectPos(random_x_pos(gen), random_y_pos(gen));
 }
 
 void Asteroid::Move(int screen_width, int screen_height, float delta_time_seconds)
 {
-	SDL_FRect rect = this->GetRect();
+	SDL_FRect rect = GetRect();
 	float pos_x = rect.x;
 	float pos_y = rect.y;
 	float width = rect.w;
@@ -46,7 +46,7 @@ void Asteroid::Move(int screen_width, int screen_height, float delta_time_second
 	pos_x += std::sin(Angle * M_PI / 180) * Velocity * delta_time_seconds;
 	pos_y -= std::cos(Angle * M_PI / 180) * Velocity * delta_time_seconds;
 
-	this->SetRectPos(pos_x, pos_y);
+	SetRectPos(pos_x, pos_y);
 
 	return;
 }

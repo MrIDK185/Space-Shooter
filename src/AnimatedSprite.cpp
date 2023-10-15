@@ -11,7 +11,7 @@ AnimatedSprite::AnimatedSprite(SDL_Renderer *renderer, const char *path, float s
 																																																																			  IMGPartRect({0, 0, (int)frame_width, (int)frame_height}),
 																																																																			  nextTickTime(animations_per_second > 0 ? SDL_GetTicks64() + 1000 / animations_per_second : SDL_GetTicks64())
 {
-	this->SetRectSize(frame_width * scale, frame_height * scale);
+	SetRectSize(frame_width * scale, frame_height * scale);
 
 	return;
 }
@@ -105,14 +105,14 @@ void AnimatedSprite::Animate(Uint64 current_ticks)
 
 	if (animationFrame == IMG_FRAMES)
 	{
-		this->SetAnimationFrame(1);
+		SetAnimationFrame(1);
 	}
 	else
 	{
-		this->SetAnimationFrame(animationFrame + 1);
+		SetAnimationFrame(animationFrame + 1);
 	}
 
-	this->SetNextTickTime(current_ticks + 1000 / ANIMATIONS_PER_SECOND);
+	SetNextTickTime(current_ticks + 1000 / ANIMATIONS_PER_SECOND);
 
 	return;
 }

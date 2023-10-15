@@ -19,7 +19,7 @@ void Text::SetText()
 
 	int width, height;
 	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
-	this->SetRectSize(width, height);
+	SetRectSize(width, height);
 
 	SDL_FreeSurface(messageSurface);
 	messageSurface = nullptr;
@@ -38,7 +38,7 @@ Text::Text(SDL_Renderer *renderer, const wchar_t *message, const char *path, uns
 																												   fontColor(color)
 
 {
-	this->SetText();
+	SetText();
 
 	return;
 }
@@ -61,7 +61,7 @@ const wchar_t *Text::GetMessage() const
 void Text::SetMessage(const wchar_t *new_message)
 {
 	Message = new_message;
-	this->SetText();
+	SetText();
 
 	return;
 }

@@ -60,7 +60,7 @@ Gem::Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, co
 																																																																																						  blinkDuration(blink_duration),
 																																																																																						  lifetimeDuration(lifetime_duration)
 {
-	this->Randomize(screen_width, screen_height, SDL_GetTicks64());
+	Randomize(screen_width, screen_height, SDL_GetTicks64());
 
 	return;
 }
@@ -183,9 +183,9 @@ void Gem::Randomize(int screen_width, int screen_height, Uint64 current_ticks)
 	int new_x = random_x(gen);
 	int new_y = random_y(gen);
 
-	this->SetAnimationType(new_type);
-	this->SetAnimationFrame(new_frame);
-	this->SetRectPos(new_x, new_y);
+	SetAnimationType(new_type);
+	SetAnimationFrame(new_frame);
+	SetRectPos(new_x, new_y);
 
 	blinkTicks = current_ticks + blinkDuration;
 	lifetimeTicks = current_ticks + lifetimeDuration;

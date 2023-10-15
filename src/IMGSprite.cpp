@@ -9,8 +9,8 @@ IMGSprite::IMGSprite(SDL_Renderer *renderer, const char *path, float scale, floa
 																							Scale(scale),
 																							Radius(radius * scale)
 {
-	this->SetIMGTexture();
-	this->SetScale(scale);
+	SetIMGTexture();
+	SetScale(scale);
 
 	return;
 }
@@ -27,7 +27,7 @@ float IMGSprite::GetScale() const
 
 void IMGSprite::SetScale(float factor)
 {
-	this->SetRectSize(Rect.w * factor, Rect.h * factor);
+	SetRectSize(Rect.w * factor, Rect.h * factor);
 
 	Scale = factor;
 
@@ -53,7 +53,7 @@ void IMGSprite::SetIMGTexture()
 
 	int width, height;
 	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
-	this->SetRectSize(width, height);
+	SetRectSize(width, height);
 
 	SDL_FreeSurface(loadedSurface);
 	loadedSurface = nullptr;

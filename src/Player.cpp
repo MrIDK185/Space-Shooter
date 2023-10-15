@@ -203,12 +203,12 @@ void Player::HandleKeys(int screen_width, int screen_height, Uint64 delta_time_s
 	if (keyboard[SDL_SCANCODE_UP])
 	{
 		Velocity += Acceleration * delta_time_seconds;
-		gemCollected == false ? this->SetAnimationType(3) : this->SetAnimationType(4);
+		gemCollected == false ? SetAnimationType(3) : SetAnimationType(4);
 	}
 	else
 	{
 		Velocity -= Friction * delta_time_seconds;
-		gemCollected == false ? this->SetAnimationType(1) : this->SetAnimationType(2);
+		gemCollected == false ? SetAnimationType(1) : SetAnimationType(2);
 	}
 	if (keyboard[SDL_SCANCODE_DOWN])
 	{
@@ -227,7 +227,7 @@ void Player::HandleKeys(int screen_width, int screen_height, Uint64 delta_time_s
 	pos_x += std::sin(angle * M_PI / 180) * Velocity * delta_time_seconds;
 	pos_y -= std::cos(angle * M_PI / 180) * Velocity * delta_time_seconds;
 
-	this->SetRectPos(pos_x, pos_y);
+	SetRectPos(pos_x, pos_y);
 	Angle = angle;
 
 	return;
