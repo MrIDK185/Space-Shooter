@@ -72,7 +72,7 @@ struct Game
 	std::vector<std::shared_ptr<Asteroid>> asteroidGroup;
 
 	//* Main loop
-	int Run();
+	int runMainLoop();
 
 	//* Error-handling
 	void ShowErrorMessage();
@@ -99,12 +99,12 @@ struct Game
 	void CheckCollisions();
 
 	//* Rendering
-	template <typename valueType>
-	void RenderMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map);
+	template <typename keyType, typename valueType>
+	void renderUnorderedMap(std::unordered_map<keyType, valueType> *map);
 	template <typename elementType>
-	void RenderVector(std::vector<std::shared_ptr<elementType>> *vector);
-	template <typename valueType>
-	void AnimateMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map);
+	void renderVector(std::vector<elementType> *vector);
+	template <typename keyType, typename valueType>
+	void animateUnorderedMap(std::unordered_map<keyType, valueType> *map);
 
 	//* Constructor/Destructor
 	Game() = default;

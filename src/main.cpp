@@ -6,5 +6,5 @@ int main()
 {
 	Game game;
 
-	return game.Run();
+	return game.runMainLoop();
 }

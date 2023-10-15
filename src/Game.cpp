@@ -14,7 +14,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
-int Game::Run()
+int Game::runMainLoop()
 {
 	if (InitializeSystems() < 0)
 	{
@@ -185,8 +185,6 @@ void Game::SetupGame()
 {
 	std::cout << "Importing settings...\n";
 	ImportSettings();
-
-	// Config.windowFlags = SDL_GetWindowFlags(Config.Window);
 
 	currentChunkVolume = Mix_MasterVolume(-1);
 	lastChunkVolume = currentChunkVolume;
@@ -428,15 +426,15 @@ void Game::GameStarted()
 	HandleGems();
 	HandleAsteroids();
 	CheckCollisions();
-	AnimateMap<Player>(&playerMap);
+	animateUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
 
 	SDL_RenderClear(Renderer);
 
-	RenderMap<IMGSprite>(&IMGSpriteMap);
-	RenderVector<Gem>(&gemGroup);
-	RenderMap<Player>(&playerMap);
-	RenderVector<Asteroid>(&asteroidGroup);
-	RenderMap<Text>(&textMap);
+	renderUnorderedMap<std::string, std::shared_ptr<IMGSprite>>(&IMGSpriteMap);
+	renderVector<std::shared_ptr<Gem>>(&gemGroup);
+	renderUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
+	renderVector<std::shared_ptr<Asteroid>>(&asteroidGroup);
+	renderUnorderedMap<std::string, std::shared_ptr<Text>>(&textMap);
 
 	SDL_RenderPresent(Renderer);
 
@@ -588,8 +586,8 @@ void Game::CheckCollisions()
 }
 
 //* Rendering
-template <typename valueType>
-void Game::RenderMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map)
+template <typename keyType, typename valueType>
+void Game::renderUnorderedMap(std::unordered_map<keyType, valueType> *map)
 {
 	for (const auto &[name, element] : *map)
 	{
@@ -598,7 +596,7 @@ void Game::RenderMap(std::unordered_map<std::string, std::shared_ptr<valueType>>
 }
 
 template <typename elementType>
-void Game::RenderVector(std::vector<std::shared_ptr<elementType>> *vector)
+void Game::renderVector(std::vector<elementType> *vector)
 {
 	for (const auto &element : *vector)
 	{
@@ -606,8 +604,8 @@ void Game::RenderVector(std::vector<std::shared_ptr<elementType>> *vector)
 	}
 }
 
-template <typename valueType>
-void Game::AnimateMap(std::unordered_map<std::string, std::shared_ptr<valueType>> *map)
+template <typename keyType, typename valueType>
+void Game::animateUnorderedMap(std::unordered_map<keyType, valueType> *map)
 {
 	for (const auto &[name, element] : *map)
 	{
