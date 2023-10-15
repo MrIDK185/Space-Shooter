@@ -2,63 +2,24 @@
 
 #include <random>
 
-//*static(private)
-
-SDL_Renderer *Gem::D_RENDERER = nullptr;
-const char *Gem::D_PATH = nullptr;
-
-float
-	Gem::D_SCALE = 0,
-	Gem::D_RADIUS = 0;
-
-unsigned int
-	Gem::D_FRAME_WIDTH = 0,
-	Gem::D_FRAME_HEIGHT = 0,
-	Gem::D_IMG_FRAMES = 0,
-	Gem::D_IMG_TYPES = 0,
-	Gem::D_ANIMATIONS_PER_SECOND = 0;
-
-Uint64
-	Gem::D_BLINKDURATION = 0,
-	Gem::D_LIFETIMEDURATION = 0;
-
 //*static(public)
 
-void Gem::InitDefaultValues(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration)
+std::shared_ptr<Gem> Gem::NewGem(Configuration &config, SDL_Renderer *renderer, const char *path, int screen_width, int screen_height)
 {
-	D_RENDERER = renderer;
-	D_PATH = path;
-	D_SCALE = scale;
-	D_RADIUS = radius;
-	D_FRAME_WIDTH = frame_width;
-	D_FRAME_HEIGHT = frame_height;
-	D_IMG_FRAMES = img_frames;
-	D_IMG_TYPES = img_types;
-	D_ANIMATIONS_PER_SECOND = animations_per_second;
-	D_BLINKDURATION = blink_duration;
-	D_LIFETIMEDURATION = lifetime_duration;
-
-	return;
-}
-
-void Gem::CleanDefaultValues()
-{
-	D_RENDERER = nullptr;
-	D_PATH = nullptr;
-
-	return;
-}
-
-std::shared_ptr<Gem> Gem::NewGem(int screen_width, int screen_height)
-{
-	return std::make_shared<Gem>(D_RENDERER, D_PATH, D_SCALE, D_RADIUS, D_FRAME_WIDTH, D_FRAME_HEIGHT, D_IMG_FRAMES, D_IMG_TYPES, D_ANIMATIONS_PER_SECOND, D_BLINKDURATION, D_LIFETIMEDURATION, screen_width, screen_height);
+	return std::make_shared<Gem>(renderer, path, config.GEM_SCALE, config.GEM_RADIUS, config.GEM_FRAME_WIDTH,
+								 config.GEM_FRAME_HEIGHT, config.GEM_IMG_FRAMES, config.GEM_IMG_TYPES, 0, config.GEM_BLINK_DURATION,
+								 config.GEM_LIFETIME_DURATION, screen_width, screen_height);
 }
 
 //*non-static(public)
 
-Gem::Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration, int screen_width, int screen_height) : AnimatedSprite(renderer, path, scale, radius, frame_width, frame_height, img_frames, img_types, animations_per_second),
-																																																																																						  blinkDuration(blink_duration),
-																																																																																						  lifetimeDuration(lifetime_duration)
+Gem::Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
+		 const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
+		 const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration,
+		 int screen_width, int screen_height)
+	: AnimatedSprite(renderer, path, scale, radius, frame_width, frame_height, img_frames, img_types, animations_per_second),
+	  blinkDuration(blink_duration),
+	  lifetimeDuration(lifetime_duration)
 {
 	Randomize(screen_width, screen_height, SDL_GetTicks64());
 

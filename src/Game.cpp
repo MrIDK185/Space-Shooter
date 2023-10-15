@@ -86,8 +86,6 @@ void Game::Clean()
 
 	std::cout << "Cleaning Player default values...\n";
 	Player::CleanDefaultValues();
-	std::cout << "Cleaning Gem default values...\n\n";
-	Gem::CleanDefaultValues();
 
 	std::cout << "Clearing musicMap...\n";
 	musicMap.clear();
@@ -377,8 +375,7 @@ void Game::CreateObjects()
 	asteroidGroup.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200, screenWidth, screenHeight));
 
 	std::cout << "Initializing Gem default values...\n";
-	Gem::InitDefaultValues(Renderer, "assets/images/gems.png", Config.GEM_SCALE, Config.GEM_RADIUS, Config.GEM_FRAME_WIDTH, Config.GEM_FRAME_HEIGHT, Config.GEM_IMG_FRAMES, Config.GEM_IMG_TYPES, 0, Config.GEM_BLINK_DURATION, Config.GEM_LIFETIME_DURATION);
-	gemGroup.push_back(Gem::NewGem(screenWidth, screenHeight));
+	gemGroup.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
 
 	std::cout << "Initializing Player default values...\n\n";
 	Player::InitDefaultValues(Renderer, Config.PLAYER_SCALE, Config.PLAYER_RADIUS, Config.PLAYER_FRAME_WIDTH, Config.PLAYER_FRAME_HEIGHT, Config.PLAYER_IMG_FRAMES, Config.PLAYER_IMG_TYPES, Config.PLAYER_ANIMATIONS_PER_SECOND, Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION, Config.PLAYER_EFFECT_DURATION_SECONDS, Config.PLAYER_ROTATION_SPEED);
