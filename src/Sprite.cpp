@@ -1,25 +1,9 @@
 #include "Sprite.hpp"
 
-//*non-static(protected)
-
-void Sprite::Init()
-{
-	SDL_Surface *loadedSurface = SDL_CreateRGBSurface(0, 0, 0, 0, 0, 0, 0, 0);
-	Texture = SDL_CreateTextureFromSurface(destRenderer, loadedSurface);
-
-	SDL_FreeSurface(loadedSurface);
-	loadedSurface = nullptr;
-
-	return;
-}
-
 //*non-static(public)
 
 Sprite::Sprite(SDL_Renderer *renderer) : destRenderer(renderer)
 {
-	Init();
-
-	return;
 }
 
 Sprite::~Sprite()

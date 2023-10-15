@@ -16,6 +16,8 @@ protected:
 		Scale,
 		Radius;
 
+	void LoadImage();
+
 public:
 	//*non-static
 
@@ -30,8 +32,6 @@ public:
 	float GetRadius() const;
 
 	void SetRadius(float radius);
-
-	void SetIMGTexture();
 
 	bool Collideswith(std::shared_ptr<IMGSprite> sprite) const;
 };

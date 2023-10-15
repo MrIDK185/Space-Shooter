@@ -2,14 +2,31 @@
 
 #include <SDL2/SDL_image.h>
 
-//*non-static(public)
+//* non-static(protected)
+
+void IMGSprite::LoadImage()
+{
+	SDL_Surface *loadedSurface = IMG_Load(IMGPath);
+	Texture = SDL_CreateTextureFromSurface(destRenderer, loadedSurface);
+
+	int width, height;
+	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
+	SetRectSize(width, height);
+
+	SDL_FreeSurface(loadedSurface);
+	loadedSurface = nullptr;
+
+	return;
+}
+
+//* non-static(public)
 
 IMGSprite::IMGSprite(SDL_Renderer *renderer, const char *path, float scale, float radius) : Sprite(renderer),
 																							IMGPath(path),
 																							Scale(scale),
 																							Radius(radius * scale)
 {
-	SetIMGTexture();
+	LoadImage();
 	SetScale(scale);
 
 	return;
@@ -42,21 +59,6 @@ float IMGSprite::GetRadius() const
 void IMGSprite::SetRadius(float radius)
 {
 	Radius = radius;
-
-	return;
-}
-
-void IMGSprite::SetIMGTexture()
-{
-	SDL_Surface *loadedSurface = IMG_Load(IMGPath);
-	Texture = SDL_CreateTextureFromSurface(destRenderer, loadedSurface);
-
-	int width, height;
-	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
-	SetRectSize(width, height);
-
-	SDL_FreeSurface(loadedSurface);
-	loadedSurface = nullptr;
 
 	return;
 }

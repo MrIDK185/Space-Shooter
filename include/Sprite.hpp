@@ -9,10 +9,8 @@ protected:
 	//*non-static
 
 	SDL_Renderer *destRenderer;
-	SDL_Texture *Texture;
+	SDL_Texture *Texture = NULL;
 	SDL_FRect Rect = {0, 0, 0, 0};
-
-	void Init();
 
 public:
 	//*non-static
