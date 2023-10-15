@@ -32,7 +32,7 @@ soundChunk::~soundChunk()
 	return;
 }
 
-Mix_Chunk *soundChunk::GetChunk()
+Mix_Chunk *soundChunk::GetChunk() const
 {
 	return Chunk;
 }
@@ -44,12 +44,12 @@ void soundChunk::PlayChunk()
 	return;
 }
 
-int soundChunk::GetChannel()
+int soundChunk::GetChannel() const
 {
 	return Channel;
 }
 
-unsigned int soundChunk::GetVolume()
+unsigned int soundChunk::GetVolume() const
 {
 	return Volume;
 }
@@ -99,7 +99,7 @@ soundMusic::~soundMusic()
 	return;
 }
 
-Mix_Music *soundMusic::GetMusic()
+Mix_Music *soundMusic::GetMusic() const
 {
 	return Music;
 }

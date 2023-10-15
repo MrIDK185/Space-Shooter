@@ -69,7 +69,7 @@ Gem::~Gem()
 {
 }
 
-std::string Gem::GetBrightnessChange()
+std::string Gem::GetBrightnessChange() const
 {
 	return brightnessChange;
 }
@@ -81,7 +81,7 @@ void Gem::SetBrightnessChange(const std::string &new_brightness)
 	return;
 }
 
-Uint64 Gem::GetBlinkTicks()
+Uint64 Gem::GetBlinkTicks() const
 {
 	return blinkTicks;
 }
@@ -93,7 +93,7 @@ void Gem::SetBlinkTicks(Uint64 new_blink_ticks)
 	return;
 }
 
-unsigned int Gem::GetBlinkDuration()
+unsigned int Gem::GetBlinkDuration() const
 {
 	return blinkDuration;
 }
@@ -105,7 +105,7 @@ void Gem::SetBlinkDuration(unsigned int new_duration)
 	return;
 }
 
-Uint64 Gem::GetLifetimeTicks()
+Uint64 Gem::GetLifetimeTicks() const
 {
 	return lifetimeTicks;
 }
@@ -117,7 +117,7 @@ void Gem::SetLifetimeTicks(Uint64 new_lifetime_ticks)
 	return;
 }
 
-unsigned int Gem::GetLifetimeDuration()
+unsigned int Gem::GetLifetimeDuration() const
 {
 	return lifetimeDuration;
 }

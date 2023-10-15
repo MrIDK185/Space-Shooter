@@ -32,7 +32,7 @@ Sprite::~Sprite()
 	return;
 }
 
-SDL_Renderer *Sprite::GetRenderer()
+SDL_Renderer *Sprite::GetRenderer() const
 {
 	return destRenderer;
 }
@@ -44,7 +44,7 @@ void Sprite::SetRenderer(SDL_Renderer *renderer)
 	return;
 }
 
-SDL_Texture *Sprite::GetTexture()
+SDL_Texture *Sprite::GetTexture() const
 {
 	return Texture;
 }
@@ -77,7 +77,7 @@ void Sprite::SetRectPos(float pos_x, float pos_y)
 	return;
 }
 
-void Sprite::Render()
+void Sprite::Render() const
 {
 	SDL_RenderCopyF(destRenderer, Texture, nullptr, &Rect);
 

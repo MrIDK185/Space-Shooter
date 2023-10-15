@@ -21,7 +21,7 @@ public:
 
 	void Move(int screen_width, int screen_height, float delta_time_seconds);
 
-	void Render() override;
+	void Render() const override;
 };
 
 #endif //! ASTEROID_HPP

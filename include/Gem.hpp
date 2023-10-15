@@ -55,23 +55,23 @@ public:
 
 	~Gem() override;
 
-	std::string GetBrightnessChange();
+	std::string GetBrightnessChange() const;
 
 	void SetBrightnessChange(const std::string &new_brightness);
 
-	Uint64 GetBlinkTicks();
+	Uint64 GetBlinkTicks() const;
 
 	void SetBlinkTicks(Uint64 new_blink_ticks);
 
-	unsigned int GetBlinkDuration();
+	unsigned int GetBlinkDuration() const;
 
 	void SetLifetimeTicks(Uint64 new_lifetime_ticks);
 
-	unsigned int GetLifetimeDuration();
+	unsigned int GetLifetimeDuration() const;
 
 	void SetBlinkDuration(unsigned int new_duration);
 
-	Uint64 GetLifetimeTicks();
+	Uint64 GetLifetimeTicks() const;
 
 	void SetLifetimeDuration(unsigned int new_duration);
 

@@ -27,13 +27,13 @@ public:
 
 	~soundChunk();
 
-	Mix_Chunk *GetChunk();
+	Mix_Chunk *GetChunk() const;
 
 	void PlayChunk();
 
-	int GetChannel();
+	int GetChannel() const;
 
-	unsigned int GetVolume();
+	unsigned int GetVolume() const;
 
 	void SetVolume(unsigned int new_volume);
 };
@@ -57,7 +57,7 @@ public:
 
 	~soundMusic();
 
-	Mix_Music *GetMusic();
+	Mix_Music *GetMusic() const;
 
 	void PlayMusic();
 };

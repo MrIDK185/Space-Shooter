@@ -23,19 +23,19 @@ public:
 
 	~Text() override;
 
-	const wchar_t *GetMessage();
+	const wchar_t *GetMessage() const;
 
 	void SetMessage(const wchar_t *new_message);
 
-	TTF_Font *GetFont();
+	TTF_Font *GetFont() const;
 
 	void SetFont(TTF_Font *new_font);
 
-	SDL_Color GetFontColor();
+	SDL_Color GetFontColor() const;
 
 	void SetFontColor(SDL_Color new_font_color);
 
-	void Render() override;
+	void Render() const override;
 };
 
 #endif //! TEXT_HPP

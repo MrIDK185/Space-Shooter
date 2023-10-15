@@ -117,7 +117,7 @@ void AnimatedSprite::Animate(Uint64 current_ticks)
 	return;
 }
 
-void AnimatedSprite::Render()
+void AnimatedSprite::Render() const
 {
 	SDL_FRect destrect = Rect;
 	SDL_RenderCopyF(destRenderer, Texture, &IMGPartRect, &destrect);

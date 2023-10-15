@@ -55,7 +55,7 @@ public:
 
 	void Animate(Uint64 current_ticks);
 
-	void Render() override;
+	void Render() const override;
 };
 
 #endif //! ANIMATED_SPRITE_HPP

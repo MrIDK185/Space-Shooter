@@ -56,7 +56,7 @@ Asteroid::~Asteroid()
 	return;
 }
 
-void Asteroid::Render()
+void Asteroid::Render() const
 {
 	SDL_RenderCopyExF(destRenderer, Texture, nullptr, &Rect, Angle, nullptr, SDL_FLIP_NONE);
 }

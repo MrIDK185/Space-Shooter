@@ -21,11 +21,11 @@ public:
 
 	virtual ~Sprite();
 
-	SDL_Renderer *GetRenderer();
+	SDL_Renderer *GetRenderer() const;
 
 	void SetRenderer(SDL_Renderer *renderer);
 
-	SDL_Texture *GetTexture();
+	SDL_Texture *GetTexture() const;
 
 	void SetTexture(SDL_Texture *texture);
 
@@ -35,7 +35,7 @@ public:
 
 	void SetRectPos(float pos_x, float pos_y);
 
-	virtual void Render();
+	virtual void Render() const;
 };
 
 #endif //! SPRITE_HPP

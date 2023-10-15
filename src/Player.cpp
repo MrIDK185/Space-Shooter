@@ -63,7 +63,7 @@ Player::~Player()
 {
 }
 
-float Player::GetAcceleration()
+float Player::GetAcceleration() const
 {
 	return Acceleration;
 }
@@ -75,7 +75,7 @@ void Player::SetAcceleration(float acceleration)
 	return;
 }
 
-float Player::GetVelocity()
+float Player::GetVelocity() const
 {
 	return Velocity;
 }
@@ -87,7 +87,7 @@ void Player::SetVelocity(float velocity)
 	return;
 }
 
-float Player::GetMaxVelocity()
+float Player::GetMaxVelocity() const
 {
 	return maxVelocity;
 }
@@ -99,7 +99,7 @@ void Player::SetMaxVelocity(float max_velocity)
 	return;
 }
 
-float Player::GetAngle()
+float Player::GetAngle() const
 {
 	return Angle;
 }
@@ -111,7 +111,7 @@ void Player::SetAngle(float angle)
 	return;
 }
 
-float Player::GetFriction()
+float Player::GetFriction() const
 {
 	return Friction;
 }
@@ -123,7 +123,7 @@ void Player::SetFriction(float friction)
 	return;
 }
 
-bool Player::GetGemCollected()
+bool Player::GetGemCollected() const
 {
 	return gemCollected;
 }
@@ -135,7 +135,7 @@ void Player::SetGemCollected(bool new_status)
 	return;
 }
 
-Uint64 Player::GetCollectionTicks()
+Uint64 Player::GetCollectionTicks() const
 {
 	return collectionTicks;
 }
@@ -233,7 +233,7 @@ void Player::HandleKeys(int screen_width, int screen_height, Uint64 delta_time_s
 	return;
 }
 
-void Player::Render()
+void Player::Render() const
 {
 	SDL_Rect srcrect = IMGPartRect;
 	SDL_FRect destrect = Rect;

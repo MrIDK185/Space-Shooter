@@ -53,7 +53,7 @@ Text::~Text()
 	return;
 }
 
-const wchar_t *Text::GetMessage()
+const wchar_t *Text::GetMessage() const
 {
 	return Message;
 }
@@ -66,7 +66,7 @@ void Text::SetMessage(const wchar_t *new_message)
 	return;
 }
 
-TTF_Font *Text::GetFont()
+TTF_Font *Text::GetFont() const
 {
 	return Font;
 }
@@ -78,7 +78,7 @@ void Text::SetFont(TTF_Font *new_font)
 	return;
 }
 
-SDL_Color Text::GetFontColor()
+SDL_Color Text::GetFontColor() const
 {
 	return fontColor;
 }
@@ -90,7 +90,7 @@ void Text::SetFontColor(SDL_Color new_font_color)
 	return;
 }
 
-void Text::Render()
+void Text::Render() const
 {
 	SDL_FRect destrect = Rect;
 	SDL_RenderCopyF(destRenderer, Texture, nullptr, &destrect);
