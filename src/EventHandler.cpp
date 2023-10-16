@@ -71,57 +71,29 @@ bool EventHandler::Handle_F11()
 
 bool EventHandler::Handle_KP_Plus()
 {
-	if (currentGame->currentSoundState == MUTED)
-	{
-		return false;
-	}
-
-	currentGame->currentChunkVolume + 10 <= MIX_MAX_VOLUME ? currentGame->currentChunkVolume += 10 : currentGame->currentChunkVolume = MIX_MAX_VOLUME;
-	Mix_MasterVolume(currentGame->currentChunkVolume);
-	Mix_VolumeMusic(currentGame->currentChunkVolume / 5);
+	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume + 10);
 
 	return true;
 }
 
 bool EventHandler::Handle_KP_Minus()
 {
-	if (currentGame->currentSoundState == MUTED)
-	{
-		return false;
-	}
-
-	currentGame->currentChunkVolume - 10 >= 0 ? currentGame->currentChunkVolume -= 10 : currentGame->currentChunkVolume = 0;
-	Mix_MasterVolume(currentGame->currentChunkVolume);
-	Mix_VolumeMusic(currentGame->currentChunkVolume / 5);
+	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume - 10);
 
 	return true;
 }
 
 bool EventHandler::Handle_M()
 {
-	if (currentGame->currentSoundState == UNMUTED)
-	{
-		currentGame->lastChunkVolume = currentGame->currentChunkVolume;
-
-		Mix_MasterVolume(0);
-		Mix_VolumeMusic(0);
-
-		currentGame->currentSoundState = MUTED;
-
-		return true;
-	}
-
-	Mix_MasterVolume(currentGame->lastChunkVolume);
-	Mix_VolumeMusic(currentGame->lastChunkVolume / 5);
-
-	currentGame->currentSoundState = UNMUTED;
+	currentGame->volumeController.toggleMute();
 
 	return true;
 }
 
 //* non-static(public)
 
-EventHandler::EventHandler(Game *current_game) : currentGame(current_game)
+EventHandler::EventHandler(Game *current_game)
+	: currentGame(current_game)
 {
 }
 

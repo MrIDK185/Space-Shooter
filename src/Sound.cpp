@@ -62,30 +62,31 @@ int soundChunk::GetChannel() const
 	return Channel;
 }
 
-void soundChunk::SetChannel(unsigned int channel)
+void soundChunk::SetChannel(int channel)
 {
 	Channel = channel;
 
 	return;
 }
 
-unsigned int soundChunk::GetVolume() const
+int soundChunk::GetVolume() const
 {
 	return Volume;
 }
 
-void soundChunk::SetVolume(unsigned int new_volume)
+void soundChunk::SetVolume(int new_volume)
 {
 	if (new_volume > MIX_MAX_VOLUME)
 	{
-		Volume = MIX_MAX_VOLUME;
-		Mix_VolumeChunk(Chunk, Volume);
-
-		return;
+		new_volume = MIX_MAX_VOLUME;
+	}
+	else if (new_volume < 0)
+	{
+		new_volume = 0;
 	}
 
 	Volume = new_volume;
-	Mix_VolumeChunk(Chunk, new_volume);
+	Mix_VolumeChunk(Chunk, Volume);
 
 	return;
 }
@@ -141,6 +142,57 @@ void soundMusic::SetMusic(Mix_Music *music)
 void soundMusic::PlayMusic()
 {
 	Mix_PlayMusic(Music, -1);
+
+	return;
+}
+
+/*------------ volumeControl ------------*/
+
+void volumeControl::changeMasterVolume(int volume)
+{
+	if (currentSoundState == MUTED)
+	{
+		return;
+	}
+
+	if (volume > MIX_MAX_VOLUME)
+	{
+		volume = MIX_MAX_VOLUME;
+	}
+	else if (volume < 0)
+	{
+		volume = 0;
+	}
+
+	masterVolume = volume;
+	Mix_MasterVolume(masterVolume);
+	musicVolume = volume * ratioMusicToChunk;
+	Mix_VolumeMusic(musicVolume);
+
+	return;
+}
+
+void volumeControl::saveMasterVolume()
+{
+	lastMasterVolume = masterVolume;
+	lastMusicVolume = musicVolume;
+
+	return;
+}
+
+void volumeControl::toggleMute()
+{
+	if (currentSoundState == UNMUTED)
+	{
+		saveMasterVolume();
+		changeMasterVolume(0);
+		currentSoundState = MUTED;
+
+		return;
+	}
+
+	currentSoundState = UNMUTED;
+	changeMasterVolume(lastMasterVolume);
 
 	return;
 }

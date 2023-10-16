@@ -4,6 +4,7 @@
 #include "Configuration.hpp"
 #include "EventHandler.hpp"
 #include "Time.hpp"
+#include "Sound.hpp"
 
 #include <vector>
 #include <unordered_map>
@@ -15,12 +16,6 @@ typedef enum
 	GAME_PAUSED,
 	TITLE_SCREEN
 } gameState;
-
-typedef enum
-{
-	UNMUTED,
-	MUTED
-} soundState;
 
 class IMGSprite;
 class Asteroid;
@@ -48,8 +43,9 @@ struct Game
 	SecondTimer startTimer;
 	Uint64 currentTicks = 0;
 
+	volumeControl volumeController;
+
 	gameState currentGameState = TITLE_SCREEN;
-	soundState currentSoundState = UNMUTED;
 
 	bool
 		Running = true,
@@ -58,9 +54,7 @@ struct Game
 
 	int
 		Score = 0,
-		Countdown = 3,
-		currentChunkVolume = 0,
-		lastChunkVolume = 0;
+		Countdown = 3;
 
 	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSpriteMap;
 	std::unordered_map<std::string, std::shared_ptr<Player>> playerMap;

@@ -33,8 +33,6 @@ int Game::runMainLoop()
 		currentTicks = SDL_GetTicks64();
 		Keyboard = SDL_GetKeyboardState(nullptr);
 
-		currentChunkVolume = Mix_MasterVolume(-1);
-
 		int current_window_width, current_window_height;
 		SDL_GetWindowSizeInPixels(Window, &current_window_width, &current_window_height);
 		float window_width_scale = static_cast<float>(current_window_width) / static_cast<float>(screenWidth);
@@ -180,8 +178,7 @@ void Game::SetupGame()
 	std::cout << "Importing settings...\n";
 	ImportSettings();
 
-	currentChunkVolume = Mix_MasterVolume(-1);
-	lastChunkVolume = currentChunkVolume;
+	volumeController.changeMasterVolume(MIX_MAX_VOLUME);
 
 	startTimer.Duration = Config.COUNTDOWN_DURATION;
 	startTimer.Interval = Config.COUNTDOWN_INTERVAL;
@@ -390,8 +387,6 @@ void Game::CreateObjects()
 	musicMap.at("menuMusic")->PlayMusic();
 
 	musicMap["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
-
-	Mix_VolumeMusic(Mix_MasterVolume(-1) / 5);
 
 	return;
 }

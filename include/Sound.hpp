@@ -17,7 +17,7 @@ private:
 
 	Mix_Chunk *Chunk = nullptr;
 	int Channel = -1;
-	unsigned int Volume;
+	int Volume;
 
 	void LoadChunk();
 
@@ -38,11 +38,11 @@ public:
 
 	int GetChannel() const;
 
-	void SetChannel(unsigned int channel);
+	void SetChannel(int channel);
 
-	unsigned int GetVolume() const;
+	int GetVolume() const;
 
-	void SetVolume(unsigned int new_volume);
+	void SetVolume(int new_volume);
 
 	void PlayChunk();
 };
@@ -72,6 +72,33 @@ public:
 	void SetMusic(Mix_Music *music);
 
 	void PlayMusic();
+};
+
+/*------------ volumeControl ------------*/
+
+typedef enum
+{
+	UNMUTED,
+	MUTED
+} soundState;
+
+struct volumeControl
+{
+	int
+		masterVolume,
+		lastMasterVolume,
+		musicVolume,
+		lastMusicVolume;
+
+	float ratioMusicToChunk = 0.2;
+
+	soundState currentSoundState = UNMUTED;
+
+	void changeMasterVolume(int volume);
+
+	void saveMasterVolume();
+
+	void toggleMute();
 };
 
 #endif //! SOUND_HPP
