@@ -39,7 +39,7 @@ public:
 		   const unsigned int animations_per_second, float acceleration, float max_velocity, float friction,
 		   unsigned int effect_duration_seconds, unsigned int rotation_speed);
 
-	~Player() override;
+	~Player() override = default;
 
 	float GetAcceleration() const;
 

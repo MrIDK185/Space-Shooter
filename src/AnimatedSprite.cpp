@@ -19,8 +19,6 @@ AnimatedSprite::AnimatedSprite(SDL_Renderer *renderer, std::string path, float s
 	return;
 }
 
-AnimatedSprite::~AnimatedSprite() = default;
-
 unsigned int AnimatedSprite::GetFrameWidth() const
 {
 	return FRAME_WIDTH;

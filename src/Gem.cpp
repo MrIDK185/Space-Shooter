@@ -31,10 +31,6 @@ Gem::Gem(SDL_Renderer *renderer, std::string path, float scale, float radius, co
 	return;
 }
 
-Gem::~Gem()
-{
-}
-
 Uint64 Gem::GetBlinkTicks() const
 {
 	return blinkTicks;

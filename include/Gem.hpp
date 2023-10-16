@@ -42,7 +42,7 @@ public:
 		unsigned int minimum_brightness, unsigned int maximum_brightness, unsigned int blink_factor,
 		int screen_width, int screen_height);
 
-	~Gem() override;
+	~Gem() override = default;
 
 	Uint64 GetBlinkTicks() const;
 

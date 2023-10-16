@@ -17,7 +17,7 @@ public:
 
 	Asteroid(SDL_Renderer *renderer, std::string path, float scale, float radius, float velocity, int screen_width, int screen_height);
 
-	~Asteroid() override;
+	~Asteroid() override = default;
 
 	void Move(int screen_width, int screen_height, float delta_time_seconds);
 

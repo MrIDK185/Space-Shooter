@@ -20,10 +20,6 @@ Asteroid::Asteroid(SDL_Renderer *renderer, std::string path, float scale, float 
 	SetRectPos(random_x_pos(gen), random_y_pos(gen));
 }
 
-Asteroid::~Asteroid()
-{
-}
-
 void Asteroid::Move(int screen_width, int screen_height, float delta_time_seconds)
 {
 	Rect.x += std::sin(Angle * M_PI / 180) * Velocity * delta_time_seconds;

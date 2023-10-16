@@ -80,10 +80,6 @@ Player::Player(SDL_Renderer *renderer, std::string path, float scale, float radi
 {
 }
 
-Player::~Player()
-{
-}
-
 float Player::GetAcceleration() const
 {
 	return Acceleration;

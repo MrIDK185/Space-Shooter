@@ -450,15 +450,12 @@ void Game::GameTitleScreen()
 		Countdown -= startTimer.Interval;
 
 		std::wstring countdown_str = std::to_wstring(Countdown);
-		printf("Before set message");
 		textMap.at("startText")->SetMessage(countdown_str);
-		printf("After set message");
 
 		textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 	}
 	if (Countdown <= 0)
 	{
-		printf("Countdown is 0");
 		startTimer.Stop();
 		startCountdown = false;
 		currentGameState = GAME_STARTED;

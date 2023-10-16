@@ -33,10 +33,6 @@ IMGSprite::IMGSprite(SDL_Renderer *renderer, std::string path, float scale, floa
 	return;
 }
 
-IMGSprite::~IMGSprite()
-{
-}
-
 std::string IMGSprite::GetIMGPath() const
 {
 	return IMGPath;

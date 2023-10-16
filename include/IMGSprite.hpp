@@ -24,7 +24,7 @@ public:
 
 	IMGSprite(SDL_Renderer *renderer, std::string path, float scale, float radius);
 
-	~IMGSprite() override;
+	~IMGSprite() override = default;
 
 	std::string GetIMGPath() const;
 
