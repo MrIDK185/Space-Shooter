@@ -32,10 +32,12 @@ void Text::SetText()
 
 //*non-static(public)
 
-Text::Text(SDL_Renderer *renderer, const wchar_t *message, const char *path, unsigned int size, SDL_Color color) : Sprite(renderer),
-																												   Message(message),
-																												   Font(TTF_OpenFont(path, size)),
-																												   fontColor(color)
+Text::Text(SDL_Renderer *renderer, const wchar_t *message, const char *font_path, unsigned int font_size,
+		   SDL_Color font_color)
+	: Sprite(renderer),
+	  Message(message),
+	  Font(TTF_OpenFont(font_path, font_size)),
+	  fontColor(font_color)
 
 {
 	SetText();
@@ -92,8 +94,7 @@ void Text::SetFontColor(SDL_Color new_font_color)
 
 void Text::Render() const
 {
-	SDL_FRect destrect = Rect;
-	SDL_RenderCopyF(destRenderer, Texture, nullptr, &destrect);
+	SDL_RenderCopyF(destRenderer, Texture, nullptr, &Rect);
 
 	return;
 }

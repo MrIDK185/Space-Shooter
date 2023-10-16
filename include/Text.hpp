@@ -11,6 +11,7 @@ private:
 	//*non-static
 
 	const wchar_t *Message = nullptr;
+
 	TTF_Font *Font;
 	SDL_Color fontColor;
 
@@ -19,7 +20,8 @@ private:
 public:
 	//*non-static
 
-	Text(SDL_Renderer *renderer, const wchar_t *message, const char *path, unsigned int size, SDL_Color color);
+	Text(SDL_Renderer *renderer, const wchar_t *message, const char *font_path, unsigned int font_size,
+		 SDL_Color font_color);
 
 	~Text() override;
 
