@@ -6,7 +6,7 @@
 
 void Text::SetText()
 {
-	size_t array_size = wcslen(Message) + 1;
+	size_t array_size = Message.length() + 1;
 	Uint16 *unicodeMessage = new Uint16[array_size];
 
 	for (unsigned int idx = 0; idx < array_size; idx++)
@@ -32,11 +32,11 @@ void Text::SetText()
 
 //*non-static(public)
 
-Text::Text(SDL_Renderer *renderer, const wchar_t *message, const char *font_path, unsigned int font_size,
+Text::Text(SDL_Renderer *renderer, std::wstring message, std::string font_path, unsigned int font_size,
 		   SDL_Color font_color)
 	: Sprite(renderer),
 	  Message(message),
-	  Font(TTF_OpenFont(font_path, font_size)),
+	  Font(TTF_OpenFont(font_path.c_str(), font_size)),
 	  fontColor(font_color)
 
 {
@@ -50,20 +50,30 @@ Text::~Text()
 	TTF_CloseFont(Font);
 	Font = nullptr;
 
-	Message = nullptr;
-
 	return;
 }
 
-const wchar_t *Text::GetMessage() const
+std::wstring Text::GetMessage() const
 {
 	return Message;
 }
 
-void Text::SetMessage(const wchar_t *new_message)
+void Text::SetMessage(std::wstring new_message)
 {
 	Message = new_message;
 	SetText();
+
+	return;
+}
+
+std::string Text::GetPath() const
+{
+	return Path;
+}
+
+void Text::SetPath(std::string path)
+{
+	Path = path;
 
 	return;
 }

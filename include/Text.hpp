@@ -3,6 +3,8 @@
 
 #include "Sprite.hpp"
 
+#include <string>
+
 typedef struct _TTF_Font TTF_Font;
 
 class Text : public Sprite
@@ -10,7 +12,8 @@ class Text : public Sprite
 private:
 	//*non-static
 
-	const wchar_t *Message = nullptr;
+	std::wstring Message;
+	std::string Path;
 
 	TTF_Font *Font;
 	SDL_Color fontColor;
@@ -20,14 +23,18 @@ private:
 public:
 	//*non-static
 
-	Text(SDL_Renderer *renderer, const wchar_t *message, const char *font_path, unsigned int font_size,
+	Text(SDL_Renderer *renderer, std::wstring message, std::string font_path, unsigned int font_size,
 		 SDL_Color font_color);
 
 	~Text() override;
 
-	const wchar_t *GetMessage() const;
+	std::wstring GetMessage() const;
 
-	void SetMessage(const wchar_t *new_message);
+	void SetMessage(std::wstring new_message);
+
+	std::string GetPath() const;
+
+	void SetPath(std::string path);
 
 	TTF_Font *GetFont() const;
 

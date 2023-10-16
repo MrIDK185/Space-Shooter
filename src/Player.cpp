@@ -2,7 +2,7 @@
 
 //* static(public)
 
-std::shared_ptr<Player> Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, const char *path)
+std::shared_ptr<Player> Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path)
 {
 	return std::make_shared<Player>(renderer, path, config.PLAYER_SCALE, config.PLAYER_RADIUS, config.PLAYER_FRAME_WIDTH,
 									config.PLAYER_FRAME_HEIGHT, config.PLAYER_IMG_FRAMES, config.PLAYER_IMG_TYPES,
@@ -66,7 +66,7 @@ void Player::UpdateVelocity(float delta_time_seconds, const Uint8 *keyboard)
 
 //* non-static(public)
 
-Player::Player(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
+Player::Player(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
 			   const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
 			   const unsigned int animations_per_second, float acceleration, float max_velocity, float friction,
 			   unsigned int effect_duration_seconds, unsigned int rotation_speed)

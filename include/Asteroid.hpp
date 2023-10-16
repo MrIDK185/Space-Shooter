@@ -15,7 +15,7 @@ private:
 public:
 	//* non-static
 
-	Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity, int screen_width, int screen_height);
+	Asteroid(SDL_Renderer *renderer, std::string path, float scale, float radius, float velocity, int screen_width, int screen_height);
 
 	~Asteroid() override;
 

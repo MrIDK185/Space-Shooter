@@ -15,7 +15,8 @@ void soundChunk::Init()
 
 //*non-static(public)
 
-soundChunk::soundChunk(const char *path) : Path(path)
+soundChunk::soundChunk(const char *path)
+	: Path(path)
 {
 	Init();
 
@@ -24,10 +25,10 @@ soundChunk::soundChunk(const char *path) : Path(path)
 
 soundChunk::~soundChunk()
 {
-	Path = nullptr;
-
 	Mix_FreeChunk(Chunk);
 	Chunk = nullptr;
+
+	Path = nullptr;
 
 	return;
 }
@@ -91,10 +92,10 @@ soundMusic::soundMusic(const char *path) : Path(path)
 
 soundMusic::~soundMusic()
 {
-	Path = nullptr;
-
 	Mix_FreeMusic(Music);
 	Music = nullptr;
+
+	Path = nullptr;
 
 	return;
 }

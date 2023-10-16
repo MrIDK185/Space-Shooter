@@ -6,7 +6,7 @@
 
 void IMGSprite::LoadImage()
 {
-	SDL_Surface *loadedSurface = IMG_Load(IMGPath);
+	SDL_Surface *loadedSurface = IMG_Load(IMGPath.c_str());
 	Texture = SDL_CreateTextureFromSurface(destRenderer, loadedSurface);
 
 	int width, height;
@@ -21,10 +21,11 @@ void IMGSprite::LoadImage()
 
 //* non-static(public)
 
-IMGSprite::IMGSprite(SDL_Renderer *renderer, const char *path, float scale, float radius) : Sprite(renderer),
-																							IMGPath(path),
-																							Scale(scale),
-																							Radius(radius * scale)
+IMGSprite::IMGSprite(SDL_Renderer *renderer, std::string path, float scale, float radius)
+	: Sprite(renderer),
+	  IMGPath(path),
+	  Scale(scale),
+	  Radius(radius * scale)
 {
 	LoadImage();
 	SetScale(scale);
@@ -34,7 +35,19 @@ IMGSprite::IMGSprite(SDL_Renderer *renderer, const char *path, float scale, floa
 
 IMGSprite::~IMGSprite()
 {
-	IMGPath = nullptr;
+}
+
+std::string IMGSprite::GetIMGPath() const
+{
+	return IMGPath;
+}
+
+void IMGSprite::SetIMGPath(std::string img_path)
+{
+	IMGPath = img_path;
+	LoadImage();
+
+	return;
 }
 
 float IMGSprite::GetScale() const

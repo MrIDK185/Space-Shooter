@@ -3,6 +3,7 @@
 
 #include "Sprite.hpp"
 
+#include <string>
 #include <memory>
 
 class IMGSprite : public Sprite
@@ -10,7 +11,7 @@ class IMGSprite : public Sprite
 protected:
 	//*non-static
 
-	const char *IMGPath = nullptr;
+	std::string IMGPath;
 
 	float
 		Scale,
@@ -21,9 +22,13 @@ protected:
 public:
 	//*non-static
 
-	IMGSprite(SDL_Renderer *renderer, const char *path, float scale, float radius);
+	IMGSprite(SDL_Renderer *renderer, std::string path, float scale, float radius);
 
 	~IMGSprite() override;
+
+	std::string GetIMGPath() const;
+
+	void SetIMGPath(std::string img_path);
 
 	float GetScale() const;
 

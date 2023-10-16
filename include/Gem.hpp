@@ -4,8 +4,6 @@
 #include "Configuration.hpp"
 #include "AnimatedSprite.hpp"
 
-#include <string>
-
 typedef enum
 {
 	INCREMENT = 1,
@@ -33,12 +31,12 @@ private:
 public:
 	//*static
 
-	static std::shared_ptr<Gem> NewGem(Configuration &config, SDL_Renderer *renderer, const char *path,
+	static std::shared_ptr<Gem> NewGem(Configuration &config, SDL_Renderer *renderer, std::string path,
 									   int screen_width, int screen_height);
 
 	//*non-static
 
-	Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
+	Gem(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
 		const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
 		const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration,
 		unsigned int minimum_brightness, unsigned int maximum_brightness, unsigned int blink_factor,

@@ -362,7 +362,7 @@ void Game::CreateObjects()
 	b = (Config.FONT_COLOR_HEX & 0xFF);
 	SDL_Color font_color = {r, g, b, 255};
 
-	textMap["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT.c_str(), Config.FONT_PATH.c_str(), Config.START_TEXT_SIZE, font_color);
+	textMap["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH, Config.START_TEXT_SIZE, font_color);
 	SDL_FRect text_rect = textMap.at("startText")->GetRect();
 	textMap.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
 
@@ -377,7 +377,7 @@ void Game::CreateObjects()
 	playerMap.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2), static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 
 	const wchar_t score_text[] = {L"0"};
-	textMap["scoreText"] = std::make_shared<Text>(Renderer, score_text, Config.FONT_PATH.c_str(), Config.SCORE_TEXT_SIZE, font_color);
+	textMap["scoreText"] = std::make_shared<Text>(Renderer, score_text, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, font_color);
 	textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 
 	chunkMap["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3");
@@ -450,12 +450,15 @@ void Game::GameTitleScreen()
 		Countdown -= startTimer.Interval;
 
 		std::wstring countdown_str = std::to_wstring(Countdown);
-		textMap.at("startText")->SetMessage(countdown_str.c_str());
+		printf("Before set message");
+		textMap.at("startText")->SetMessage(countdown_str);
+		printf("After set message");
 
 		textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 	}
 	if (Countdown <= 0)
 	{
+		printf("Countdown is 0");
 		startTimer.Stop();
 		startCountdown = false;
 		currentGameState = GAME_STARTED;
@@ -504,7 +507,7 @@ void Game::HandleGems()
 			chunkMap.at("gemMissed")->PlayChunk();
 
 			std::wstring current_score = std::to_wstring(Score);
-			textMap.at("scoreText")->SetMessage(current_score.c_str());
+			textMap.at("scoreText")->SetMessage(current_score);
 
 			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 
@@ -540,7 +543,7 @@ void Game::CheckCollisions()
 			chunkMap.at("gemCollected")->PlayChunk();
 
 			std::wstring current_score = std::to_wstring(Score);
-			textMap.at("scoreText")->SetMessage(current_score.c_str());
+			textMap.at("scoreText")->SetMessage(current_score);
 
 			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 
@@ -566,7 +569,7 @@ void Game::CheckCollisions()
 			Score -= 1;
 
 			std::wstring current_score = std::to_wstring(Score);
-			textMap.at("scoreText")->SetMessage(current_score.c_str());
+			textMap.at("scoreText")->SetMessage(current_score);
 
 			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
 		}

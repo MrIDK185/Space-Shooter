@@ -4,7 +4,7 @@
 
 //*static(public)
 
-std::shared_ptr<Gem> Gem::NewGem(Configuration &config, SDL_Renderer *renderer, const char *path, int screen_width, int screen_height)
+std::shared_ptr<Gem> Gem::NewGem(Configuration &config, SDL_Renderer *renderer, std::string path, int screen_width, int screen_height)
 {
 	return std::make_shared<Gem>(renderer, path, config.GEM_SCALE, config.GEM_RADIUS, config.GEM_FRAME_WIDTH,
 								 config.GEM_FRAME_HEIGHT, config.GEM_IMG_FRAMES, config.GEM_IMG_TYPES, 0, config.GEM_BLINK_DURATION,
@@ -14,7 +14,7 @@ std::shared_ptr<Gem> Gem::NewGem(Configuration &config, SDL_Renderer *renderer, 
 
 //*non-static(public)
 
-Gem::Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
+Gem::Gem(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
 		 const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
 		 const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration,
 		 unsigned int minimum_brightness, unsigned int maximum_brightness, unsigned int blink_factor,
