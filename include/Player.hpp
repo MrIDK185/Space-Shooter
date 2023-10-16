@@ -23,6 +23,10 @@ private:
 	Uint64 collectionTicks = 0;
 	bool gemCollected = false;
 
+	void UpdateAngle(float delta_time_seconds, const Uint8 *keyboard);
+
+	void UpdateVelocity(float delta_time_seconds, const Uint8 *keyboard);
+
 public:
 	//* static
 
@@ -57,17 +61,25 @@ public:
 
 	void SetFriction(float friction);
 
+	unsigned int GetEffectDuration() const;
+
+	void SetEffectDuration(unsigned int effect_duration);
+
+	unsigned int GetRotationSpeed() const;
+
+	void SetRotationSpeed(unsigned int rotation_speed);
+
 	bool GetGemCollected() const;
 
 	void SetGemCollected(bool new_status);
 
 	Uint64 GetCollectionTicks() const;
 
-	void SetCollectionTicks(Uint64 collection_ticks);
+	void SetCollectionTicks(Uint64 current_ticks);
 
-	void CheckType(Uint64 current_ticks);
+	void UpdateGemCollected(Uint64 current_ticks);
 
-	void HandleKeys(int screen_width, int screen_height, float delta_time_seconds, const Uint8 *keyboard);
+	void HandleInput(int screen_width, int screen_height, float delta_time_seconds, const Uint8 *keyboard);
 
 	void Render() const override;
 };

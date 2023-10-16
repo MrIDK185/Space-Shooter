@@ -483,8 +483,8 @@ void Game::HandlePlayers()
 {
 	for (const auto &[name, player] : playerMap)
 	{
-		player->CheckType(currentTicks);
-		player->HandleKeys(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
+		player->UpdateGemCollected(currentTicks);
+		player->HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
 	}
 
 	return;
