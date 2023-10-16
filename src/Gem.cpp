@@ -35,18 +35,6 @@ Gem::~Gem()
 {
 }
 
-std::string Gem::GetBrightnessChange() const
-{
-	return brightnessChange;
-}
-
-void Gem::SetBrightnessChange(const std::string &new_brightness)
-{
-	brightnessChange = new_brightness;
-
-	return;
-}
-
 Uint64 Gem::GetBlinkTicks() const
 {
 	return blinkTicks;
@@ -131,6 +119,18 @@ void Gem::SetBlinkFactor(unsigned int blink_factor)
 	return;
 }
 
+Sign Gem::GetSignedFactor() const
+{
+	return signedFactor;
+}
+
+void Gem::SetSignedFactor(Sign new_sign)
+{
+	signedFactor = new_sign;
+
+	return;
+}
+
 void Gem::UpdateTicks(Uint64 current_ticks)
 {
 	blinkTicks = current_ticks + blinkDuration;
@@ -145,24 +145,17 @@ void Gem::Blink(float delta_time_seconds)
 	SDL_GetTextureColorMod(Texture, &brightness_value, nullptr, nullptr);
 	float next_brightness_value = static_cast<float>(brightness_value);
 
-	if (brightnessChange == "Up")
-	{
-		next_brightness_value += static_cast<float>(blinkFactor) * delta_time_seconds;
-	}
-	else if (brightnessChange == "Down")
-	{
-		next_brightness_value -= static_cast<float>(blinkFactor) * delta_time_seconds;
-	}
+	next_brightness_value += static_cast<float>(blinkFactor) * static_cast<float>(signedFactor) * delta_time_seconds;
 
 	if (next_brightness_value >= maximumBrightness)
 	{
-		brightnessChange = "Down";
 		next_brightness_value = maximumBrightness;
+		signedFactor = DECREMENT;
 	}
 	if (next_brightness_value <= minimumBrightness)
 	{
-		brightnessChange = "Up";
 		next_brightness_value = minimumBrightness;
+		signedFactor = INCREMENT;
 	}
 
 	SDL_SetTextureColorMod(Texture, next_brightness_value, next_brightness_value, next_brightness_value);

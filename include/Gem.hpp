@@ -6,12 +6,16 @@
 
 #include <string>
 
+typedef enum
+{
+	INCREMENT = 1,
+	DECREMENT = -1
+} Sign;
+
 class Gem : public AnimatedSprite
 {
 private:
 	//*non-static
-
-	std::string brightnessChange = "Down";
 
 	Uint64
 		blinkTicks,
@@ -23,6 +27,8 @@ private:
 		minimumBrightness,
 		maximumBrightness,
 		blinkFactor;
+
+	Sign signedFactor = DECREMENT;
 
 public:
 	//*static
@@ -39,10 +45,6 @@ public:
 		int screen_width, int screen_height);
 
 	~Gem() override;
-
-	std::string GetBrightnessChange() const;
-
-	void SetBrightnessChange(const std::string &new_brightness);
 
 	Uint64 GetBlinkTicks() const;
 
@@ -71,6 +73,10 @@ public:
 	unsigned int GetBlinkFactor() const;
 
 	void SetBlinkFactor(unsigned int blink_factor);
+
+	Sign GetSignedFactor() const;
+
+	void SetSignedFactor(Sign new_sign);
 
 	void UpdateTicks(Uint64 current_ticks);
 
