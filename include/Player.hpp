@@ -67,7 +67,7 @@ public:
 
 	void CheckType(Uint64 current_ticks);
 
-	void HandleKeys(int screen_width, int screen_height, Uint64 delta_time_seconds, const Uint8 *keyboard);
+	void HandleKeys(int screen_width, int screen_height, float delta_time_seconds, const Uint8 *keyboard);
 
 	void Render() const override;
 };

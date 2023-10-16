@@ -40,6 +40,6 @@ Gem IMG Frames = 16
 Gem IMG Types = 8
 Gem Blink Duration = 2000
 Gem Lifetime Duration = 4500
-Gem Blink Factor = 288
+Gem Blink Factor = 200
 Gem Maximum Brightness = 255
 Gem Minimum Brightness = 151

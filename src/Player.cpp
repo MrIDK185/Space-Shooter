@@ -124,7 +124,7 @@ void Player::CheckType(Uint64 current_ticks)
 	return;
 }
 
-void Player::HandleKeys(int screen_width, int screen_height, Uint64 delta_time_seconds, const Uint8 *keyboard)
+void Player::HandleKeys(int screen_width, int screen_height, float delta_time_seconds, const Uint8 *keyboard)
 {
 	float pos_x = Rect.x;
 	float pos_y = Rect.y;
@@ -154,9 +154,9 @@ void Player::HandleKeys(int screen_width, int screen_height, Uint64 delta_time_s
 	{
 		angle = 0;
 	}
-	else if (angle <= 0)
+	else if (angle < 0)
 	{
-		angle = 360 - angle;
+		angle = 360 + angle;
 	}
 
 	if (keyboard[SDL_SCANCODE_LEFT])
