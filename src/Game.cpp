@@ -189,7 +189,7 @@ void Game::SetupGame()
 	std::cout << "Creating main window...\n";
 	Window = SDL_CreateWindow("Space Shooter", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Config.START_WINDOW_WIDTH, Config.START_WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
 	std::cout << "Creating main renderer...\n\n";
-	Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED);
+	Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	std::cout << "Creating objects...\n";
 	CreateObjects();
@@ -465,7 +465,7 @@ void Game::GameTitleScreen()
 
 		for (std::shared_ptr<Gem> gem : gemGroup)
 		{
-			gem->SetTicks(currentTicks);
+			gem->UpdateTicks(currentTicks);
 		}
 
 		Mix_HaltMusic();
@@ -496,7 +496,7 @@ void Game::HandleGems()
 	{
 		if (currentTicks >= gem->GetBlinkTicks())
 		{
-			gem->Blink(Config.GEM_MINIMUM_BRIGHTNESS, Config.GEM_MAXIMUM_BRIGHTNESS, Config.GEM_BLINK_FACTOR);
+			gem->Blink();
 		}
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{

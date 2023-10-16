@@ -2,7 +2,7 @@
 
 Window Width = 1440
 Window Height = 810
-Countdown Duration = 5
+Countdown Duration = 0
 Countdown Interval = 1
 
 ------------ Text ------------

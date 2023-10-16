@@ -19,7 +19,10 @@ private:
 
 	unsigned int
 		blinkDuration,
-		lifetimeDuration;
+		lifetimeDuration,
+		minimumBrightness,
+		maximumBrightness,
+		blinkFactor;
 
 public:
 	//*static
@@ -32,6 +35,7 @@ public:
 	Gem(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
 		const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
 		const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration,
+		unsigned int minimum_brightness, unsigned int maximum_brightness, unsigned int blink_factor,
 		int screen_width, int screen_height);
 
 	~Gem() override;
@@ -44,21 +48,33 @@ public:
 
 	void SetBlinkTicks(Uint64 new_blink_ticks);
 
-	unsigned int GetBlinkDuration() const;
+	Uint64 GetLifetimeTicks() const;
 
 	void SetLifetimeTicks(Uint64 new_lifetime_ticks);
 
-	unsigned int GetLifetimeDuration() const;
+	unsigned int GetBlinkDuration() const;
 
 	void SetBlinkDuration(unsigned int new_duration);
 
-	Uint64 GetLifetimeTicks() const;
+	unsigned int GetLifetimeDuration() const;
 
 	void SetLifetimeDuration(unsigned int new_duration);
 
-	void SetTicks(Uint64 current_ticks);
+	unsigned int GetMinimumBrightness() const;
 
-	void Blink(int gem_minimum_brightness, int gem_maximum_brightness, int gem_blink_factor);
+	void SetMinimumBrightness(unsigned int minimum_brightness);
+
+	unsigned int GetMaximumBrightness() const;
+
+	void SetMaximumBrightness(unsigned int maximum_brightness);
+
+	unsigned int GetBlinkFactor() const;
+
+	void SetBlinkFactor(unsigned int blink_factor);
+
+	void UpdateTicks(Uint64 current_ticks);
+
+	void Blink();
 
 	void Randomize(int screen_width, int screen_height, Uint64 current_ticks = 0);
 };
