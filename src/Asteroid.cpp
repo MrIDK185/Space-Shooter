@@ -2,8 +2,10 @@
 
 #include <random>
 
-Asteroid::Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity, int screen_width, int screen_height) : IMGSprite::IMGSprite(renderer, path, scale, radius),
-																																			   Velocity(velocity)
+Asteroid::Asteroid(SDL_Renderer *renderer, const char *path, float scale, float radius, float velocity,
+				   int screen_width, int screen_height)
+	: IMGSprite::IMGSprite(renderer, path, scale, radius),
+	  Velocity(velocity)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -18,41 +20,32 @@ Asteroid::Asteroid(SDL_Renderer *renderer, const char *path, float scale, float 
 	SetRectPos(random_x_pos(gen), random_y_pos(gen));
 }
 
-void Asteroid::Move(int screen_width, int screen_height, float delta_time_seconds)
-{
-	SDL_FRect rect = GetRect();
-	float pos_x = rect.x;
-	float pos_y = rect.y;
-	float width = rect.w;
-	float height = rect.h;
-
-	if (pos_x <= -width)
-	{
-		pos_x = screen_width;
-	}
-	else if (pos_x >= screen_width)
-	{
-		pos_x = -width;
-	}
-	if (pos_y <= -height)
-	{
-		pos_y = screen_height;
-	}
-	else if (pos_y >= screen_height)
-	{
-		pos_y = -height;
-	}
-
-	pos_x += std::sin(Angle * M_PI / 180) * Velocity * delta_time_seconds;
-	pos_y -= std::cos(Angle * M_PI / 180) * Velocity * delta_time_seconds;
-
-	SetRectPos(pos_x, pos_y);
-
-	return;
-}
-
 Asteroid::~Asteroid()
 {
+}
+
+void Asteroid::Move(int screen_width, int screen_height, float delta_time_seconds)
+{
+	Rect.x += std::sin(Angle * M_PI / 180) * Velocity * delta_time_seconds;
+	Rect.y -= std::cos(Angle * M_PI / 180) * Velocity * delta_time_seconds;
+
+	if (Rect.x <= -Rect.w)
+	{
+		Rect.x = screen_width;
+	}
+	else if (Rect.x >= screen_width)
+	{
+		Rect.x = -Rect.w;
+	}
+	if (Rect.y <= -Rect.h)
+	{
+		Rect.y = screen_height;
+	}
+	else if (Rect.y >= screen_height)
+	{
+		Rect.y = -Rect.h;
+	}
+
 	return;
 }
 
