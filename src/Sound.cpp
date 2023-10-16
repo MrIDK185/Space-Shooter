@@ -6,19 +6,20 @@
 
 //*non-static(private)
 
-void soundChunk::Init()
+void soundChunk::LoadChunk()
 {
-	Chunk = Mix_LoadWAV(Path);
+	Chunk = Mix_LoadWAV(Path.c_str());
 
 	return;
 }
 
 //*non-static(public)
 
-soundChunk::soundChunk(const char *path)
-	: Path(path)
+soundChunk::soundChunk(std::string path)
+	: Path(path),
+	  Volume(MIX_MAX_VOLUME)
 {
-	Init();
+	LoadChunk();
 
 	return;
 }
@@ -28,7 +29,18 @@ soundChunk::~soundChunk()
 	Mix_FreeChunk(Chunk);
 	Chunk = nullptr;
 
-	Path = nullptr;
+	return;
+}
+
+std::string soundChunk::GetPath() const
+{
+	return Path;
+}
+
+void soundChunk::SetPath(std::string path)
+{
+	Path = path;
+	LoadChunk();
 
 	return;
 }
@@ -38,9 +50,9 @@ Mix_Chunk *soundChunk::GetChunk() const
 	return Chunk;
 }
 
-void soundChunk::PlayChunk()
+void soundChunk::SetChunk(Mix_Chunk *chunk)
 {
-	Channel = Mix_PlayChannel(-1, Chunk, 0);
+	Chunk = chunk;
 
 	return;
 }
@@ -48,6 +60,13 @@ void soundChunk::PlayChunk()
 int soundChunk::GetChannel() const
 {
 	return Channel;
+}
+
+void soundChunk::SetChannel(unsigned int channel)
+{
+	Channel = channel;
+
+	return;
 }
 
 unsigned int soundChunk::GetVolume() const
@@ -60,7 +79,8 @@ void soundChunk::SetVolume(unsigned int new_volume)
 	if (new_volume > MIX_MAX_VOLUME)
 	{
 		Volume = MIX_MAX_VOLUME;
-		Mix_VolumeChunk(Chunk, MIX_MAX_VOLUME);
+		Mix_VolumeChunk(Chunk, Volume);
+
 		return;
 	}
 
@@ -70,22 +90,30 @@ void soundChunk::SetVolume(unsigned int new_volume)
 	return;
 }
 
+void soundChunk::PlayChunk()
+{
+	Channel = Mix_PlayChannel(-1, Chunk, 0);
+
+	return;
+}
+
 /*------------ soundMusic ------------*/
 
 //*non-static(private)
 
-void soundMusic::Init()
+void soundMusic::LoadMusic()
 {
-	Music = Mix_LoadMUS(Path);
+	Music = Mix_LoadMUS(Path.c_str());
 
 	return;
 }
 
 //*non-static(public)
 
-soundMusic::soundMusic(const char *path) : Path(path)
+soundMusic::soundMusic(std::string path)
+	: Path(path)
 {
-	Init();
+	LoadMusic();
 
 	return;
 }
@@ -95,14 +123,19 @@ soundMusic::~soundMusic()
 	Mix_FreeMusic(Music);
 	Music = nullptr;
 
-	Path = nullptr;
-
 	return;
 }
 
 Mix_Music *soundMusic::GetMusic() const
 {
 	return Music;
+}
+
+void soundMusic::SetMusic(Mix_Music *music)
+{
+	Music = music;
+
+	return;
 }
 
 void soundMusic::PlayMusic()

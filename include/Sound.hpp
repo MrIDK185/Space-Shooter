@@ -1,7 +1,7 @@
 #ifndef SOUND_HPP
 #define SOUND_HPP
 
-constexpr unsigned int MIX_MAX_VOLUME = 128;
+#include <string>
 
 typedef struct Mix_Chunk Mix_Chunk;
 typedef struct _Mix_Music Mix_Music;
@@ -13,29 +13,38 @@ class soundChunk
 private:
 	//*non-static
 
-	Mix_Chunk *Chunk = nullptr;
-	const char *Path = nullptr;
-	int Channel;
-	unsigned int Volume = MIX_MAX_VOLUME;
+	std::string Path;
 
-	void Init();
+	Mix_Chunk *Chunk = nullptr;
+	int Channel = -1;
+	unsigned int Volume;
+
+	void LoadChunk();
 
 public:
 	//*non-static
 
-	explicit soundChunk(const char *path);
+	explicit soundChunk(std::string path);
 
 	~soundChunk();
 
+	std::string GetPath() const;
+
+	void SetPath(std::string path);
+
 	Mix_Chunk *GetChunk() const;
 
-	void PlayChunk();
+	void SetChunk(Mix_Chunk *chunk);
 
 	int GetChannel() const;
+
+	void SetChannel(unsigned int channel);
 
 	unsigned int GetVolume() const;
 
 	void SetVolume(unsigned int new_volume);
+
+	void PlayChunk();
 };
 
 /*------------ soundMusic ------------*/
@@ -45,19 +54,22 @@ class soundMusic
 private:
 	//*non-static
 
-	Mix_Music *Music = nullptr;
-	const char *Path = nullptr;
+	std::string Path;
 
-	void Init();
+	Mix_Music *Music = nullptr;
+
+	void LoadMusic();
 
 public:
 	//*non-static
 
-	explicit soundMusic(const char *path);
+	explicit soundMusic(std::string path);
 
 	~soundMusic();
 
 	Mix_Music *GetMusic() const;
+
+	void SetMusic(Mix_Music *music);
 
 	void PlayMusic();
 };
