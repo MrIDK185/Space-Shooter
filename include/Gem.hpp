@@ -24,7 +24,8 @@ private:
 public:
 	//*static
 
-	static std::shared_ptr<Gem> NewGem(Configuration &config, SDL_Renderer *renderer, const char *path, int screen_width, int screen_height);
+	static std::shared_ptr<Gem> NewGem(Configuration &config, SDL_Renderer *renderer, const char *path,
+									   int screen_width, int screen_height);
 
 	//*non-static
 

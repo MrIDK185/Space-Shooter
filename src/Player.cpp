@@ -1,61 +1,28 @@
 #include "Player.hpp"
 
-//*static(private)
+//* static(public)
 
-SDL_Renderer *Player::D_RENDERER = nullptr;
-
-float
-	Player::D_ACCELERATION = 0,
-	Player::D_MAX_VELOCITY = 0,
-	Player::D_SCALE = 0,
-	Player::D_FRICTION = 0,
-	Player::D_RADIUS = 0;
-
-unsigned int
-	Player::D_FRAME_WIDTH = 0,
-	Player::D_FRAME_HEIGHT = 0,
-	Player::D_IMG_FRAMES = 0,
-	Player::D_IMG_TYPES = 0,
-	Player::D_ANIMATIONS_PER_SECOND = 0,
-	Player::D_EFFECT_DURATION_SECONDS = 0,
-	Player::D_ROTATION_SPEED = 0;
-
-//*static(public)
-
-void Player::InitDefaultValues(SDL_Renderer *renderer, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, float acceleration, float max_velocity, float friction, unsigned int effect_duration_seconds, unsigned int rotation_speed)
+std::shared_ptr<Player> Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, const char *path)
 {
-	D_RENDERER = renderer;
-	D_SCALE = scale;
-	D_RADIUS = radius;
-	D_FRAME_WIDTH = frame_width;
-	D_FRAME_HEIGHT = frame_height;
-	D_IMG_FRAMES = img_frames;
-	D_IMG_TYPES = img_types;
-	D_ANIMATIONS_PER_SECOND = animations_per_second;
-	D_ACCELERATION = acceleration;
-	D_MAX_VELOCITY = max_velocity;
-	D_FRICTION = friction;
-	D_EFFECT_DURATION_SECONDS = effect_duration_seconds;
-	D_ROTATION_SPEED = rotation_speed;
-
-	return;
+	return std::make_shared<Player>(renderer, path, config.PLAYER_SCALE, config.PLAYER_RADIUS, config.PLAYER_FRAME_WIDTH,
+									config.PLAYER_FRAME_HEIGHT, config.PLAYER_IMG_FRAMES, config.PLAYER_IMG_TYPES,
+									config.PLAYER_ANIMATIONS_PER_SECOND, config.PLAYER_ACCELEARION, config.PLAYER_MAX_VELOCITY,
+									config.PLAYER_FRICTION, config.PLAYER_EFFECT_DURATION_SECONDS, config.PLAYER_ROTATION_SPEED);
 }
 
-void Player::CleanDefaultValues()
-{
-	D_RENDERER = nullptr;
+//* non-static(public)
 
-	return;
-}
-
-//*non-static(public)
-
-Player::Player(const char *path) : AnimatedSprite(D_RENDERER, path, D_SCALE, D_RADIUS, D_FRAME_WIDTH, D_FRAME_HEIGHT, D_IMG_FRAMES, D_IMG_TYPES, D_ANIMATIONS_PER_SECOND),
-								   Acceleration(D_ACCELERATION),
-								   maxVelocity(D_MAX_VELOCITY),
-								   Friction(D_FRICTION),
-								   effectDuration(D_EFFECT_DURATION_SECONDS * 1000),
-								   rotationSpeed(D_ROTATION_SPEED)
+Player::Player(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
+			   const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
+			   const unsigned int animations_per_second, float acceleration, float max_velocity, float friction,
+			   unsigned int effect_duration_seconds, unsigned int rotation_speed)
+	: AnimatedSprite(renderer, path, scale, radius, frame_width, frame_height, img_frames, img_types,
+					 animations_per_second),
+	  Acceleration(acceleration),
+	  maxVelocity(max_velocity),
+	  Friction(friction),
+	  effectDuration(effect_duration_seconds * 1000),
+	  rotationSpeed(rotation_speed)
 {
 }
 
@@ -235,9 +202,7 @@ void Player::HandleKeys(int screen_width, int screen_height, Uint64 delta_time_s
 
 void Player::Render() const
 {
-	SDL_Rect srcrect = IMGPartRect;
-	SDL_FRect destrect = Rect;
-	SDL_RenderCopyExF(destRenderer, Texture, &srcrect, &destrect, Angle, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyExF(destRenderer, Texture, &IMGPartRect, &Rect, Angle, nullptr, SDL_FLIP_NONE);
 
 	return;
 }

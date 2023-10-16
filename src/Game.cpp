@@ -83,10 +83,6 @@ void Game::ShowErrorMessage()
 //* Cleanup
 void Game::Clean()
 {
-
-	std::cout << "Cleaning Player default values...\n";
-	Player::CleanDefaultValues();
-
 	std::cout << "Clearing musicMap...\n";
 	musicMap.clear();
 	std::cout << "Clearing chunkMap...\n";
@@ -374,12 +370,9 @@ void Game::CreateObjects()
 
 	asteroidGroup.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200, screenWidth, screenHeight));
 
-	std::cout << "Initializing Gem default values...\n";
 	gemGroup.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
 
-	std::cout << "Initializing Player default values...\n\n";
-	Player::InitDefaultValues(Renderer, Config.PLAYER_SCALE, Config.PLAYER_RADIUS, Config.PLAYER_FRAME_WIDTH, Config.PLAYER_FRAME_HEIGHT, Config.PLAYER_IMG_FRAMES, Config.PLAYER_IMG_TYPES, Config.PLAYER_ANIMATIONS_PER_SECOND, Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION, Config.PLAYER_EFFECT_DURATION_SECONDS, Config.PLAYER_ROTATION_SPEED);
-	playerMap["Player1"] = std::make_shared<Player>("assets/images/player.png");
+	playerMap["Player1"] = Player::NewPlayer(Config, Renderer, "assets/images/player.png");
 	SDL_Rect player_rect = playerMap.at("Player1")->GetIMGPartRect();
 	playerMap.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2), static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 

@@ -1,30 +1,12 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include "Configuration.hpp"
 #include "AnimatedSprite.hpp"
 
 class Player : public AnimatedSprite
 {
 private:
-	//*static
-
-	static SDL_Renderer *D_RENDERER;
-
-	static float
-		D_ACCELERATION,
-		D_MAX_VELOCITY,
-		D_SCALE, D_FRICTION,
-		D_RADIUS;
-
-	static unsigned int
-		D_FRAME_WIDTH,
-		D_FRAME_HEIGHT,
-		D_IMG_FRAMES,
-		D_IMG_TYPES,
-		D_ANIMATIONS_PER_SECOND,
-		D_EFFECT_DURATION_SECONDS,
-		D_ROTATION_SPEED;
-
 	//*non-static
 
 	float
@@ -42,15 +24,16 @@ private:
 	bool gemCollected = false;
 
 public:
-	//*static
+	//* static
 
-	static void InitDefaultValues(SDL_Renderer *renderer, float scale, float radius, const unsigned int frame_width, const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second, float acceleration, float max_velocity, float friction, unsigned int effect_duration_seconds, unsigned int rotation_speed);
-
-	static void CleanDefaultValues();
+	static std::shared_ptr<Player> NewPlayer(Configuration &config, SDL_Renderer *renderer, const char *path);
 
 	//*non-static
 
-	Player(const char *path);
+	Player(SDL_Renderer *renderer, const char *path, float scale, float radius, const unsigned int frame_width,
+		   const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
+		   const unsigned int animations_per_second, float acceleration, float max_velocity, float friction,
+		   unsigned int effect_duration_seconds, unsigned int rotation_speed);
 
 	~Player() override;
 
