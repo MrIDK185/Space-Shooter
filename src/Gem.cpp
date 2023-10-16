@@ -139,30 +139,33 @@ void Gem::UpdateTicks(Uint64 current_ticks)
 	return;
 }
 
-void Gem::Blink()
+void Gem::Blink(float delta_time_seconds)
 {
 	Uint8 brightness_value;
 	SDL_GetTextureColorMod(Texture, &brightness_value, nullptr, nullptr);
-
-	if (brightness_value >= maximumBrightness)
-	{
-		brightnessChange = "Down";
-	}
-	if (brightness_value <= minimumBrightness)
-	{
-		brightnessChange = "Up";
-	}
+	float next_brightness_value = static_cast<float>(brightness_value);
 
 	if (brightnessChange == "Up")
 	{
-		brightness_value += blinkFactor;
+		next_brightness_value += static_cast<float>(blinkFactor) * delta_time_seconds;
 	}
 	else if (brightnessChange == "Down")
 	{
-		brightness_value -= blinkFactor;
+		next_brightness_value -= static_cast<float>(blinkFactor) * delta_time_seconds;
 	}
 
-	SDL_SetTextureColorMod(Texture, brightness_value, brightness_value, brightness_value);
+	if (next_brightness_value >= maximumBrightness)
+	{
+		brightnessChange = "Down";
+		next_brightness_value = maximumBrightness;
+	}
+	if (next_brightness_value <= minimumBrightness)
+	{
+		brightnessChange = "Up";
+		next_brightness_value = minimumBrightness;
+	}
+
+	SDL_SetTextureColorMod(Texture, next_brightness_value, next_brightness_value, next_brightness_value);
 
 	return;
 }

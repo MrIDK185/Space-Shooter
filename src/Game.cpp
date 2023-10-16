@@ -496,7 +496,7 @@ void Game::HandleGems()
 	{
 		if (currentTicks >= gem->GetBlinkTicks())
 		{
-			gem->Blink();
+			gem->Blink(gameClock.deltaTimeSeconds);
 		}
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{

@@ -11,7 +11,7 @@ class Gem : public AnimatedSprite
 private:
 	//*non-static
 
-	std::string brightnessChange;
+	std::string brightnessChange = "Down";
 
 	Uint64
 		blinkTicks,
@@ -74,7 +74,7 @@ public:
 
 	void UpdateTicks(Uint64 current_ticks);
 
-	void Blink();
+	void Blink(float delta_time_seconds);
 
 	void Randomize(int screen_width, int screen_height, Uint64 current_ticks = 0);
 };
