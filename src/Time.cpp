@@ -22,7 +22,14 @@ void Clock::Tick()
 Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 {
 	unsigned int *current_counter_milliseconds = static_cast<unsigned int *>(param);
-	*current_counter_milliseconds -= interval_milliseconds;
+	if (*current_counter_milliseconds >= interval_milliseconds)
+	{
+		*current_counter_milliseconds -= interval_milliseconds;
+	}
+	else
+	{
+		*current_counter_milliseconds = 0;
+	}
 
 	if (*current_counter_milliseconds > 0)
 	{
