@@ -43,14 +43,15 @@ public:
 	//*non-static
 
 	unsigned int
-		durationMilliseconds,
-		intervalMilliseconds,
-		counterMilliseconds;
+		durationMilliseconds = 0,
+		intervalMilliseconds = 0,
+		counterMilliseconds = 0;
 
-	Uint32 timerID;
+	Uint32 timerID = 0;
 
 	bool Started = false;
 
+	explicit SecondTimer();
 	SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, SDL_TimerCallback callback);
 	~SecondTimer();
 

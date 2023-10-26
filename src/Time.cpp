@@ -51,6 +51,14 @@ Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 
 //*non-static(public)
 
+SecondTimer::SecondTimer()
+	: Callback(nullptr),
+	  durationMilliseconds(0),
+	  intervalMilliseconds(0),
+	  counterMilliseconds(0)
+{
+}
+
 SecondTimer::SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, SDL_TimerCallback callback)
 	: Callback(callback),
 	  durationMilliseconds(duration_milliseconds),
