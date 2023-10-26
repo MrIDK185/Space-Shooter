@@ -23,6 +23,9 @@ private:
 	bool Handle_KP_Minus();
 	bool Handle_M();
 
+	bool Handle_TimerDecrement();
+	bool Handle_TimerStop();
+
 public:
 	explicit EventHandler(Game *current_game);
 	~EventHandler();

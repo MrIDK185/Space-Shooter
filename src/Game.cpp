@@ -135,7 +135,7 @@ int Game::InitializeSystems()
 	std::cout << "------------- Startup -------------\n\n";
 
 	std::cout << "Initializing SDL...\n";
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
 	{
 		ShowErrorMessage();
 		Quit();
@@ -178,10 +178,9 @@ void Game::SetupGame()
 	std::cout << "Importing settings...\n";
 	ImportSettings();
 
-	volumeController.changeMasterVolume(MIX_MAX_VOLUME);
+	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
 
-	startTimer.Duration = Config.COUNTDOWN_DURATION;
-	startTimer.Interval = Config.COUNTDOWN_INTERVAL;
+	volumeController.changeMasterVolume(MIX_MAX_VOLUME);
 
 	std::cout << "Creating main window...\n";
 	Window = SDL_CreateWindow("Space Shooter", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Config.START_WINDOW_WIDTH, Config.START_WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
@@ -216,8 +215,8 @@ void Game::ImportSettings()
 	intMap["Window Width"] = &Config.START_WINDOW_WIDTH;
 	intMap["Window Height"] = &Config.START_WINDOW_HEIGHT;
 
-	intMap["Countdown Duration"] = &Config.COUNTDOWN_DURATION;
-	intMap["Countdown Interval"] = &Config.COUNTDOWN_INTERVAL;
+	intMap["Countdown Duration Milliseconds"] = &Config.COUNTDOWN_DURATION_MILLISECONDS;
+	intMap["Countdown Interval Milliseconds"] = &Config.COUNTDOWN_INTERVAL_MILLISECONDS;
 
 	intMap["Start Text Size"] = &Config.START_TEXT_SIZE;
 	intMap["Score Text Size"] = &Config.SCORE_TEXT_SIZE;
@@ -434,41 +433,6 @@ void Game::GameTitleScreen()
 	textMap.at("startText")->Render();
 
 	SDL_RenderPresent(Renderer);
-
-	if (!startCountdown)
-	{
-		return;
-	}
-
-	if (startTimer.Check(currentTicks))
-	{
-		Countdown -= startTimer.Interval;
-
-		std::wstring countdown_str = std::to_wstring(Countdown);
-		textMap.at("startText")->SetMessage(countdown_str);
-
-		textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
-	}
-	if (Countdown <= 0)
-	{
-		startTimer.Stop();
-		startCountdown = false;
-		currentGameState = GAME_STARTED;
-
-		IMGSpriteMap.erase("startBackground");
-		textMap.erase("startText");
-
-		for (std::shared_ptr<Gem> gem : gemGroup)
-		{
-			gem->UpdateTicks(currentTicks);
-		}
-
-		Mix_HaltMusic();
-		chunkMap.at("startSound")->PlayChunk();
-		startSoundPlaying = true;
-
-		return;
-	}
 
 	return;
 }

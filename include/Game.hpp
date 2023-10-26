@@ -40,7 +40,7 @@ struct Game
 	EventHandler gameEvents = EventHandler(this);
 
 	Clock gameClock;
-	SecondTimer startTimer;
+	SecondTimer startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
 	Uint64 currentTicks = 0;
 
 	volumeControl volumeController;
@@ -49,12 +49,9 @@ struct Game
 
 	bool
 		Running = true,
-		startCountdown = false,	   // Probably going to be removed
 		startSoundPlaying = false; // Probably going to be removed
 
-	int
-		Score = 0,
-		Countdown = 3;
+	int Score = 0;
 
 	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSpriteMap;
 	std::unordered_map<std::string, std::shared_ptr<Player>> playerMap;

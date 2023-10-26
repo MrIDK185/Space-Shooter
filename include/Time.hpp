@@ -1,9 +1,7 @@
 #ifndef TIME_HPP
 #define TIME_HPP
 
-typedef unsigned long int __uint64_t;
-typedef __uint64_t uint64_t;
-typedef uint64_t Uint64;
+#include <SDL2/SDL.h>
 
 /*------------ Clock ------------*/
 
@@ -18,6 +16,8 @@ public:
 
 	float deltaTimeSeconds = 0;
 
+	unsigned int framesPerSecond = 0;
+
 	void Tick();
 
 	Clock() = default;
@@ -26,26 +26,39 @@ public:
 
 /*------------ SecondTimer ------------*/
 
+typedef enum
+{
+	TIMER_DECREMENT,
+	TIMER_STOP
+} timerEvent;
+
+Uint32 TimerCallback(Uint32 interval_milliseconds, void *param);
+
 struct SecondTimer
 {
+private:
+	SDL_TimerCallback Callback = nullptr;
+
 public:
 	//*non-static
 
 	unsigned int
-		Duration = 0,
-		Interval = 0;
+		durationMilliseconds,
+		intervalMilliseconds,
+		counterMilliseconds;
 
-	Uint64 nextTicks = 0;
+	Uint32 timerID;
+
 	bool Started = false;
 
-	void Start(Uint64 current_ticks);
+	SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, SDL_TimerCallback callback);
+	~SecondTimer();
+
+	void Start();
 
 	void Stop();
 
-	bool Check(Uint64 current_ticks);
-
-	SecondTimer() = default;
-	~SecondTimer() = default;
+	void Reset();
 };
 
 #endif //! TIME_HPP

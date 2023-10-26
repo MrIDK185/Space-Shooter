@@ -2,8 +2,8 @@
 
 Window Width = 1440
 Window Height = 810
-Countdown Duration = 3
-Countdown Interval = 1
+Countdown Duration Milliseconds = 3000
+Countdown Interval Milliseconds = 1000
 
 ------------ Text ------------
 
@@ -24,8 +24,8 @@ Player IMG Types = 4
 Player Animations Per Second = 15
 Player Acceleration = 200
 Player Max Velocity = 600
-Player Friction = 200
-Player Effect Duration Seconds = 1
+Player Friction = 150
+Player Effect Duration Seconds = 2
 Player Rotation Speed = 144
 Player Max Velocity Boost = 20
 Player Acceleration Boost = 20
@@ -42,4 +42,4 @@ Gem Blink Duration = 2000
 Gem Lifetime Duration = 4500
 Gem Blink Factor = 200
 Gem Maximum Brightness = 255
-Gem Minimum Brightness = 151
+Gem Minimum Brightness = 150

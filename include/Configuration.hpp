@@ -67,8 +67,8 @@ public:
 	/*------------ Time ------------*/
 
 	int
-		COUNTDOWN_DURATION = 3,
-		COUNTDOWN_INTERVAL = 1;
+		COUNTDOWN_DURATION_MILLISECONDS = 3000,
+		COUNTDOWN_INTERVAL_MILLISECONDS = 1000;
 
 	/*--- Constructor/Destructor ---*/
 	Configuration() = default;

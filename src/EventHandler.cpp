@@ -1,6 +1,7 @@
 #include "EventHandler.hpp"
 #include "Game.hpp"
 #include "Text.hpp"
+#include "Gem.hpp"
 
 #include <SDL2/SDL_mixer.h>
 
@@ -34,20 +35,18 @@ bool EventHandler::Handle_Escape()
 
 bool EventHandler::Handle_Return()
 {
-	if (currentGame->currentGameState == GAME_STARTED || currentGame->currentGameState == GAME_PAUSED || currentGame->startCountdown)
+	if (currentGame->currentGameState == GAME_STARTED || currentGame->currentGameState == GAME_PAUSED || currentGame->startTimer.Started)
 	{
 		return false;
 	}
 
-	currentGame->Countdown = currentGame->Config.COUNTDOWN_DURATION;
-	std::wstring countdown_str = std::to_wstring(currentGame->Countdown);
+	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
 	currentGame->textMap.at("startText")->SetMessage(countdown_str.c_str());
 
 	SDL_FRect text_rect = currentGame->textMap.at("startText")->GetRect();
 	currentGame->textMap.at("startText")->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
 
-	currentGame->startCountdown = true;
-	currentGame->startTimer.Start(currentGame->currentTicks);
+	currentGame->startTimer.Start();
 
 	return true;
 }
@@ -90,11 +89,43 @@ bool EventHandler::Handle_M()
 	return true;
 }
 
+bool EventHandler::Handle_TimerDecrement()
+{
+	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
+	currentGame->textMap.at("startText")->SetMessage(countdown_str);
+
+	currentGame->textMap.at("scoreText")->SetRectPos(static_cast<float>(currentGame->screenWidth) - currentGame->textMap.at("scoreText")->GetRect().w, 0);
+
+	return true;
+}
+
+bool EventHandler::Handle_TimerStop()
+{
+	currentGame->startTimer.Stop();
+
+	currentGame->currentGameState = GAME_STARTED;
+
+	currentGame->IMGSpriteMap.erase("startBackground");
+	currentGame->textMap.erase("startText");
+
+	for (std::shared_ptr<Gem> gem : currentGame->gemGroup)
+	{
+		gem->UpdateTicks(currentGame->currentTicks);
+	}
+
+	Mix_HaltMusic();
+	currentGame->chunkMap.at("startSound")->PlayChunk();
+	currentGame->startSoundPlaying = true;
+
+	return true;
+}
+
 //* non-static(public)
 
 EventHandler::EventHandler(Game *current_game)
 	: currentGame(current_game)
 {
+	SDL_RegisterEvents(2);
 }
 
 EventHandler::~EventHandler()
@@ -109,6 +140,21 @@ void EventHandler::HandleEvents()
 		if (Handle_WindowQuit())
 		{
 			return;
+		}
+
+		if (Event.type == SDL_USEREVENT)
+		{
+			switch (Event.user.code)
+			{
+			case TIMER_DECREMENT:
+				Handle_TimerDecrement();
+				break;
+			case TIMER_STOP:
+				Handle_TimerStop();
+				break;
+			default:
+				break;
+			}
 		}
 
 		if (Event.type != SDL_KEYDOWN)
