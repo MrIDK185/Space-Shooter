@@ -178,6 +178,7 @@ void Game::SetupGame()
 	std::cout << "Importing settings...\n";
 	ImportSettings();
 
+	gameEvents = EventHandler(this);
 	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
 
 	volumeController.changeMasterVolume(MIX_MAX_VOLUME);

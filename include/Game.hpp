@@ -37,10 +37,10 @@ struct Game
 		screenHeight = 1080;
 
 	Configuration Config;
-	EventHandler gameEvents = EventHandler(this);
+	EventHandler gameEvents;
 
 	Clock gameClock;
-	SecondTimer startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
+	SecondTimer startTimer;
 	Uint64 currentTicks = 0;
 
 	volumeControl volumeController;
