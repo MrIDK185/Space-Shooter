@@ -85,10 +85,10 @@ typedef enum
 struct volumeControl
 {
 	int
-		masterVolume,
-		lastMasterVolume,
-		musicVolume,
-		lastMusicVolume;
+		masterVolume = 0,
+		lastMasterVolume = 0,
+		musicVolume = 0,
+		lastMusicVolume = 0;
 
 	float ratioMusicToChunk = 0.2;
 
@@ -99,6 +99,9 @@ struct volumeControl
 	void saveMasterVolume();
 
 	void toggleMute();
+
+	volumeControl() = default;
+	~volumeControl() = default;
 };
 
 #endif //! SOUND_HPP
