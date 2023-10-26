@@ -122,10 +122,14 @@ bool EventHandler::Handle_TimerStop()
 
 //* non-static(public)
 
+EventHandler::EventHandler()
+	: currentGame(nullptr)
+{
+}
+
 EventHandler::EventHandler(Game *current_game)
 	: currentGame(current_game)
 {
-	SDL_RegisterEvents(2);
 }
 
 EventHandler::~EventHandler()
