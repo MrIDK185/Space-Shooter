@@ -178,6 +178,11 @@ void Game::SetupGame()
 	std::cout << "Importing settings...\n";
 	ImportSettings();
 
+	SDL_DisplayMode display_mode;
+	SDL_GetCurrentDisplayMode(0, &display_mode);
+	screenWidth = display_mode.w;
+	screenHeight = display_mode.h;
+
 	gameEvents = EventHandler(this);
 	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
 
