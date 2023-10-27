@@ -322,12 +322,6 @@ void Game::GamePaused()
 
 void Game::GameStarted()
 {
-	if (startSoundPlaying && !Mix_Playing(chunkMap.at("startSound")->GetChannel()))
-	{
-		musicMap.at("backgroundMusic")->PlayMusic();
-		startSoundPlaying = false;
-	}
-
 	HandlePlayers();
 	HandleGems();
 	HandleAsteroids();

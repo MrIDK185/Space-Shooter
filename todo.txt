@@ -1,5 +1,5 @@
 Sound handling
- -> check if still playing
+ -> callback to stop function when finished playing
 
 Game over screen
  -> Score handling

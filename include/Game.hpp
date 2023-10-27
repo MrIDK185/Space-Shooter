@@ -34,7 +34,8 @@ struct Game
 
 	unsigned int
 		screenWidth = 1920,
-		screenHeight = 1080;
+		screenHeight = 1080,
+		Score = 0;
 
 	Configuration Config;
 	EventHandler gameEvents;
@@ -47,11 +48,7 @@ struct Game
 
 	gameState currentGameState = TITLE_SCREEN;
 
-	bool
-		Running = true,
-		startSoundPlaying = false; // Probably going to be removed
-
-	unsigned int Score = 0;
+	bool Running = true;
 
 	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSpriteMap;
 	std::unordered_map<std::string, std::shared_ptr<Player>> playerMap;

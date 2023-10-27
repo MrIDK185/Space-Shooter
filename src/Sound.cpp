@@ -206,7 +206,7 @@ void soundMusic::Play()
 		return;
 	}
 
-	if (Mix_PlayMusic(Music, 0) == 0)
+	if (Mix_PlayMusic(Music, -1) == 0)
 	{
 		currentSoundState = PLAYING;
 	}

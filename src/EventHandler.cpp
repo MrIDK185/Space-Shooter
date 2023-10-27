@@ -48,6 +48,9 @@ bool EventHandler::Handle_Return()
 
 	currentGame->startTimer.Start();
 
+	currentGame->musicMap.at("menuMusic")->Stop();
+	currentGame->chunkMap.at("startSound")->Play();
+
 	return true;
 }
 
@@ -113,9 +116,8 @@ bool EventHandler::Handle_TimerStop()
 		gem->UpdateTicks(currentGame->currentTicks);
 	}
 
-	Mix_HaltMusic();
-	currentGame->chunkMap.at("startSound")->PlayChunk();
-	currentGame->startSoundPlaying = true;
+	currentGame->chunkMap.at("startSound")->Stop();
+	currentGame->musicMap.at("backgroundMusic")->Play();
 
 	return true;
 }
