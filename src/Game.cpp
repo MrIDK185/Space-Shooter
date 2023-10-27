@@ -16,11 +16,6 @@
 
 int Game::runMainLoop()
 {
-	if (InitializeSystems() < 0)
-	{
-		return 1;
-	}
-
 	SetupGame();
 
 	std::cout << "------- Startup successful --------\n\n";
@@ -59,27 +54,12 @@ int Game::runMainLoop()
 		}
 	}
 
-	Quit();
+	Cleanup();
 	return 0;
 }
 
-//* Error-handling
-void Game::ShowErrorMessage()
-{
-	const char *error_msg = SDL_GetError();
-	int displayed = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Initialization error", error_msg, nullptr);
-	if (displayed < 0)
-	{
-		std::cout << "Initialization error: " << error_msg << "\n";
-		std::cout << "MessageBox could not be displayed: " << SDL_GetError() << "\n";
-	}
-	error_msg = nullptr;
-
-	return;
-}
-
 //* Cleanup
-void Game::Clean()
+void Game::Cleanup()
 {
 	std::cout << "Clearing musicMap...\n";
 	musicMap.clear();
@@ -107,70 +87,6 @@ void Game::Clean()
 	Keyboard = nullptr;
 
 	return;
-}
-
-void Game::Quit()
-{
-	std::cout << "\n------------- Cleanup -------------\n\n";
-	Clean();
-
-	std::cout << "Closing audio device...\n";
-	Mix_CloseAudio();
-	std::cout << "Quitting Mixer...\n";
-	Mix_Quit();
-	std::cout << "Quitting TTF...\n";
-	TTF_Quit();
-	std::cout << "Quitting IMG...\n";
-	IMG_Quit();
-	std::cout << "Quitting SDL...\n\n";
-	SDL_Quit();
-	std::cout << "-------- Cleanup successful --------\n";
-
-	return;
-}
-
-//* Initialization
-int Game::InitializeSystems()
-{
-	std::cout << "------------- Startup -------------\n\n";
-
-	std::cout << "Initializing SDL...\n";
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0)
-	{
-		ShowErrorMessage();
-		Quit();
-		return -1;
-	}
-	std::cout << "Initializing IMG...\n";
-	if (IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) != (IMG_INIT_JPG | IMG_INIT_PNG))
-	{
-		ShowErrorMessage();
-		Quit();
-		return -1;
-	}
-	std::cout << "Initializing TTF...\n";
-	if (TTF_Init() < 0)
-	{
-		ShowErrorMessage();
-		Quit();
-		return -1;
-	}
-	std::cout << "Initializing Mixer...\n";
-	if (Mix_Init(MIX_INIT_FLAC | MIX_INIT_MP3) != (MIX_INIT_FLAC | MIX_INIT_MP3))
-	{
-		ShowErrorMessage();
-		Quit();
-		return -1;
-	}
-	std::cout << "Opening audio device...\n\n";
-	if (Mix_OpenAudio(48000, AUDIO_F32SYS, 2, 4096) < 0)
-	{
-		ShowErrorMessage();
-		Quit();
-		return -1;
-	}
-
-	return 0;
 }
 
 void Game::SetupGame()

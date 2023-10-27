@@ -65,15 +65,10 @@ struct Game
 	//* Main loop
 	int runMainLoop();
 
-	//* Error-handling
-	void ShowErrorMessage();
-
 	//* Cleanup
-	void Clean();
-	void Quit();
+	void Cleanup();
 
 	//* Initialization
-	int InitializeSystems();
 	void SetupGame();
 	void ImportSettings();
 	void CreateObjects();
