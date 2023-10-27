@@ -376,6 +376,7 @@ void Game::HandleGems()
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{
 			Score -= 1;
+			chunkMap.at("gemMissed")->Stop();
 			chunkMap.at("gemMissed")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
@@ -412,6 +413,7 @@ void Game::CheckCollisions()
 			}
 
 			Score += 1;
+			chunkMap.at("gemCollected")->Stop();
 			chunkMap.at("gemCollected")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
