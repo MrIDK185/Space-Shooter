@@ -1,0 +1,19 @@
+Sound handling
+ -> check if still playing
+
+Game over screen
+ -> Score handling
+
+Pause Screen
+ -> Dim brightness (filter)
+ -> pause button
+
+Asteroid functionality
+ -> movement
+ -> breaking
+ -> collision, damage
+
+Sprite storing
+ -> different categories
+ -> right data structures
+ -> Creation, rendering

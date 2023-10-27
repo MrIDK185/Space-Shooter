@@ -6,6 +6,13 @@
 typedef struct Mix_Chunk Mix_Chunk;
 typedef struct _Mix_Music Mix_Music;
 
+typedef enum
+{
+	PLAYING,
+	PAUSED,
+	STOPPED
+} soundState;
+
 /*------------ soundChunk ------------*/
 
 class soundChunk
@@ -18,6 +25,7 @@ private:
 	Mix_Chunk *Chunk = nullptr;
 	int Channel = -1;
 	int Volume;
+	soundState currentSoundState = STOPPED;
 
 	void LoadChunk();
 
@@ -44,7 +52,15 @@ public:
 
 	void SetVolume(int new_volume);
 
-	void PlayChunk();
+	soundState GetCurrentSoundState();
+
+	void Play();
+
+	void Pause();
+
+	void Resume();
+
+	void Stop();
 };
 
 /*------------ soundMusic ------------*/
@@ -57,6 +73,7 @@ private:
 	std::string Path;
 
 	Mix_Music *Music = nullptr;
+	soundState currentSoundState = STOPPED;
 
 	void LoadMusic();
 
@@ -71,7 +88,15 @@ public:
 
 	void SetMusic(Mix_Music *music);
 
-	void PlayMusic();
+	soundState GetCurrentSoundState();
+
+	void Play();
+
+	void Pause();
+
+	void Resume();
+
+	void Stop();
 };
 
 /*------------ volumeControl ------------*/
@@ -80,7 +105,7 @@ typedef enum
 {
 	UNMUTED,
 	MUTED
-} soundState;
+} volumeState;
 
 struct volumeControl
 {
@@ -92,7 +117,7 @@ struct volumeControl
 
 	float ratioMusicToChunk = 0.2;
 
-	soundState currentSoundState = UNMUTED;
+	volumeState currentVolumeState = UNMUTED;
 
 	void changeMasterVolume(int volume);
 

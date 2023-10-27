@@ -305,7 +305,7 @@ void Game::CreateObjects()
 	chunkMap["gemMissed"] = std::make_shared<soundChunk>("assets/sounds/gem_missed.wav");
 
 	musicMap["menuMusic"] = std::make_shared<soundMusic>("assets/sounds/menu_music.mp3");
-	musicMap.at("menuMusic")->PlayMusic();
+	musicMap.at("menuMusic")->Play();
 
 	musicMap["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
 
@@ -382,7 +382,7 @@ void Game::HandleGems()
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{
 			Score -= 1;
-			chunkMap.at("gemMissed")->PlayChunk();
+			chunkMap.at("gemMissed")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
 			textMap.at("scoreText")->SetMessage(current_score);
@@ -418,7 +418,7 @@ void Game::CheckCollisions()
 			}
 
 			Score += 1;
-			chunkMap.at("gemCollected")->PlayChunk();
+			chunkMap.at("gemCollected")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
 			textMap.at("scoreText")->SetMessage(current_score);

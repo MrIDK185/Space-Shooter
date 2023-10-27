@@ -91,9 +91,64 @@ void soundChunk::SetVolume(int new_volume)
 	return;
 }
 
-void soundChunk::PlayChunk()
+soundState soundChunk::GetCurrentSoundState()
 {
+	return currentSoundState;
+}
+
+void soundChunk::Play()
+{
+	if (currentSoundState == PLAYING || currentSoundState == PAUSED)
+	{
+		return;
+	}
+
 	Channel = Mix_PlayChannel(-1, Chunk, 0);
+	if (Channel >= 0)
+	{
+		currentSoundState = PLAYING;
+	}
+
+	return;
+}
+
+void soundChunk::Pause()
+{
+	if (Channel < 0 || currentSoundState == PAUSED | currentSoundState == STOPPED)
+	{
+		return;
+	}
+
+	Mix_Pause(Channel);
+	currentSoundState = PAUSED;
+
+	return;
+}
+
+void soundChunk::Resume()
+{
+	if (Channel < 0 || currentSoundState == PLAYING | currentSoundState == STOPPED)
+	{
+		return;
+	}
+
+	Mix_Resume(Channel);
+	currentSoundState = PLAYING;
+
+	return;
+}
+
+void soundChunk::Stop()
+{
+	if (Channel < 0 || currentSoundState == STOPPED)
+	{
+		return;
+	}
+
+	if (Mix_HaltChannel(Channel) == 0)
+	{
+		currentSoundState = STOPPED;
+	}
 
 	return;
 }
@@ -139,9 +194,61 @@ void soundMusic::SetMusic(Mix_Music *music)
 	return;
 }
 
-void soundMusic::PlayMusic()
+soundState soundMusic::GetCurrentSoundState()
 {
-	Mix_PlayMusic(Music, -1);
+	return currentSoundState;
+}
+
+void soundMusic::Play()
+{
+	if (currentSoundState == PLAYING || currentSoundState == PAUSED)
+	{
+		return;
+	}
+
+	if (Mix_PlayMusic(Music, 0) == 0)
+	{
+		currentSoundState = PLAYING;
+	}
+
+	return;
+}
+
+void soundMusic::Pause()
+{
+	if (currentSoundState == PAUSED | currentSoundState == STOPPED)
+	{
+		return;
+	}
+
+	Mix_PauseMusic();
+	currentSoundState = PAUSED;
+
+	return;
+}
+
+void soundMusic::Resume()
+{
+	if (currentSoundState == PLAYING | currentSoundState == STOPPED)
+	{
+		return;
+	}
+
+	Mix_ResumeMusic();
+	currentSoundState = PLAYING;
+
+	return;
+}
+
+void soundMusic::Stop()
+{
+	if (currentSoundState == STOPPED)
+	{
+		return;
+	}
+
+	Mix_HaltMusic();
+	currentSoundState = STOPPED;
 
 	return;
 }
@@ -150,7 +257,7 @@ void soundMusic::PlayMusic()
 
 void volumeControl::changeMasterVolume(int volume)
 {
-	if (currentSoundState == MUTED)
+	if (currentVolumeState == MUTED)
 	{
 		return;
 	}
@@ -182,16 +289,16 @@ void volumeControl::saveMasterVolume()
 
 void volumeControl::toggleMute()
 {
-	if (currentSoundState == UNMUTED)
+	if (currentVolumeState == UNMUTED)
 	{
 		saveMasterVolume();
 		changeMasterVolume(0);
-		currentSoundState = MUTED;
+		currentVolumeState = MUTED;
 
 		return;
 	}
 
-	currentSoundState = UNMUTED;
+	currentVolumeState = UNMUTED;
 	changeMasterVolume(lastMasterVolume);
 
 	return;
