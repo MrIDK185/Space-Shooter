@@ -13,7 +13,7 @@ public:
 
 	/*------------ Window ------------*/
 
-	int
+	unsigned int
 		START_WINDOW_WIDTH = 1440,
 		START_WINDOW_HEIGHT = 810;
 
@@ -22,7 +22,7 @@ public:
 	std::string FONT_PATH = "/usr/share/fonts/msttcore/comicbd.ttf";
 	std::wstring START_TEXT = L"Starten: \"Enter\"\nSchließen: \"Q\"";
 
-	int
+	unsigned int
 		FONT_COLOR_HEX = 0xFFFFFF,
 		START_TEXT_SIZE = 100,
 		SCORE_TEXT_SIZE = 70;
@@ -38,7 +38,7 @@ public:
 		PLAYER_FRICTION = 200,
 		PLAYER_RADIUS = 30;
 
-	int
+	unsigned int
 		PLAYER_FRAME_WIDTH = 68,
 		PLAYER_FRAME_HEIGHT = 80,
 		PLAYER_IMG_FRAMES = 6,
@@ -53,7 +53,7 @@ public:
 		GEM_SCALE = 1,
 		GEM_RADIUS = 30;
 
-	int
+	unsigned int
 		GEM_FRAME_WIDTH = 52,
 		GEM_FRAME_HEIGHT = 64,
 		GEM_IMG_FRAMES = 16,
@@ -66,7 +66,7 @@ public:
 
 	/*------------ Time ------------*/
 
-	int
+	unsigned int
 		COUNTDOWN_DURATION_MILLISECONDS = 3000,
 		COUNTDOWN_INTERVAL_MILLISECONDS = 1000;
 

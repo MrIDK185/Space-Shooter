@@ -217,33 +217,33 @@ std::pair<std::string, std::string> SplitKeyValue(std::string_view string)
 
 void Game::ImportSettings()
 {
-	std::unordered_map<std::string, int *> intMap;
-	intMap["Window Width"] = &Config.START_WINDOW_WIDTH;
-	intMap["Window Height"] = &Config.START_WINDOW_HEIGHT;
+	std::unordered_map<std::string, unsigned int *> uintMap;
+	uintMap["Window Width"] = &Config.START_WINDOW_WIDTH;
+	uintMap["Window Height"] = &Config.START_WINDOW_HEIGHT;
 
-	intMap["Countdown Duration Milliseconds"] = &Config.COUNTDOWN_DURATION_MILLISECONDS;
-	intMap["Countdown Interval Milliseconds"] = &Config.COUNTDOWN_INTERVAL_MILLISECONDS;
+	uintMap["Countdown Duration Milliseconds"] = &Config.COUNTDOWN_DURATION_MILLISECONDS;
+	uintMap["Countdown Interval Milliseconds"] = &Config.COUNTDOWN_INTERVAL_MILLISECONDS;
 
-	intMap["Start Text Size"] = &Config.START_TEXT_SIZE;
-	intMap["Score Text Size"] = &Config.SCORE_TEXT_SIZE;
+	uintMap["Start Text Size"] = &Config.START_TEXT_SIZE;
+	uintMap["Score Text Size"] = &Config.SCORE_TEXT_SIZE;
 
-	intMap["Player Frame Width"] = &Config.PLAYER_FRAME_WIDTH;
-	intMap["Player Frame Height"] = &Config.PLAYER_FRAME_HEIGHT;
-	intMap["Player IMG Frames"] = &Config.PLAYER_IMG_FRAMES;
-	intMap["Player IMG Types"] = &Config.PLAYER_IMG_TYPES;
-	intMap["Player Animations Per Second"] = &Config.PLAYER_ANIMATIONS_PER_SECOND;
-	intMap["Player Effect Duration Seconds"] = &Config.PLAYER_EFFECT_DURATION_SECONDS;
-	intMap["Player Rotation Speed"] = &Config.PLAYER_ROTATION_SPEED;
+	uintMap["Player Frame Width"] = &Config.PLAYER_FRAME_WIDTH;
+	uintMap["Player Frame Height"] = &Config.PLAYER_FRAME_HEIGHT;
+	uintMap["Player IMG Frames"] = &Config.PLAYER_IMG_FRAMES;
+	uintMap["Player IMG Types"] = &Config.PLAYER_IMG_TYPES;
+	uintMap["Player Animations Per Second"] = &Config.PLAYER_ANIMATIONS_PER_SECOND;
+	uintMap["Player Effect Duration Seconds"] = &Config.PLAYER_EFFECT_DURATION_SECONDS;
+	uintMap["Player Rotation Speed"] = &Config.PLAYER_ROTATION_SPEED;
 
-	intMap["Gem Frame Width"] = &Config.GEM_FRAME_WIDTH;
-	intMap["Gem Frame Height"] = &Config.GEM_FRAME_HEIGHT;
-	intMap["Gem IMG Frames"] = &Config.GEM_IMG_FRAMES;
-	intMap["Gem IMG Types"] = &Config.GEM_IMG_TYPES;
-	intMap["Gem Blink Factor"] = &Config.GEM_BLINK_FACTOR;
-	intMap["Gem Blink Duration"] = &Config.GEM_BLINK_DURATION;
-	intMap["Gem Lifetime Duration"] = &Config.GEM_LIFETIME_DURATION;
-	intMap["Gem Maximum Brightness"] = &Config.GEM_MAXIMUM_BRIGHTNESS;
-	intMap["Gem Minimum Brightness"] = &Config.GEM_MINIMUM_BRIGHTNESS;
+	uintMap["Gem Frame Width"] = &Config.GEM_FRAME_WIDTH;
+	uintMap["Gem Frame Height"] = &Config.GEM_FRAME_HEIGHT;
+	uintMap["Gem IMG Frames"] = &Config.GEM_IMG_FRAMES;
+	uintMap["Gem IMG Types"] = &Config.GEM_IMG_TYPES;
+	uintMap["Gem Blink Factor"] = &Config.GEM_BLINK_FACTOR;
+	uintMap["Gem Blink Duration"] = &Config.GEM_BLINK_DURATION;
+	uintMap["Gem Lifetime Duration"] = &Config.GEM_LIFETIME_DURATION;
+	uintMap["Gem Maximum Brightness"] = &Config.GEM_MAXIMUM_BRIGHTNESS;
+	uintMap["Gem Minimum Brightness"] = &Config.GEM_MINIMUM_BRIGHTNESS;
 
 	std::unordered_map<std::string, float *> floatMap;
 	floatMap["Player Max Velocity Boost"] = &Config.PLAYER_MAX_VELOCITY_BOOST;
@@ -273,7 +273,7 @@ void Game::ImportSettings()
 		std::cout << "Closing settings file...\n\n";
 		file.close();
 
-		intMap.clear();
+		uintMap.clear();
 		floatMap.clear();
 		stringMap.clear();
 		wstringMap.clear();
@@ -300,11 +300,16 @@ void Game::ImportSettings()
 				continue;
 			}
 
-			auto itInt = intMap.find(key);
-			if (itInt != intMap.end())
+			auto itUint = uintMap.find(key);
+			if (itUint != uintMap.end())
 			{
+				if (value.find('-') != std::string::npos)
+				{
+					continue;
+				}
+
 				std::cout << "Initializing " << key << " ... \n";
-				*(itInt->second) = std::stoi(value);
+				*(itUint->second) = static_cast<unsigned int>(std::stoul(value));
 				continue;
 			}
 
@@ -346,7 +351,7 @@ void Game::ImportSettings()
 	std::cout << "Closing settings file...\n\n";
 	file.close();
 
-	intMap.clear();
+	uintMap.clear();
 	floatMap.clear();
 	stringMap.clear();
 	wstringMap.clear();
