@@ -99,7 +99,7 @@ int main()
 	}
 
 	Game game;
-	int retval = game.runMainLoop();
+	int retval = game.Run();
 	QuitSubsystems();
 
 	return retval;

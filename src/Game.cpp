@@ -14,7 +14,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
-int Game::runMainLoop()
+int Game::Run()
 {
 	SetupGame();
 
@@ -22,18 +22,13 @@ int Game::runMainLoop()
 
 	while (Running)
 	{
-		gameEvents.HandleEvents();
-
 		gameClock.Tick();
 		currentTicks = SDL_GetTicks64();
 		Keyboard = SDL_GetKeyboardState(nullptr);
 
-		int current_window_width, current_window_height;
-		SDL_GetWindowSizeInPixels(Window, &current_window_width, &current_window_height);
-		float window_width_scale = static_cast<float>(current_window_width) / static_cast<float>(screenWidth);
-		float window_height_scale = static_cast<float>(current_window_height) / static_cast<float>(screenHeight);
+		gameEvents.HandleEvents();
 
-		SDL_RenderSetScale(Renderer, window_width_scale, window_height_scale);
+		UpdateRenderScale();
 
 		switch (currentGameState)
 		{
@@ -337,15 +332,15 @@ void Game::GameStarted()
 	HandleGems();
 	HandleAsteroids();
 	CheckCollisions();
-	animateUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
+	AnimateUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
 
 	SDL_RenderClear(Renderer);
 
-	renderUnorderedMap<std::string, std::shared_ptr<IMGSprite>>(&IMGSpriteMap);
-	renderVector<std::shared_ptr<Gem>>(&gemGroup);
-	renderUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
-	renderVector<std::shared_ptr<Asteroid>>(&asteroidGroup);
-	renderUnorderedMap<std::string, std::shared_ptr<Text>>(&textMap);
+	RenderUnorderedMap<std::string, std::shared_ptr<IMGSprite>>(&IMGSpriteMap);
+	RenderVector<std::shared_ptr<Gem>>(&gemGroup);
+	RenderUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
+	RenderVector<std::shared_ptr<Asteroid>>(&asteroidGroup);
+	RenderUnorderedMap<std::string, std::shared_ptr<Text>>(&textMap);
 
 	SDL_RenderPresent(Renderer);
 
@@ -462,29 +457,47 @@ void Game::CheckCollisions()
 }
 
 //* Rendering
+void Game::UpdateRenderScale()
+{
+	int current_window_width, current_window_height;
+	SDL_GetWindowSizeInPixels(Window, &current_window_width, &current_window_height);
+	float window_width_scale = static_cast<float>(current_window_width) / static_cast<float>(screenWidth);
+	float window_height_scale = static_cast<float>(current_window_height) / static_cast<float>(screenHeight);
+
+	SDL_RenderSetScale(Renderer, window_width_scale, window_height_scale);
+
+	return;
+}
+
 template <typename keyType, typename valueType>
-void Game::renderUnorderedMap(std::unordered_map<keyType, valueType> *map)
+void Game::RenderUnorderedMap(std::unordered_map<keyType, valueType> *map)
 {
 	for (const auto &[name, element] : *map)
 	{
 		element->Render();
 	}
+
+	return;
 }
 
 template <typename elementType>
-void Game::renderVector(std::vector<elementType> *vector)
+void Game::RenderVector(std::vector<elementType> *vector)
 {
 	for (const auto &element : *vector)
 	{
 		element->Render();
 	}
+
+	return;
 }
 
 template <typename keyType, typename valueType>
-void Game::animateUnorderedMap(std::unordered_map<keyType, valueType> *map)
+void Game::AnimateUnorderedMap(std::unordered_map<keyType, valueType> *map)
 {
 	for (const auto &[name, element] : *map)
 	{
 		element->Animate(currentTicks);
 	}
+
+	return;
 }

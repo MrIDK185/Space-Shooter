@@ -32,7 +32,7 @@ struct Game
 	SDL_Renderer *Renderer = nullptr;
 	const Uint8 *Keyboard = nullptr;
 
-	int
+	unsigned int
 		screenWidth = 1920,
 		screenHeight = 1080;
 
@@ -51,7 +51,7 @@ struct Game
 		Running = true,
 		startSoundPlaying = false; // Probably going to be removed
 
-	int Score = 0;
+	unsigned int Score = 0;
 
 	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSpriteMap;
 	std::unordered_map<std::string, std::shared_ptr<Player>> playerMap;
@@ -63,7 +63,7 @@ struct Game
 	std::vector<std::shared_ptr<Asteroid>> asteroidGroup;
 
 	//* Main loop
-	int runMainLoop();
+	int Run();
 
 	//* Cleanup
 	void Cleanup();
@@ -85,12 +85,13 @@ struct Game
 	void CheckCollisions();
 
 	//* Rendering
+	void UpdateRenderScale();
 	template <typename keyType, typename valueType>
-	void renderUnorderedMap(std::unordered_map<keyType, valueType> *map);
+	void RenderUnorderedMap(std::unordered_map<keyType, valueType> *map);
 	template <typename elementType>
-	void renderVector(std::vector<elementType> *vector);
+	void RenderVector(std::vector<elementType> *vector);
 	template <typename keyType, typename valueType>
-	void animateUnorderedMap(std::unordered_map<keyType, valueType> *map);
+	void AnimateUnorderedMap(std::unordered_map<keyType, valueType> *map);
 
 	//* Constructor/Destructor
 	Game() = default;
