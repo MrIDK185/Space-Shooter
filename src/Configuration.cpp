@@ -151,7 +151,7 @@ void Configuration::ImportSettings()
 
 	if (!file)
 	{
-		std::cout << "Could not find setting file\nClosing settings file...\n\n";
+		std::cerr << "Could not find setting file\nClosing settings file...\n\n";
 		file.close();
 
 		return;
