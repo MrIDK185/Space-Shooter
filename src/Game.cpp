@@ -110,7 +110,7 @@ void Game::SetupGame()
 	return;
 }
 
-std::pair<std::string, std::string> SplitKeyValue(std::string_view string)
+std::pair<std::string, std::string> Game::SplitKeyValue(const std::string &string)
 {
 	std::string key;
 	std::string value;
@@ -124,6 +124,59 @@ std::pair<std::string, std::string> SplitKeyValue(std::string_view string)
 	boost::replace_all(value, "\\n", "\n");
 
 	return std::pair<std::string, std::string>(key, value);
+}
+
+void Game::ApplySetting(std::unordered_map<std::string, unsigned int *> *uint_map,
+						std::unordered_map<std::string, float *> *float_map,
+						std::unordered_map<std::string, std::string *> *string_map,
+						std::unordered_map<std::string, std::wstring *> *wstring_map,
+						const std::string &key, const std::string &value)
+{
+	if (key == "Font Color")
+	{
+		std::cout << "Initializing " << key << "...\n";
+		int start_pos = (value[0] == '#' ? 1 : 0);
+		Config.FONT_COLOR_HEX = std::stoi(value.substr(start_pos), nullptr, 16);
+		return;
+	}
+
+	auto itUint = uint_map->find(key);
+	if (itUint != uint_map->end())
+	{
+		if (value.find('-') != std::string::npos)
+		{
+			return;
+		}
+
+		std::cout << "Initializing " << key << " ... \n";
+		*(itUint->second) = static_cast<unsigned int>(std::stoul(value));
+		return;
+	}
+
+	auto itFloat = float_map->find(key);
+	if (itFloat != float_map->end())
+	{
+		std::cout << "Initializing " << key << " ... \n";
+		*(itFloat->second) = std::stof(value);
+		return;
+	}
+
+	auto itString = string_map->find(key);
+	if (itString != string_map->end())
+	{
+		std::cout << "Initializing " << key << "...\n";
+		*(itString->second) = value;
+		return;
+	}
+
+	auto itWString = wstring_map->find(key);
+	if (itWString != wstring_map->end())
+	{
+		std::cout << "Initializing " << key << "...\n";
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		*(itWString->second) = converter.from_bytes(value);
+		return;
+	}
 }
 
 void Game::ImportSettings()
@@ -177,7 +230,6 @@ void Game::ImportSettings()
 	std::cout << "Opening settings file...\n";
 	std::ifstream file("config/settings.txt", std::ios_base::in);
 	std::string line;
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
 	if (!file)
 	{
@@ -203,58 +255,17 @@ void Game::ImportSettings()
 
 		try
 		{
-			if (key == "Font Color")
-			{
-				std::cout << "Initializing " << key << "...\n";
-				int start_pos = (value[0] == '#' ? 1 : 0);
-				Config.FONT_COLOR_HEX = std::stoi(value.substr(start_pos), nullptr, 16);
-				continue;
-			}
-
-			auto itUint = uintMap.find(key);
-			if (itUint != uintMap.end())
-			{
-				if (value.find('-') != std::string::npos)
-				{
-					continue;
-				}
-
-				std::cout << "Initializing " << key << " ... \n";
-				*(itUint->second) = static_cast<unsigned int>(std::stoul(value));
-				continue;
-			}
-
-			auto itFloat = floatMap.find(key);
-			if (itFloat != floatMap.end())
-			{
-				std::cout << "Initializing " << key << " ... \n";
-				*(itFloat->second) = std::stof(value);
-				continue;
-			}
-
-			auto itString = stringMap.find(key);
-			if (itString != stringMap.end())
-			{
-				std::cout << "Initializing " << key << "...\n";
-				*(itString->second) = value;
-				continue;
-			}
-
-			auto itWString = wstringMap.find(key);
-			if (itWString != wstringMap.end())
-			{
-				std::cout << "Initializing " << key << "...\n";
-				*(itWString->second) = converter.from_bytes(value);
-				continue;
-			}
+			ApplySetting(&uintMap, &floatMap, &stringMap, &wstringMap, key, value);
 		}
 
-		catch (const std::invalid_argument &)
+		catch (const std::invalid_argument &error)
 		{
+			std::cerr << "An error occurred while trying to initialize a setting: " << error.what() << "\n";
 			continue;
 		}
-		catch (const std::out_of_range &)
+		catch (const std::out_of_range &error)
 		{
+			std::cerr << "An error occurred while trying to initialize a setting: " << error.what() << "\n";
 			continue;
 		}
 	}
