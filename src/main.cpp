@@ -23,8 +23,8 @@ void ShowSDLErrorMessage()
 	int displayed = SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Initialization error", error_msg, nullptr);
 	if (displayed < 0)
 	{
-		std::cout << "Initialization error: " << error_msg << "\n";
-		std::cout << "MessageBox could not be displayed: " << SDL_GetError() << "\n";
+		std::cerr << "Initialization error: " << error_msg << "\n";
+		std::cerr << "MessageBox could not be displayed: " << SDL_GetError() << "\n";
 	}
 	error_msg = nullptr;
 
