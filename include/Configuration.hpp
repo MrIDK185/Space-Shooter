@@ -14,6 +14,7 @@ private:
 	/*------------ Variable Mappings ------------*/
 
 	std::unordered_map<std::string, unsigned int *> UIntMap;
+	std::unordered_map<std::string, unsigned int *> colorMap;
 	std::unordered_map<std::string, float *> floatMap;
 	std::unordered_map<std::string, std::string *> stringMap;
 	std::unordered_map<std::string, std::wstring *> wstringMap;

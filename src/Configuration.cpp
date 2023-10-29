@@ -25,24 +25,33 @@ std::pair<std::string, std::string> Configuration::SplitKeyValue(const std::stri
 
 void Configuration::ApplySetting(const std::string &key, const std::string &value)
 {
-	if (key == "Font Color")
-	{
-		std::cout << "Initializing " << key << "...\n";
-		int start_pos = (value[0] == '#' ? 1 : 0);
-		FONT_COLOR_HEX = std::stoi(value.substr(start_pos), nullptr, 16);
-		return;
-	}
-
 	auto itUint = UIntMap.find(key);
 	if (itUint != UIntMap.end())
 	{
+		std::cout << "Initializing " << key << " ... \n";
 		if (value.find('-') != std::string::npos)
 		{
+			throw std::out_of_range("");
 			return;
 		}
 
-		std::cout << "Initializing " << key << " ... \n";
 		*(itUint->second) = static_cast<unsigned int>(std::stoul(value));
+		return;
+	}
+
+	auto itColor = colorMap.find(key);
+	if (itColor != colorMap.end())
+	{
+		std::cout << "Initializing " << key << " ... \n";
+		if (value.find('-') != std::string::npos)
+		{
+			throw std::out_of_range("");
+			return;
+		}
+
+		std::cout << "Initializing " << key << "...\n";
+		int start_pos = (value[0] == '#' ? 1 : 0);
+		*(itColor->second) = std::stoul(value.substr(start_pos), nullptr, 16);
 		return;
 	}
 
@@ -103,6 +112,8 @@ Configuration::Configuration()
 	UIntMap["Gem Maximum Brightness"] = &GEM_MAXIMUM_BRIGHTNESS;
 	UIntMap["Gem Minimum Brightness"] = &GEM_MINIMUM_BRIGHTNESS;
 
+	colorMap["Font Color"] = &FONT_COLOR_HEX;
+
 	floatMap["Player Max Velocity Boost"] = &PLAYER_MAX_VELOCITY_BOOST;
 	floatMap["Player Acceleration Boost"] = &PLAYER_ACCELEARION_BOOST;
 	floatMap["Player Acceleration"] = &PLAYER_ACCELEARION;
@@ -124,6 +135,7 @@ Configuration::Configuration()
 Configuration::~Configuration()
 {
 	UIntMap.clear();
+	colorMap.clear();
 	floatMap.clear();
 	stringMap.clear();
 	wstringMap.clear();
@@ -161,12 +173,12 @@ void Configuration::ImportSettings()
 
 		catch (const std::invalid_argument &error)
 		{
-			std::cerr << "An error occurred while trying to initialize a setting: " << error.what() << "\n";
+			std::cerr << "Error: Invalid argument at: " << error.what() << "\n";
 			continue;
 		}
 		catch (const std::out_of_range &error)
 		{
-			std::cerr << "An error occurred while trying to initialize a setting: " << error.what() << "\n";
+			std::cerr << "Error: argument out of range at: " << error.what() << "\n";
 			continue;
 		}
 	}
