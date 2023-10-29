@@ -2,12 +2,27 @@
 #define GLOBALS_HPP
 
 #include <string>
+#include <unordered_map>
 
 typedef unsigned int uint32_t;
 typedef uint32_t Uint32;
 
 struct Configuration
 {
+private:
+	//* non-static
+	/*------------ Variable Mappings ------------*/
+
+	std::unordered_map<std::string, unsigned int *> UIntMap;
+	std::unordered_map<std::string, float *> floatMap;
+	std::unordered_map<std::string, std::string *> stringMap;
+	std::unordered_map<std::string, std::wstring *> wstringMap;
+
+	/*------------ Settings ------------*/
+
+	std::pair<std::string, std::string> SplitKeyValue(const std::string &string);
+	void ApplySetting(const std::string &key, const std::string &value);
+
 public:
 	//* non-static
 
@@ -70,9 +85,13 @@ public:
 		COUNTDOWN_DURATION_MILLISECONDS = 3000,
 		COUNTDOWN_INTERVAL_MILLISECONDS = 1000;
 
+	/*------------ Settings ------------*/
+
+	void ImportSettings();
+
 	/*--- Constructor/Destructor ---*/
-	Configuration() = default;
-	~Configuration() = default;
+	Configuration();
+	~Configuration();
 };
 
 #endif //! GLOBALS_HPP

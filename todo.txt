@@ -17,3 +17,6 @@ Sprite storing
  -> different categories
  -> right data structures
  -> Creation, rendering
+
+Expanding Config class
+ -> Move ImportSettings, etc into Config

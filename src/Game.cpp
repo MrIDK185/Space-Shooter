@@ -6,9 +6,6 @@
 #include "Sound.hpp"
 
 #include <iostream>
-#include <fstream>
-#include <codecvt>
-#include <boost/algorithm/string.hpp>
 
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -87,15 +84,15 @@ void Game::Cleanup()
 void Game::SetupGame()
 {
 	std::cout << "Importing settings...\n";
-	ImportSettings();
+	Config.ImportSettings();
+
+	gameEvents = EventHandler(this);
+	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
 
 	SDL_DisplayMode display_mode;
 	SDL_GetCurrentDisplayMode(0, &display_mode);
 	screenWidth = display_mode.w;
 	screenHeight = display_mode.h;
-
-	gameEvents = EventHandler(this);
-	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
 
 	volumeController.changeMasterVolume(MIX_MAX_VOLUME);
 
@@ -106,177 +103,6 @@ void Game::SetupGame()
 
 	std::cout << "Creating objects...\n";
 	CreateObjects();
-
-	return;
-}
-
-std::pair<std::string, std::string> Game::SplitKeyValue(const std::string &string)
-{
-	std::string key;
-	std::string value;
-	size_t index = string.find("=");
-
-	key = string.substr(0, index);
-	boost::algorithm::trim(key);
-
-	value = string.substr(index + 1, string.length() - (index + 1));
-	boost::algorithm::trim(value);
-	boost::replace_all(value, "\\n", "\n");
-
-	return std::pair<std::string, std::string>(key, value);
-}
-
-void Game::ApplySetting(std::unordered_map<std::string, unsigned int *> *uint_map,
-						std::unordered_map<std::string, float *> *float_map,
-						std::unordered_map<std::string, std::string *> *string_map,
-						std::unordered_map<std::string, std::wstring *> *wstring_map,
-						const std::string &key, const std::string &value)
-{
-	if (key == "Font Color")
-	{
-		std::cout << "Initializing " << key << "...\n";
-		int start_pos = (value[0] == '#' ? 1 : 0);
-		Config.FONT_COLOR_HEX = std::stoi(value.substr(start_pos), nullptr, 16);
-		return;
-	}
-
-	auto itUint = uint_map->find(key);
-	if (itUint != uint_map->end())
-	{
-		if (value.find('-') != std::string::npos)
-		{
-			return;
-		}
-
-		std::cout << "Initializing " << key << " ... \n";
-		*(itUint->second) = static_cast<unsigned int>(std::stoul(value));
-		return;
-	}
-
-	auto itFloat = float_map->find(key);
-	if (itFloat != float_map->end())
-	{
-		std::cout << "Initializing " << key << " ... \n";
-		*(itFloat->second) = std::stof(value);
-		return;
-	}
-
-	auto itString = string_map->find(key);
-	if (itString != string_map->end())
-	{
-		std::cout << "Initializing " << key << "...\n";
-		*(itString->second) = value;
-		return;
-	}
-
-	auto itWString = wstring_map->find(key);
-	if (itWString != wstring_map->end())
-	{
-		std::cout << "Initializing " << key << "...\n";
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		*(itWString->second) = converter.from_bytes(value);
-		return;
-	}
-}
-
-void Game::ImportSettings()
-{
-	std::unordered_map<std::string, unsigned int *> uintMap;
-	uintMap["Window Width"] = &Config.START_WINDOW_WIDTH;
-	uintMap["Window Height"] = &Config.START_WINDOW_HEIGHT;
-
-	uintMap["Countdown Duration Milliseconds"] = &Config.COUNTDOWN_DURATION_MILLISECONDS;
-	uintMap["Countdown Interval Milliseconds"] = &Config.COUNTDOWN_INTERVAL_MILLISECONDS;
-
-	uintMap["Start Text Size"] = &Config.START_TEXT_SIZE;
-	uintMap["Score Text Size"] = &Config.SCORE_TEXT_SIZE;
-
-	uintMap["Player Frame Width"] = &Config.PLAYER_FRAME_WIDTH;
-	uintMap["Player Frame Height"] = &Config.PLAYER_FRAME_HEIGHT;
-	uintMap["Player IMG Frames"] = &Config.PLAYER_IMG_FRAMES;
-	uintMap["Player IMG Types"] = &Config.PLAYER_IMG_TYPES;
-	uintMap["Player Animations Per Second"] = &Config.PLAYER_ANIMATIONS_PER_SECOND;
-	uintMap["Player Effect Duration Seconds"] = &Config.PLAYER_EFFECT_DURATION_SECONDS;
-	uintMap["Player Rotation Speed"] = &Config.PLAYER_ROTATION_SPEED;
-
-	uintMap["Gem Frame Width"] = &Config.GEM_FRAME_WIDTH;
-	uintMap["Gem Frame Height"] = &Config.GEM_FRAME_HEIGHT;
-	uintMap["Gem IMG Frames"] = &Config.GEM_IMG_FRAMES;
-	uintMap["Gem IMG Types"] = &Config.GEM_IMG_TYPES;
-	uintMap["Gem Blink Factor"] = &Config.GEM_BLINK_FACTOR;
-	uintMap["Gem Blink Duration"] = &Config.GEM_BLINK_DURATION;
-	uintMap["Gem Lifetime Duration"] = &Config.GEM_LIFETIME_DURATION;
-	uintMap["Gem Maximum Brightness"] = &Config.GEM_MAXIMUM_BRIGHTNESS;
-	uintMap["Gem Minimum Brightness"] = &Config.GEM_MINIMUM_BRIGHTNESS;
-
-	std::unordered_map<std::string, float *> floatMap;
-	floatMap["Player Max Velocity Boost"] = &Config.PLAYER_MAX_VELOCITY_BOOST;
-	floatMap["Player Acceleration Boost"] = &Config.PLAYER_ACCELEARION_BOOST;
-	floatMap["Player Acceleration"] = &Config.PLAYER_ACCELEARION;
-	floatMap["Player Max Velocity"] = &Config.PLAYER_MAX_VELOCITY;
-	floatMap["Player Friction"] = &Config.PLAYER_FRICTION;
-	floatMap["Player Scale"] = &Config.PLAYER_SCALE;
-	floatMap["Player Radius"] = &Config.PLAYER_RADIUS;
-
-	floatMap["Gem Scale"] = &Config.GEM_SCALE;
-	floatMap["Gem Radius"] = &Config.GEM_RADIUS;
-
-	std::unordered_map<std::string, std::string *> stringMap;
-	stringMap["Font Path"] = &Config.FONT_PATH;
-
-	std::unordered_map<std::string, std::wstring *> wstringMap;
-	wstringMap["Start Text"] = &Config.START_TEXT;
-
-	std::cout << "Opening settings file...\n";
-	std::ifstream file("config/settings.txt", std::ios_base::in);
-	std::string line;
-
-	if (!file)
-	{
-		std::cout << "Closing settings file...\n\n";
-		file.close();
-
-		uintMap.clear();
-		floatMap.clear();
-		stringMap.clear();
-		wstringMap.clear();
-
-		return;
-	}
-
-	while (std::getline(file, line))
-	{
-		if (line.empty())
-		{
-			continue;
-		}
-
-		const auto [key, value] = SplitKeyValue(line);
-
-		try
-		{
-			ApplySetting(&uintMap, &floatMap, &stringMap, &wstringMap, key, value);
-		}
-
-		catch (const std::invalid_argument &error)
-		{
-			std::cerr << "An error occurred while trying to initialize a setting: " << error.what() << "\n";
-			continue;
-		}
-		catch (const std::out_of_range &error)
-		{
-			std::cerr << "An error occurred while trying to initialize a setting: " << error.what() << "\n";
-			continue;
-		}
-	}
-
-	std::cout << "Closing settings file...\n\n";
-	file.close();
-
-	uintMap.clear();
-	floatMap.clear();
-	stringMap.clear();
-	wstringMap.clear();
 
 	return;
 }

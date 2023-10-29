@@ -68,13 +68,6 @@ public:
 
 	//* Initialization
 	void SetupGame();
-	void ImportSettings();
-	std::pair<std::string, std::string> SplitKeyValue(const std::string &string);
-	void ApplySetting(std::unordered_map<std::string, unsigned int *> *uint_map,
-					  std::unordered_map<std::string, float *> *float_map,
-					  std::unordered_map<std::string, std::string *> *string_map,
-					  std::unordered_map<std::string, std::wstring *> *wstring_map,
-					  const std::string &key, const std::string &value);
 	void CreateObjects();
 
 	//* Game modes
