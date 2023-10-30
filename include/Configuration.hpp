@@ -4,6 +4,8 @@
 #include <string>
 #include <unordered_map>
 
+#include <SDL2/SDL.h>
+
 typedef unsigned int uint32_t;
 typedef uint32_t Uint32;
 
@@ -14,7 +16,7 @@ private:
 	/*------------ Variable Mappings ------------*/
 
 	std::unordered_map<std::string, unsigned int *> UIntMap;
-	std::unordered_map<std::string, unsigned int *> colorMap;
+	std::unordered_map<std::string, SDL_Color *> colorMap;
 	std::unordered_map<std::string, float *> floatMap;
 	std::unordered_map<std::string, std::string *> stringMap;
 	std::unordered_map<std::string, std::wstring *> wstringMap;
@@ -38,8 +40,9 @@ public:
 	std::string FONT_PATH = "/usr/share/fonts/msttcore/comicbd.ttf";
 	std::wstring START_TEXT = L"Starten: \"Enter\"\nSchließen: \"Q\"";
 
+	SDL_Color FONT_COLOR_HEX = {255, 255, 255, 255};
+
 	unsigned int
-		FONT_COLOR_HEX = 0xFFFFFF,
 		START_TEXT_SIZE = 100,
 		SCORE_TEXT_SIZE = 70,
 		START_SCORE = 0;

@@ -51,7 +51,12 @@ void Configuration::ApplySetting(const std::string &key, const std::string &valu
 
 		std::cout << "Initializing " << key << "...\n";
 		int start_pos = (value[0] == '#' ? 1 : 0);
-		*(itColor->second) = std::stoul(value.substr(start_pos), nullptr, 16);
+		unsigned int hex_value = std::stoul(value.substr(start_pos), nullptr, 16);
+
+		Uint8 r = ((hex_value >> 16) & 0xFF);
+		Uint8 g = ((hex_value >> 8) & 0xFF);
+		Uint8 b = (hex_value & 0xFF);
+		*(itColor->second) = {r, g, b, 255};
 		return;
 	}
 

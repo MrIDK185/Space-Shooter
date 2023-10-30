@@ -109,14 +109,8 @@ void Game::CreateObjects()
 
 	objectsTitleScreen.IMGSprites["startBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
 
-	Uint8 r, g, b;
-	r = ((Config.FONT_COLOR_HEX >> 16) & 0xFF);
-	g = ((Config.FONT_COLOR_HEX >> 8) & 0xFF);
-	b = (Config.FONT_COLOR_HEX & 0xFF);
-	SDL_Color font_color = {r, g, b, 255};
-
 	objectsTitleScreen.Texts["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH,
-																   Config.START_TEXT_SIZE, font_color);
+																   Config.START_TEXT_SIZE, Config.FONT_COLOR_HEX);
 	SDL_FRect text_rect = objectsTitleScreen.Texts.at("startText")->GetRect();
 	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
 
@@ -140,7 +134,7 @@ void Game::CreateObjects()
 														 static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 
 	std::wstring current_score = std::to_wstring(Score);
-	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, font_color);
+	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, Config.FONT_COLOR_HEX);
 	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
 	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
