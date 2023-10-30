@@ -3,12 +3,9 @@
 
 #include "Configuration.hpp"
 #include "EventHandler.hpp"
+#include "objectStorage.hpp"
 #include "Time.hpp"
 #include "Sound.hpp"
-
-#include <vector>
-#include <unordered_map>
-#include <memory>
 
 typedef enum
 {
@@ -16,43 +13,6 @@ typedef enum
 	GAME_PAUSED,
 	TITLE_SCREEN
 } gameState;
-
-class IMGSprite;
-class Asteroid;
-class Gem;
-class Player;
-class Text;
-class soundChunk;
-class soundMusic;
-
-struct objectStorage
-{
-public:
-	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSprites;
-	std::unordered_map<std::string, std::shared_ptr<Player>> Players;
-	std::unordered_map<std::string, std::shared_ptr<Text>> Texts;
-	std::unordered_map<std::string, std::shared_ptr<soundChunk>> Chunks;
-	std::unordered_map<std::string, std::shared_ptr<soundMusic>> Musics;
-
-	std::vector<std::shared_ptr<Gem>> Gems;
-	std::vector<std::shared_ptr<Asteroid>> Asteroids;
-
-	void ClearAll()
-	{
-		IMGSprites.clear();
-		Players.clear();
-		Texts.clear();
-		Chunks.clear();
-		Musics.clear();
-		Gems.clear();
-		Asteroids.clear();
-
-		return;
-	}
-
-	objectStorage() = default;
-	~objectStorage() = default;
-};
 
 struct Game
 {
