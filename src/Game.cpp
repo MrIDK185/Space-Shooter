@@ -187,7 +187,21 @@ void Game::GamePaused()
 {
 	SDL_RenderClear(Renderer);
 
-	RenderObjects(&objectsGameRunning);
+	switch (lastGameState)
+	{
+	case TITLE_SCREEN:
+		RenderObjects(&objectsTitleScreen);
+		break;
+	case GAME_STARTED:
+		RenderObjects(&objectsGameRunning);
+		break;
+	case GAME_OVER:
+		RenderObjects(&objectsGameOver);
+		break;
+	default:
+		break;
+	};
+
 	RenderObjects(&objectsGamePaused);
 
 	SDL_RenderPresent(Renderer);

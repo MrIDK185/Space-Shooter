@@ -28,7 +28,14 @@ bool EventHandler::Handle_Q()
 
 bool EventHandler::Handle_Escape()
 {
-	currentGame->currentGameState = (currentGame->currentGameState == GAME_PAUSED ? GAME_STARTED : GAME_PAUSED);
+	if (currentGame->currentGameState != GAME_PAUSED)
+	{
+		currentGame->lastGameState = currentGame->currentGameState;
+		currentGame->currentGameState = GAME_PAUSED;
+		return true;
+	}
+
+	currentGame->currentGameState = currentGame->lastGameState;
 
 	return true;
 }

@@ -38,6 +38,7 @@ public:
 	volumeControl volumeController;
 
 	gameState currentGameState = TITLE_SCREEN;
+	gameState lastGameState = TITLE_SCREEN;
 
 	bool Running = true;
 
