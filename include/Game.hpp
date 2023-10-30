@@ -58,9 +58,9 @@ public:
 	void CreateObjects();
 
 	//* Game modes
-	void GamePaused();
-	void GameStarted();
 	void GameTitleScreen();
+	void GameStarted();
+	void GamePaused();
 
 	//* Game handling
 	void UpdateScore(int amount);

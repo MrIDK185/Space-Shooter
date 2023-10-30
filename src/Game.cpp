@@ -154,12 +154,11 @@ void Game::CreateObjects()
 }
 
 //* Game modes
-void Game::GamePaused()
+void Game::GameTitleScreen()
 {
 	SDL_RenderClear(Renderer);
 
-	RenderObjects(&objectsGameRunning);
-	RenderObjects(&objectsGamePaused);
+	RenderObjects(&objectsTitleScreen);
 
 	SDL_RenderPresent(Renderer);
 
@@ -184,11 +183,12 @@ void Game::GameStarted()
 	return;
 }
 
-void Game::GameTitleScreen()
+void Game::GamePaused()
 {
 	SDL_RenderClear(Renderer);
 
-	RenderObjects(&objectsTitleScreen);
+	RenderObjects(&objectsGameRunning);
+	RenderObjects(&objectsGamePaused);
 
 	SDL_RenderPresent(Renderer);
 
