@@ -193,6 +193,12 @@ void Game::GameTitleScreen()
 //* Game handling
 void Game::UpdateScore(int amount)
 {
+	if (amount < 0 && Score < static_cast<unsigned int>(abs(amount)))
+	{
+		currentGameState = GAME_OVER;
+		return;
+	}
+
 	Score += amount;
 
 	std::wstring current_score = std::to_wstring(Score);

@@ -9,9 +9,10 @@
 
 typedef enum
 {
+	TITLE_SCREEN,
 	GAME_STARTED,
 	GAME_PAUSED,
-	TITLE_SCREEN
+	GAME_OVER
 } gameState;
 
 struct Game
