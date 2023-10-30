@@ -53,20 +53,14 @@ int Game::Run()
 //* Cleanup
 void Game::Cleanup()
 {
-	std::cout << "Clearing musicMap...\n";
-	musicMap.clear();
-	std::cout << "Clearing chunkMap...\n";
-	chunkMap.clear();
-	std::cout << "Clearing textMap...\n";
-	textMap.clear();
-	std::cout << "Clearing playerMap...\n";
-	playerMap.clear();
-	std::cout << "Clearing gemGroup...\n";
-	gemGroup.clear();
-	std::cout << "Clearing asteroidGroup...\n";
-	asteroidGroup.clear();
-	std::cout << "Clearing IMGSpriteMap...\n\n";
-	IMGSpriteMap.clear();
+	std::cout << "Clearing objectsGameOver...\n";
+	objectsGameOver.ClearAll();
+	std::cout << "Clearing objectsGamePaused...\n";
+	objectsGamePaused.ClearAll();
+	std::cout << "Clearing objectsGameRunning...\n";
+	objectsGameRunning.ClearAll();
+	std::cout << "Clearing objectsTitleScreen...\n";
+	objectsTitleScreen.ClearAll();
 
 	std::cout << "Destroying renderer...\n";
 	SDL_DestroyRenderer(Renderer);
@@ -109,7 +103,7 @@ void Game::SetupGame()
 
 void Game::CreateObjects()
 {
-	IMGSpriteMap["startBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
+	objectsTitleScreen.IMGSprites["startBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
 
 	Uint8 r, g, b;
 	r = ((Config.FONT_COLOR_HEX >> 16) & 0xFF);
@@ -117,34 +111,34 @@ void Game::CreateObjects()
 	b = (Config.FONT_COLOR_HEX & 0xFF);
 	SDL_Color font_color = {r, g, b, 255};
 
-	textMap["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH, Config.START_TEXT_SIZE, font_color);
-	SDL_FRect text_rect = textMap.at("startText")->GetRect();
-	textMap.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
+	objectsTitleScreen.Texts["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH, Config.START_TEXT_SIZE, font_color);
+	SDL_FRect text_rect = objectsTitleScreen.Texts.at("startText")->GetRect();
+	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
 
-	IMGSpriteMap["gameBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background.png", 1, 0);
+	objectsGameRunning.IMGSprites["gameBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background.png", 1, 0);
 
-	asteroidGroup.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200, screenWidth, screenHeight));
+	objectsGameRunning.Asteroids.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200, screenWidth, screenHeight));
 
-	gemGroup.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
+	objectsGameRunning.Gems.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
 
-	playerMap["Player1"] = Player::NewPlayer(Config, Renderer, "assets/images/player.png");
-	SDL_Rect player_rect = playerMap.at("Player1")->GetIMGPartRect();
-	playerMap.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2), static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
+	objectsGameRunning.Players["Player1"] = Player::NewPlayer(Config, Renderer, "assets/images/player.png");
+	SDL_Rect player_rect = objectsGameRunning.Players.at("Player1")->GetIMGPartRect();
+	objectsGameRunning.Players.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2), static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 
 	const wchar_t score_text[] = {L"0"};
-	textMap["scoreText"] = std::make_shared<Text>(Renderer, score_text, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, font_color);
-	textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
+	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, score_text, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, font_color);
+	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
 
-	chunkMap["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3");
+	objectsTitleScreen.Chunks["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3");
 
-	chunkMap["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3");
+	objectsGameRunning.Chunks["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3");
 
-	chunkMap["gemMissed"] = std::make_shared<soundChunk>("assets/sounds/gem_missed.wav");
+	objectsGameRunning.Chunks["gemMissed"] = std::make_shared<soundChunk>("assets/sounds/gem_missed.wav");
 
-	musicMap["menuMusic"] = std::make_shared<soundMusic>("assets/sounds/menu_music.mp3");
-	musicMap.at("menuMusic")->Play();
+	objectsTitleScreen.Musics["menuMusic"] = std::make_shared<soundMusic>("assets/sounds/menu_music.mp3");
+	objectsTitleScreen.Musics.at("menuMusic")->Play();
 
-	musicMap["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
+	objectsGameRunning.Musics["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
 
 	return;
 }
@@ -163,15 +157,15 @@ void Game::GameStarted()
 	HandleGems();
 	HandleAsteroids();
 	CheckCollisions();
-	AnimateUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
+	AnimateUnorderedMap<std::string, std::shared_ptr<Player>>(&objectsGameRunning.Players);
 
 	SDL_RenderClear(Renderer);
 
-	RenderUnorderedMap<std::string, std::shared_ptr<IMGSprite>>(&IMGSpriteMap);
-	RenderVector<std::shared_ptr<Gem>>(&gemGroup);
-	RenderUnorderedMap<std::string, std::shared_ptr<Player>>(&playerMap);
-	RenderVector<std::shared_ptr<Asteroid>>(&asteroidGroup);
-	RenderUnorderedMap<std::string, std::shared_ptr<Text>>(&textMap);
+	RenderUnorderedMap<std::string, std::shared_ptr<IMGSprite>>(&objectsGameRunning.IMGSprites);
+	RenderVector<std::shared_ptr<Gem>>(&objectsGameRunning.Gems);
+	RenderUnorderedMap<std::string, std::shared_ptr<Player>>(&objectsGameRunning.Players);
+	RenderVector<std::shared_ptr<Asteroid>>(&objectsGameRunning.Asteroids);
+	RenderUnorderedMap<std::string, std::shared_ptr<Text>>(&objectsGameRunning.Texts);
 
 	SDL_RenderPresent(Renderer);
 
@@ -182,8 +176,8 @@ void Game::GameTitleScreen()
 {
 	SDL_RenderClear(Renderer);
 
-	IMGSpriteMap.at("startBackground")->Render();
-	textMap.at("startText")->Render();
+	objectsTitleScreen.IMGSprites.at("startBackground")->Render();
+	objectsTitleScreen.Texts.at("startText")->Render();
 
 	SDL_RenderPresent(Renderer);
 
@@ -193,7 +187,7 @@ void Game::GameTitleScreen()
 //* Game handling
 void Game::HandlePlayers()
 {
-	for (const auto &[name, player] : playerMap)
+	for (const auto &[name, player] : objectsGameRunning.Players)
 	{
 		player->UpdateGemCollected(currentTicks);
 		player->HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
@@ -204,7 +198,7 @@ void Game::HandlePlayers()
 
 void Game::HandleGems()
 {
-	for (const std::shared_ptr<Gem> &gem : gemGroup)
+	for (const std::shared_ptr<Gem> &gem : objectsGameRunning.Gems)
 	{
 		if (currentTicks >= gem->GetBlinkTicks())
 		{
@@ -213,13 +207,13 @@ void Game::HandleGems()
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{
 			Score -= 1;
-			chunkMap.at("gemMissed")->Stop();
-			chunkMap.at("gemMissed")->Play();
+			objectsGameRunning.Chunks.at("gemMissed")->Stop();
+			objectsGameRunning.Chunks.at("gemMissed")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
-			textMap.at("scoreText")->SetMessage(current_score);
+			objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
 
-			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
+			objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
 
 			gem->Randomize(screenWidth, screenHeight, currentTicks);
 		}
@@ -230,7 +224,7 @@ void Game::HandleGems()
 
 void Game::HandleAsteroids()
 {
-	for (const std::shared_ptr<Asteroid> &asteroid : asteroidGroup)
+	for (const std::shared_ptr<Asteroid> &asteroid : objectsGameRunning.Asteroids)
 	{
 		asteroid->Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
 	}
@@ -240,9 +234,9 @@ void Game::HandleAsteroids()
 
 void Game::CheckCollisions()
 {
-	for (const auto &[name, player] : playerMap)
+	for (const auto &[name, player] : objectsGameRunning.Players)
 	{
-		for (const std::shared_ptr<Gem> &gem : gemGroup)
+		for (const std::shared_ptr<Gem> &gem : objectsGameRunning.Gems)
 		{
 			if (!gem->Collideswith(player))
 			{
@@ -250,13 +244,13 @@ void Game::CheckCollisions()
 			}
 
 			Score += 1;
-			chunkMap.at("gemCollected")->Stop();
-			chunkMap.at("gemCollected")->Play();
+			objectsGameRunning.Chunks.at("gemCollected")->Stop();
+			objectsGameRunning.Chunks.at("gemCollected")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
-			textMap.at("scoreText")->SetMessage(current_score);
+			objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
 
-			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
+			objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
 
 			gem->Randomize(screenWidth, screenHeight, currentTicks);
 
@@ -270,7 +264,7 @@ void Game::CheckCollisions()
 			player->SetCollectionTicks(currentTicks);
 		}
 
-		for (const std::shared_ptr<Asteroid> &asteroid : asteroidGroup)
+		for (const std::shared_ptr<Asteroid> &asteroid : objectsGameRunning.Asteroids)
 		{
 			if (!asteroid->Collideswith(player))
 			{
@@ -280,9 +274,9 @@ void Game::CheckCollisions()
 			Score -= 1;
 
 			std::wstring current_score = std::to_wstring(Score);
-			textMap.at("scoreText")->SetMessage(current_score);
+			objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
 
-			textMap.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - textMap.at("scoreText")->GetRect().w, 0);
+			objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
 		}
 	}
 

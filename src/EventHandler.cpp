@@ -41,15 +41,15 @@ bool EventHandler::Handle_Return()
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	currentGame->textMap.at("startText")->SetMessage(countdown_str.c_str());
+	currentGame->objectsTitleScreen.Texts.at("startText")->SetMessage(countdown_str.c_str());
 
-	SDL_FRect text_rect = currentGame->textMap.at("startText")->GetRect();
-	currentGame->textMap.at("startText")->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
+	SDL_FRect text_rect = currentGame->objectsTitleScreen.Texts.at("startText")->GetRect();
+	currentGame->objectsTitleScreen.Texts.at("startText")->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
 
 	currentGame->startTimer.Start();
 
-	currentGame->musicMap.at("menuMusic")->Stop();
-	currentGame->chunkMap.at("startSound")->Play();
+	currentGame->objectsTitleScreen.Musics.at("menuMusic")->Stop();
+	currentGame->objectsTitleScreen.Chunks.at("startSound")->Play();
 
 	return true;
 }
@@ -95,9 +95,10 @@ bool EventHandler::Handle_M()
 bool EventHandler::Handle_TimerDecrement()
 {
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	currentGame->textMap.at("startText")->SetMessage(countdown_str);
+	currentGame->objectsTitleScreen.Texts.at("startText")->SetMessage(countdown_str);
 
-	currentGame->textMap.at("scoreText")->SetRectPos(static_cast<float>(currentGame->screenWidth) - currentGame->textMap.at("scoreText")->GetRect().w, 0);
+	SDL_FRect text_rect = currentGame->objectsTitleScreen.Texts.at("startText")->GetRect();
+	currentGame->objectsTitleScreen.Texts.at("startText")->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
 
 	return true;
 }
@@ -108,16 +109,13 @@ bool EventHandler::Handle_TimerStop()
 
 	currentGame->currentGameState = GAME_STARTED;
 
-	currentGame->IMGSpriteMap.erase("startBackground");
-	currentGame->textMap.erase("startText");
-
-	for (std::shared_ptr<Gem> gem : currentGame->gemGroup)
+	for (std::shared_ptr<Gem> gem : currentGame->objectsGameRunning.Gems)
 	{
 		gem->UpdateTicks(currentGame->currentTicks);
 	}
 
-	currentGame->chunkMap.at("startSound")->Stop();
-	currentGame->musicMap.at("backgroundMusic")->Play();
+	currentGame->objectsTitleScreen.Chunks.at("startSound")->Stop();
+	currentGame->objectsGameRunning.Musics.at("backgroundMusic")->Play();
 
 	return true;
 }

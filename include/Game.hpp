@@ -25,6 +25,35 @@ class Text;
 class soundChunk;
 class soundMusic;
 
+struct objectStorage
+{
+public:
+	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSprites;
+	std::unordered_map<std::string, std::shared_ptr<Player>> Players;
+	std::unordered_map<std::string, std::shared_ptr<Text>> Texts;
+	std::unordered_map<std::string, std::shared_ptr<soundChunk>> Chunks;
+	std::unordered_map<std::string, std::shared_ptr<soundMusic>> Musics;
+
+	std::vector<std::shared_ptr<Gem>> Gems;
+	std::vector<std::shared_ptr<Asteroid>> Asteroids;
+
+	void ClearAll()
+	{
+		IMGSprites.clear();
+		Players.clear();
+		Texts.clear();
+		Chunks.clear();
+		Musics.clear();
+		Gems.clear();
+		Asteroids.clear();
+
+		return;
+	}
+
+	objectStorage() = default;
+	~objectStorage() = default;
+};
+
 struct Game
 {
 public:
@@ -51,14 +80,11 @@ public:
 
 	bool Running = true;
 
-	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSpriteMap;
-	std::unordered_map<std::string, std::shared_ptr<Player>> playerMap;
-	std::unordered_map<std::string, std::shared_ptr<Text>> textMap;
-	std::unordered_map<std::string, std::shared_ptr<soundChunk>> chunkMap;
-	std::unordered_map<std::string, std::shared_ptr<soundMusic>> musicMap;
-
-	std::vector<std::shared_ptr<Gem>> gemGroup;
-	std::vector<std::shared_ptr<Asteroid>> asteroidGroup;
+	objectStorage
+		objectsTitleScreen,
+		objectsGameRunning,
+		objectsGamePaused,
+		objectsGameOver;
 
 	//* Main loop
 	int Run();
