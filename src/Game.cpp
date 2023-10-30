@@ -134,7 +134,8 @@ void Game::CreateObjects()
 														 static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 
 	std::wstring current_score = std::to_wstring(Score);
-	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, Config.FONT_COLOR_HEX);
+	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH,
+																   Config.SCORE_TEXT_SIZE, Config.FONT_COLOR_HEX);
 	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
 	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
@@ -256,7 +257,6 @@ void Game::HandleGems()
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{
 			UpdateScore(-1);
-			objectsGameRunning.Chunks.at("gemMissed")->Stop();
 			objectsGameRunning.Chunks.at("gemMissed")->Play();
 			gem->Randomize(screenWidth, screenHeight, currentTicks);
 		}
@@ -277,7 +277,6 @@ void Game::CheckCollisions()
 			}
 
 			UpdateScore(1);
-			objectsGameRunning.Chunks.at("gemCollected")->Stop();
 			objectsGameRunning.Chunks.at("gemCollected")->Play();
 
 			gem->Randomize(screenWidth, screenHeight, currentTicks);

@@ -98,11 +98,6 @@ soundState soundChunk::GetCurrentSoundState()
 
 void soundChunk::Play()
 {
-	if (currentSoundState == PLAYING || currentSoundState == PAUSED)
-	{
-		return;
-	}
-
 	Channel = Mix_PlayChannel(-1, Chunk, 0);
 	if (Channel >= 0)
 	{
