@@ -62,9 +62,10 @@ public:
 	void GameTitleScreen();
 
 	//* Game handling
+	void UpdateScore(int amount);
 	void HandlePlayers();
-	void HandleGems();
 	void HandleAsteroids();
+	void HandleGems();
 	void CheckCollisions();
 
 	//* Rendering

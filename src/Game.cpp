@@ -189,12 +189,36 @@ void Game::GameTitleScreen()
 }
 
 //* Game handling
+void Game::UpdateScore(int amount)
+{
+	Score += amount;
+
+	std::wstring current_score = std::to_wstring(Score);
+	std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
+
+	scoreText->SetMessage(current_score);
+	SDL_FRect score_rect = scoreText->GetRect();
+	scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
+
+	return;
+}
+
 void Game::HandlePlayers()
 {
 	for (const auto &[name, player] : objectsGameRunning.Players)
 	{
 		player->UpdateGemCollected(currentTicks);
 		player->HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
+	}
+
+	return;
+}
+
+void Game::HandleAsteroids()
+{
+	for (const std::shared_ptr<Asteroid> &asteroid : objectsGameRunning.Asteroids)
+	{
+		asteroid->Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
 	}
 
 	return;
@@ -210,29 +234,11 @@ void Game::HandleGems()
 		}
 		if (currentTicks >= gem->GetLifetimeTicks())
 		{
-			Score -= 1;
+			UpdateScore(-1);
 			objectsGameRunning.Chunks.at("gemMissed")->Stop();
 			objectsGameRunning.Chunks.at("gemMissed")->Play();
-
-			std::wstring current_score = std::to_wstring(Score);
-			std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
-
-			scoreText->SetMessage(current_score);
-			SDL_FRect score_rect = scoreText->GetRect();
-			scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
-
 			gem->Randomize(screenWidth, screenHeight, currentTicks);
 		}
-	}
-
-	return;
-}
-
-void Game::HandleAsteroids()
-{
-	for (const std::shared_ptr<Asteroid> &asteroid : objectsGameRunning.Asteroids)
-	{
-		asteroid->Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
 	}
 
 	return;
@@ -249,16 +255,9 @@ void Game::CheckCollisions()
 				continue;
 			}
 
-			Score += 1;
+			UpdateScore(1);
 			objectsGameRunning.Chunks.at("gemCollected")->Stop();
 			objectsGameRunning.Chunks.at("gemCollected")->Play();
-
-			std::wstring current_score = std::to_wstring(Score);
-			std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
-
-			scoreText->SetMessage(current_score);
-			SDL_FRect score_rect = scoreText->GetRect();
-			scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
 			gem->Randomize(screenWidth, screenHeight, currentTicks);
 
@@ -279,14 +278,7 @@ void Game::CheckCollisions()
 				continue;
 			}
 
-			Score -= 1;
-
-			std::wstring current_score = std::to_wstring(Score);
-			std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
-
-			scoreText->SetMessage(current_score);
-			SDL_FRect score_rect = scoreText->GetRect();
-			scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
+			UpdateScore(-1);
 		}
 	}
 
