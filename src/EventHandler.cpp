@@ -30,11 +30,13 @@ bool EventHandler::Handle_Escape()
 {
 	if (currentGame->currentGameState != GAME_PAUSED)
 	{
+		currentGame->volumeController.toggleMute();
 		currentGame->lastGameState = currentGame->currentGameState;
 		currentGame->currentGameState = GAME_PAUSED;
 		return true;
 	}
 
+	currentGame->volumeController.toggleMute();
 	currentGame->currentGameState = currentGame->lastGameState;
 
 	return true;

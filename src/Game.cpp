@@ -145,6 +145,10 @@ void Game::CreateObjects()
 
 	objectsGameRunning.Musics["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
 
+	//* Game Paused
+
+	objectsGamePaused.IMGSprites["pauseIcon"] = std::make_shared<IMGSprite>(Renderer, "assets/images/pause-button.png", 0.3, 0);
+
 	return;
 }
 

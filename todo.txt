@@ -6,7 +6,6 @@ Game over screen
 
 Pause Screen
  -> Dim brightness (filter)
- -> pause button
 
 Asteroid functionality
  -> movement
