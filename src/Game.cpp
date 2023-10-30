@@ -156,6 +156,11 @@ void Game::CreateObjects()
 //* Game modes
 void Game::GamePaused()
 {
+	SDL_RenderClear(Renderer);
+
+	RenderObjects(&objectsGameRunning);
+	RenderObjects(&objectsGamePaused);
+
 	SDL_RenderPresent(Renderer);
 
 	return;
@@ -167,6 +172,7 @@ void Game::GameStarted()
 	HandleGems();
 	HandleAsteroids();
 	CheckCollisions();
+
 	AnimateObjects(&objectsGameRunning);
 
 	SDL_RenderClear(Renderer);
@@ -182,8 +188,7 @@ void Game::GameTitleScreen()
 {
 	SDL_RenderClear(Renderer);
 
-	objectsTitleScreen.IMGSprites.at("startBackground")->Render();
-	objectsTitleScreen.Texts.at("startText")->Render();
+	RenderObjects(&objectsTitleScreen);
 
 	SDL_RenderPresent(Renderer);
 
