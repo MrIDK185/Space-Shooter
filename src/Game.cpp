@@ -103,6 +103,8 @@ void Game::SetupGame()
 
 void Game::CreateObjects()
 {
+	//* Title screen
+
 	objectsTitleScreen.IMGSprites["startBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
 
 	Uint8 r, g, b;
@@ -111,32 +113,38 @@ void Game::CreateObjects()
 	b = (Config.FONT_COLOR_HEX & 0xFF);
 	SDL_Color font_color = {r, g, b, 255};
 
-	objectsTitleScreen.Texts["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH, Config.START_TEXT_SIZE, font_color);
+	objectsTitleScreen.Texts["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH,
+																   Config.START_TEXT_SIZE, font_color);
 	SDL_FRect text_rect = objectsTitleScreen.Texts.at("startText")->GetRect();
 	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
 
+	objectsTitleScreen.Chunks["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3");
+
+	objectsTitleScreen.Musics["menuMusic"] = std::make_shared<soundMusic>("assets/sounds/menu_music.mp3");
+	objectsTitleScreen.Musics.at("menuMusic")->Play();
+
+	//* Game running
+
 	objectsGameRunning.IMGSprites["gameBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background.png", 1, 0);
 
-	objectsGameRunning.Asteroids.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200, screenWidth, screenHeight));
+	objectsGameRunning.Asteroids.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200,
+																	  screenWidth, screenHeight));
 
 	objectsGameRunning.Gems.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
 
 	objectsGameRunning.Players["Player1"] = Player::NewPlayer(Config, Renderer, "assets/images/player.png");
 	SDL_Rect player_rect = objectsGameRunning.Players.at("Player1")->GetIMGPartRect();
-	objectsGameRunning.Players.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2), static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
+	objectsGameRunning.Players.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2),
+														 static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 
 	const wchar_t score_text[] = {L"0"};
 	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, score_text, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, font_color);
-	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
-
-	objectsTitleScreen.Chunks["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3");
+	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
+	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
 	objectsGameRunning.Chunks["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3");
 
 	objectsGameRunning.Chunks["gemMissed"] = std::make_shared<soundChunk>("assets/sounds/gem_missed.wav");
-
-	objectsTitleScreen.Musics["menuMusic"] = std::make_shared<soundMusic>("assets/sounds/menu_music.mp3");
-	objectsTitleScreen.Musics.at("menuMusic")->Play();
 
 	objectsGameRunning.Musics["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
 
@@ -157,15 +165,11 @@ void Game::GameStarted()
 	HandleGems();
 	HandleAsteroids();
 	CheckCollisions();
-	AnimateUnorderedMap<std::string, std::shared_ptr<Player>>(&objectsGameRunning.Players);
+	AnimateObjects(&objectsGameRunning);
 
 	SDL_RenderClear(Renderer);
 
-	RenderUnorderedMap<std::string, std::shared_ptr<IMGSprite>>(&objectsGameRunning.IMGSprites);
-	RenderVector<std::shared_ptr<Gem>>(&objectsGameRunning.Gems);
-	RenderUnorderedMap<std::string, std::shared_ptr<Player>>(&objectsGameRunning.Players);
-	RenderVector<std::shared_ptr<Asteroid>>(&objectsGameRunning.Asteroids);
-	RenderUnorderedMap<std::string, std::shared_ptr<Text>>(&objectsGameRunning.Texts);
+	RenderObjects(&objectsGameRunning);
 
 	SDL_RenderPresent(Renderer);
 
@@ -211,9 +215,11 @@ void Game::HandleGems()
 			objectsGameRunning.Chunks.at("gemMissed")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
-			objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
+			std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
 
-			objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
+			scoreText->SetMessage(current_score);
+			SDL_FRect score_rect = scoreText->GetRect();
+			scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
 			gem->Randomize(screenWidth, screenHeight, currentTicks);
 		}
@@ -248,9 +254,11 @@ void Game::CheckCollisions()
 			objectsGameRunning.Chunks.at("gemCollected")->Play();
 
 			std::wstring current_score = std::to_wstring(Score);
-			objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
+			std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
 
-			objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
+			scoreText->SetMessage(current_score);
+			SDL_FRect score_rect = scoreText->GetRect();
+			scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
 			gem->Randomize(screenWidth, screenHeight, currentTicks);
 
@@ -274,9 +282,11 @@ void Game::CheckCollisions()
 			Score -= 1;
 
 			std::wstring current_score = std::to_wstring(Score);
-			objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
+			std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
 
-			objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - objectsGameRunning.Texts.at("scoreText")->GetRect().w, 0);
+			scoreText->SetMessage(current_score);
+			SDL_FRect score_rect = scoreText->GetRect();
+			scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 		}
 	}
 
@@ -296,10 +306,25 @@ void Game::UpdateRenderScale()
 	return;
 }
 
-template <typename keyType, typename valueType>
-void Game::RenderUnorderedMap(std::unordered_map<keyType, valueType> *map)
+void Game::RenderObjects(objectStorage *storage)
 {
-	for (const auto &[name, element] : *map)
+	for (const auto &[name, element] : storage->IMGSprites)
+	{
+		element->Render();
+	}
+	for (const auto &element : storage->Asteroids)
+	{
+		element->Render();
+	}
+	for (const auto &element : storage->Gems)
+	{
+		element->Render();
+	}
+	for (const auto &[name, element] : storage->Players)
+	{
+		element->Render();
+	}
+	for (const auto &[name, element] : storage->Texts)
 	{
 		element->Render();
 	}
@@ -307,21 +332,13 @@ void Game::RenderUnorderedMap(std::unordered_map<keyType, valueType> *map)
 	return;
 }
 
-template <typename elementType>
-void Game::RenderVector(std::vector<elementType> *vector)
+void Game::AnimateObjects(objectStorage *storage)
 {
-	for (const auto &element : *vector)
+	for (const auto &[name, element] : storage->Players)
 	{
-		element->Render();
+		element->Animate(currentTicks);
 	}
-
-	return;
-}
-
-template <typename keyType, typename valueType>
-void Game::AnimateUnorderedMap(std::unordered_map<keyType, valueType> *map)
-{
-	for (const auto &[name, element] : *map)
+	for (const auto &element : storage->Gems)
 	{
 		element->Animate(currentTicks);
 	}

@@ -69,12 +69,8 @@ public:
 
 	//* Rendering
 	void UpdateRenderScale();
-	template <typename keyType, typename valueType>
-	void RenderUnorderedMap(std::unordered_map<keyType, valueType> *map);
-	template <typename elementType>
-	void RenderVector(std::vector<elementType> *vector);
-	template <typename keyType, typename valueType>
-	void AnimateUnorderedMap(std::unordered_map<keyType, valueType> *map);
+	void RenderObjects(objectStorage *storage);
+	void AnimateObjects(objectStorage *storage);
 
 	//* Constructor/Destructor
 	Game() = default;

@@ -99,7 +99,7 @@ void AnimatedSprite::SetNextTickTime(Uint64 new_time)
 
 void AnimatedSprite::Animate(Uint64 current_ticks)
 {
-	if (current_ticks < nextTickTime)
+	if (current_ticks < nextTickTime | ANIMATIONS_PER_SECOND <= 0)
 	{
 		return;
 	}

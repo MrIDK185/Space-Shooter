@@ -41,15 +41,16 @@ bool EventHandler::Handle_Return()
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	currentGame->objectsTitleScreen.Texts.at("startText")->SetMessage(countdown_str.c_str());
+	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
-	SDL_FRect text_rect = currentGame->objectsTitleScreen.Texts.at("startText")->GetRect();
-	currentGame->objectsTitleScreen.Texts.at("startText")->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
-
-	currentGame->startTimer.Start();
+	startText->SetMessage(countdown_str.c_str());
+	SDL_FRect text_rect = startText->GetRect();
+	startText->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
 
 	currentGame->objectsTitleScreen.Musics.at("menuMusic")->Stop();
 	currentGame->objectsTitleScreen.Chunks.at("startSound")->Play();
+
+	currentGame->startTimer.Start();
 
 	return true;
 }
@@ -95,10 +96,11 @@ bool EventHandler::Handle_M()
 bool EventHandler::Handle_TimerDecrement()
 {
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	currentGame->objectsTitleScreen.Texts.at("startText")->SetMessage(countdown_str);
+	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
-	SDL_FRect text_rect = currentGame->objectsTitleScreen.Texts.at("startText")->GetRect();
-	currentGame->objectsTitleScreen.Texts.at("startText")->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
+	startText->SetMessage(countdown_str);
+	SDL_FRect text_rect = startText->GetRect();
+	startText->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
 
 	return true;
 }
