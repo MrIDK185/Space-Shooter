@@ -41,7 +41,8 @@ public:
 	unsigned int
 		FONT_COLOR_HEX = 0xFFFFFF,
 		START_TEXT_SIZE = 100,
-		SCORE_TEXT_SIZE = 70;
+		SCORE_TEXT_SIZE = 70,
+		START_SCORE = 0;
 
 	/*------------ Player ------------*/
 

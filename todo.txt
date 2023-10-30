@@ -12,8 +12,3 @@ Asteroid functionality
  -> movement
  -> breaking
  -> collision, damage
-
-Sprite storing
- -> different categories
- -> right data structures
- -> Creation, rendering

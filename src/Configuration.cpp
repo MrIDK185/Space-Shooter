@@ -93,6 +93,7 @@ Configuration::Configuration()
 
 	UIntMap["Start Text Size"] = &START_TEXT_SIZE;
 	UIntMap["Score Text Size"] = &SCORE_TEXT_SIZE;
+	UIntMap["Start Score"] = &START_SCORE;
 
 	UIntMap["Player Frame Width"] = &PLAYER_FRAME_WIDTH;
 	UIntMap["Player Frame Height"] = &PLAYER_FRAME_HEIGHT;

@@ -80,6 +80,8 @@ void Game::SetupGame()
 	std::cout << "Importing settings...\n";
 	Config.ImportSettings();
 
+	Score = Config.START_SCORE;
+
 	gameEvents = EventHandler(this);
 	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
 
@@ -137,8 +139,8 @@ void Game::CreateObjects()
 	objectsGameRunning.Players.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2),
 														 static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
 
-	const wchar_t score_text[] = {L"0"};
-	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, score_text, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, font_color);
+	std::wstring current_score = std::to_wstring(Score);
+	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH, Config.SCORE_TEXT_SIZE, font_color);
 	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
 	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
