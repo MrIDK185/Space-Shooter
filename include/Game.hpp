@@ -64,6 +64,7 @@ public:
 	void GameTitleScreen();
 	void GameStarted();
 	void GamePaused();
+	void GameOver();
 
 	//* Game handling
 	Uint64 GetCurrentTime();

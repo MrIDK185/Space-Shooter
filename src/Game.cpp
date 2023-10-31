@@ -29,16 +29,20 @@ int Game::Run()
 
 		switch (currentGameState)
 		{
-		case GAME_PAUSED:
-			GamePaused();
+		case TITLE_SCREEN:
+			GameTitleScreen();
 			break;
 
 		case GAME_STARTED:
 			GameStarted();
 			break;
 
-		case TITLE_SCREEN:
-			GameTitleScreen();
+		case GAME_PAUSED:
+			GamePaused();
+			break;
+
+		case GAME_OVER:
+			GameOver();
 			break;
 
 		default:
@@ -113,7 +117,7 @@ void Game::CreateObjects()
 	objectsTitleScreen.IMGSprites["startBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
 
 	objectsTitleScreen.Texts["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH,
-																   Config.START_TEXT_SIZE, Config.FONT_COLOR_HEX);
+																   Config.START_TEXT_SIZE, Config.START_TEXT_COLOR);
 	SDL_FRect text_rect = objectsTitleScreen.Texts.at("startText")->GetRect();
 	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
 
@@ -138,7 +142,7 @@ void Game::CreateObjects()
 
 	std::wstring current_score = std::to_wstring(Score);
 	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH,
-																   Config.SCORE_TEXT_SIZE, Config.FONT_COLOR_HEX);
+																   Config.INGAME_TEXT_SIZE, Config.INGAME_TEXT_COLOR);
 	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
 	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
 
@@ -151,6 +155,15 @@ void Game::CreateObjects()
 	//* Game Paused
 
 	objectsGamePaused.IMGSprites["pauseIcon"] = std::make_shared<IMGSprite>(Renderer, "assets/images/pause-button.png", 0.3, 0);
+
+	//* Game Over
+
+	objectsGameOver.IMGSprites["endBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
+
+	objectsGameOver.Texts["gameOver"] = std::make_shared<Text>(Renderer, Config.GAME_OVER_TEXT, Config.FONT_PATH,
+															   Config.GAME_OVER_TEXT_SIZE, Config.GAME_OVER_TEXT_COLOR);
+	SDL_FRect game_over_rect = objectsGameOver.Texts.at("gameOver")->GetRect();
+	objectsGameOver.Texts.at("gameOver")->SetRectPos(static_cast<float>(screenWidth / 2) - game_over_rect.w / 2, static_cast<float>(screenHeight / 2) - game_over_rect.h / 2);
 
 	return;
 }
@@ -205,6 +218,17 @@ void Game::GamePaused()
 	};
 
 	RenderObjects(&objectsGamePaused);
+
+	SDL_RenderPresent(Renderer);
+
+	return;
+}
+
+void Game::GameOver()
+{
+	SDL_RenderClear(Renderer);
+
+	RenderObjects(&objectsGameOver);
 
 	SDL_RenderPresent(Renderer);
 

@@ -3,6 +3,7 @@ Sound handling
 
 Game over screen
  -> Score handling
+ -> High score
 
 Pause Screen
  -> Dim brightness (filter)

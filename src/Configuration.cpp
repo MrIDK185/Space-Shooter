@@ -97,9 +97,9 @@ Configuration::Configuration()
 	UIntMap["Countdown Interval Milliseconds"] = &COUNTDOWN_INTERVAL_MILLISECONDS;
 
 	UIntMap["Start Text Size"] = &START_TEXT_SIZE;
-	UIntMap["Score Text Size"] = &SCORE_TEXT_SIZE;
+	UIntMap["Game Over Text Size"] = &GAME_OVER_TEXT_SIZE;
+	UIntMap["Ingame Text Size"] = &INGAME_TEXT_SIZE;
 	UIntMap["Start Score"] = &START_SCORE;
-
 	UIntMap["Player Frame Width"] = &PLAYER_FRAME_WIDTH;
 	UIntMap["Player Frame Height"] = &PLAYER_FRAME_HEIGHT;
 	UIntMap["Player IMG Frames"] = &PLAYER_IMG_FRAMES;
@@ -118,7 +118,9 @@ Configuration::Configuration()
 	UIntMap["Gem Maximum Brightness"] = &GEM_MAXIMUM_BRIGHTNESS;
 	UIntMap["Gem Minimum Brightness"] = &GEM_MINIMUM_BRIGHTNESS;
 
-	colorMap["Font Color"] = &FONT_COLOR_HEX;
+	colorMap["Start Text Color"] = &START_TEXT_COLOR;
+	colorMap["Game Over Text Color"] = &GAME_OVER_TEXT_COLOR;
+	colorMap["Ingame Text Color"] = &INGAME_TEXT_COLOR;
 
 	floatMap["Player Max Velocity Boost"] = &PLAYER_MAX_VELOCITY_BOOST;
 	floatMap["Player Acceleration Boost"] = &PLAYER_ACCELEARION_BOOST;
@@ -134,6 +136,7 @@ Configuration::Configuration()
 	stringMap["Font Path"] = &FONT_PATH;
 
 	wstringMap["Start Text"] = &START_TEXT;
+	wstringMap["Game Over Text"] = &GAME_OVER_TEXT;
 
 	return;
 }

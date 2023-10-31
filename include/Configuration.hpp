@@ -38,13 +38,18 @@ public:
 	/*------------ Text ------------*/
 
 	std::string FONT_PATH = "/usr/share/fonts/msttcore/comicbd.ttf";
-	std::wstring START_TEXT = L"Starten: \"Enter\"\nSchließen: \"Q\"";
 
-	SDL_Color FONT_COLOR_HEX = {255, 255, 255, 255};
+	std::wstring START_TEXT = L"Starten: \"Enter\"\nSchließen: \"Q\"";
+	std::wstring GAME_OVER_TEXT = L"GAME OVER\nDein Score: {Score} Punkte\nDein Highscore: {Highscore} Punkte";
+
+	SDL_Color START_TEXT_COLOR = {255, 255, 255, 255};
+	SDL_Color GAME_OVER_TEXT_COLOR = {255, 0, 0, 255};
+	SDL_Color INGAME_TEXT_COLOR = {255, 255, 255, 255};
 
 	unsigned int
 		START_TEXT_SIZE = 100,
-		SCORE_TEXT_SIZE = 70,
+		GAME_OVER_TEXT_SIZE = 100,
+		INGAME_TEXT_SIZE = 70,
 		START_SCORE = 0;
 
 	/*------------ Player ------------*/

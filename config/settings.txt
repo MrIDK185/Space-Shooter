@@ -9,10 +9,17 @@ Start Score = 0
 ------------ Text ------------
 
 Font Path = /usr/share/fonts/msttcore/comicbd.ttf
-Font Color = #00FF64
+
 Start Text = Starten: "Enter"\nSchließen: "Q"
+Game Over Text = GAME OVER\nScore: {S} Punkte\nHighscore: {HS} Punkte
+
 Start Text Size = 100
+Game Over Text Size = 100
 Score Text Size = 70
+
+Start Text Color = #00FF64
+Game Over Text Color = #FF0000
+Ingame Text Color = #00FF64
 
 ------------ Player ------------
 
