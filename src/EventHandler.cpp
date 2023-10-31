@@ -30,13 +30,15 @@ bool EventHandler::Handle_Escape()
 {
 	if (currentGame->currentGameState != GAME_PAUSED)
 	{
-		currentGame->volumeController.toggleMute();
+		currentGame->pausedTicks = SDL_GetTicks64();
+		currentGame->volumeController.Mute();
 		currentGame->lastGameState = currentGame->currentGameState;
 		currentGame->currentGameState = GAME_PAUSED;
 		return true;
 	}
 
-	currentGame->volumeController.toggleMute();
+	currentGame->totalTimePaused += SDL_GetTicks64() - currentGame->pausedTicks;
+	currentGame->volumeController.Unmute();
 	currentGame->currentGameState = currentGame->lastGameState;
 
 	return true;
@@ -66,6 +68,11 @@ bool EventHandler::Handle_Return()
 
 bool EventHandler::Handle_F11()
 {
+	if (currentGame->currentGameState == GAME_PAUSED)
+	{
+		return false;
+	}
+
 	Uint32 window_flags = SDL_GetWindowFlags(currentGame->Window);
 	if ((window_flags & SDL_WINDOW_FULLSCREEN) != SDL_WINDOW_FULLSCREEN)
 	{
@@ -83,6 +90,11 @@ bool EventHandler::Handle_F11()
 
 bool EventHandler::Handle_KP_Plus()
 {
+	if (currentGame->currentGameState == GAME_PAUSED)
+	{
+		return false;
+	}
+
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume + 10);
 
 	return true;
@@ -90,6 +102,11 @@ bool EventHandler::Handle_KP_Plus()
 
 bool EventHandler::Handle_KP_Minus()
 {
+	if (currentGame->currentGameState == GAME_PAUSED)
+	{
+		return false;
+	}
+
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume - 10);
 
 	return true;
@@ -97,6 +114,11 @@ bool EventHandler::Handle_KP_Minus()
 
 bool EventHandler::Handle_M()
 {
+	if (currentGame->currentGameState == GAME_PAUSED)
+	{
+		return false;
+	}
+
 	currentGame->volumeController.toggleMute();
 
 	return true;
@@ -104,6 +126,11 @@ bool EventHandler::Handle_M()
 
 bool EventHandler::Handle_TimerDecrement()
 {
+	if (currentGame->currentGameState == GAME_PAUSED)
+	{
+		return false;
+	}
+
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
 	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
@@ -116,6 +143,11 @@ bool EventHandler::Handle_TimerDecrement()
 
 bool EventHandler::Handle_TimerStop()
 {
+	if (currentGame->currentGameState == GAME_PAUSED)
+	{
+		return false;
+	}
+
 	currentGame->startTimer.Stop();
 
 	currentGame->currentGameState = GAME_STARTED;

@@ -34,6 +34,8 @@ public:
 	Clock gameClock;
 	SecondTimer startTimer;
 	Uint64 currentTicks = 0;
+	Uint64 pausedTicks = 0;
+	Uint64 totalTimePaused = 0;
 
 	volumeControl volumeController;
 
@@ -64,6 +66,7 @@ public:
 	void GamePaused();
 
 	//* Game handling
+	Uint64 GetCurrentTime();
 	void UpdateScore(int amount);
 	void HandlePlayers();
 	void HandleAsteroids();
