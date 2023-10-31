@@ -32,8 +32,6 @@ typedef enum
 	TIMER_STOP
 } timerEvent;
 
-Uint32 TimerCallback(Uint32 interval_milliseconds, void *param);
-
 struct SecondTimer
 {
 private:
@@ -52,7 +50,7 @@ public:
 	bool Started = false;
 
 	explicit SecondTimer();
-	SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, SDL_TimerCallback callback);
+	SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds);
 	~SecondTimer();
 
 	void Start();
