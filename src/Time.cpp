@@ -1,4 +1,5 @@
 #include "Time.hpp"
+#include "Game.hpp"
 
 /*------------ Clock ------------*/
 
@@ -21,17 +22,22 @@ void Clock::Tick()
 
 static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 {
-	unsigned int *current_counter_milliseconds = static_cast<unsigned int *>(param);
-	if (*current_counter_milliseconds >= interval_milliseconds)
+	SecondTimer *timer = static_cast<SecondTimer *>(param);
+	if (timer->currentGame->currentGameState == GAME_PAUSED)
 	{
-		*current_counter_milliseconds -= interval_milliseconds;
+		return interval_milliseconds;
+	}
+
+	if (timer->counterMilliseconds >= interval_milliseconds)
+	{
+		timer->counterMilliseconds -= interval_milliseconds;
 	}
 	else
 	{
-		*current_counter_milliseconds = 0;
+		timer->counterMilliseconds = 0;
 	}
 
-	if (*current_counter_milliseconds > 0)
+	if (timer->counterMilliseconds > 0)
 	{
 		SDL_Event event;
 		event.type = SDL_USEREVENT;
@@ -46,6 +52,8 @@ static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 	event.user.code = TIMER_STOP;
 	SDL_PushEvent(&event);
 
+	timer->Stop();
+
 	return 0;
 }
 
@@ -59,10 +67,11 @@ SecondTimer::SecondTimer()
 {
 }
 
-SecondTimer::SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds)
+SecondTimer::SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, Game *current_game)
 	: Callback(TimerCallback),
 	  durationMilliseconds(duration_milliseconds),
-	  intervalMilliseconds(interval_milliseconds)
+	  intervalMilliseconds(interval_milliseconds),
+	  currentGame(current_game)
 {
 	counterMilliseconds = durationMilliseconds;
 
@@ -83,7 +92,7 @@ void SecondTimer::Start()
 		return;
 	}
 
-	timerID = SDL_AddTimer(intervalMilliseconds, Callback, &counterMilliseconds);
+	timerID = SDL_AddTimer(intervalMilliseconds, Callback, this);
 	if (timerID > 0)
 	{
 		Started = true;

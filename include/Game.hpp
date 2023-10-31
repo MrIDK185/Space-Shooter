@@ -7,7 +7,7 @@
 #include "Time.hpp"
 #include "Sound.hpp"
 
-typedef enum
+typedef enum gameState
 {
 	TITLE_SCREEN,
 	GAME_STARTED,
@@ -39,8 +39,8 @@ public:
 
 	volumeControl volumeController;
 
-	gameState currentGameState = TITLE_SCREEN;
-	gameState lastGameState = TITLE_SCREEN;
+	gameState currentGameState;
+	gameState lastGameState;
 
 	bool Running = true;
 

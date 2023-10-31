@@ -82,8 +82,11 @@ void Game::SetupGame()
 
 	Score = Config.START_SCORE;
 
+	currentGameState = TITLE_SCREEN;
+	lastGameState = TITLE_SCREEN;
+
 	gameEvents = EventHandler(this);
-	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS);
+	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, this);
 
 	SDL_DisplayMode display_mode;
 	SDL_GetCurrentDisplayMode(0, &display_mode);

@@ -3,6 +3,8 @@
 
 #include <SDL2/SDL.h>
 
+struct Game;
+
 /*------------ Clock ------------*/
 
 struct Clock
@@ -45,12 +47,14 @@ public:
 		intervalMilliseconds = 0,
 		counterMilliseconds = 0;
 
+	Game *currentGame;
+
 	Uint32 timerID = 0;
 
 	bool Started = false;
 
 	explicit SecondTimer();
-	SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds);
+	SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, Game *current_game);
 	~SecondTimer();
 
 	void Start();
