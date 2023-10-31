@@ -123,6 +123,10 @@ struct volumeControl
 
 	void saveMasterVolume();
 
+	void Mute();
+
+	void Unmute();
+
 	void toggleMute();
 
 	volumeControl() = default;

@@ -282,19 +282,42 @@ void volumeControl::saveMasterVolume()
 	return;
 }
 
-void volumeControl::toggleMute()
+void volumeControl::Mute()
+{
+	if (currentVolumeState == MUTED)
+	{
+		return;
+	}
+
+	saveMasterVolume();
+	changeMasterVolume(0);
+	currentVolumeState = MUTED;
+
+	return;
+}
+
+void volumeControl::Unmute()
 {
 	if (currentVolumeState == UNMUTED)
 	{
-		saveMasterVolume();
-		changeMasterVolume(0);
-		currentVolumeState = MUTED;
-
 		return;
 	}
 
 	currentVolumeState = UNMUTED;
 	changeMasterVolume(lastMasterVolume);
+
+	return;
+}
+
+void volumeControl::toggleMute()
+{
+	if (currentVolumeState == UNMUTED)
+	{
+		Mute();
+		return;
+	}
+
+	Unmute();
 
 	return;
 }
