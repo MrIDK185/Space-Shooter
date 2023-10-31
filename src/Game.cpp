@@ -20,7 +20,7 @@ int Game::Run()
 	while (Running)
 	{
 		gameClock.Tick();
-		currentTicks = SDL_GetTicks64();
+		currentTicks = GetCurrentTime();
 		Keyboard = SDL_GetKeyboardState(nullptr);
 
 		gameEvents.HandleEvents();
@@ -83,7 +83,7 @@ void Game::SetupGame()
 	Score = Config.START_SCORE;
 
 	gameEvents = EventHandler(this);
-	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, TimerCallback);
+	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS);
 
 	SDL_DisplayMode display_mode;
 	SDL_GetCurrentDisplayMode(0, &display_mode);
@@ -209,6 +209,11 @@ void Game::GamePaused()
 }
 
 //* Game handling
+Uint64 Game::GetCurrentTime()
+{
+	return SDL_GetTicks64() - totalTimePaused;
+}
+
 void Game::UpdateScore(int amount)
 {
 	if (amount < 0 && Score < static_cast<unsigned int>(abs(amount)))

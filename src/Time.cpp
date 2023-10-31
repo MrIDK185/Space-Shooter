@@ -19,7 +19,7 @@ void Clock::Tick()
 
 /*------------ SecondTimer ------------*/
 
-Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
+static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 {
 	unsigned int *current_counter_milliseconds = static_cast<unsigned int *>(param);
 	if (*current_counter_milliseconds >= interval_milliseconds)
@@ -52,15 +52,15 @@ Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 //*non-static(public)
 
 SecondTimer::SecondTimer()
-	: Callback(nullptr),
+	: Callback(TimerCallback),
 	  durationMilliseconds(0),
 	  intervalMilliseconds(0),
 	  counterMilliseconds(0)
 {
 }
 
-SecondTimer::SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, SDL_TimerCallback callback)
-	: Callback(callback),
+SecondTimer::SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds)
+	: Callback(TimerCallback),
 	  durationMilliseconds(duration_milliseconds),
 	  intervalMilliseconds(interval_milliseconds)
 {
