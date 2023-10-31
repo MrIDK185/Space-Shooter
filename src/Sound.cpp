@@ -196,11 +196,6 @@ soundState soundMusic::GetCurrentSoundState()
 
 void soundMusic::Play()
 {
-	if (currentSoundState == PLAYING || currentSoundState == PAUSED)
-	{
-		return;
-	}
-
 	if (Mix_PlayMusic(Music, -1) == 0)
 	{
 		currentSoundState = PLAYING;
