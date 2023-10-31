@@ -26,7 +26,7 @@ Gem::Gem(SDL_Renderer *renderer, std::string path, float scale, float radius, co
 	  maximumBrightness(maximum_brightness),
 	  blinkFactor(blink_factor)
 {
-	Randomize(screen_width, screen_height, SDL_GetTicks64());
+	Randomize(screen_width, screen_height, 0);
 
 	return;
 }

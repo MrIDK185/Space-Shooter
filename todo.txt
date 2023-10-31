@@ -5,7 +5,6 @@ Game over screen
  -> Score handling
 
 Pause Screen
- -> Pause when start timer active
  -> Dim brightness (filter)
 
 Asteroid functionality

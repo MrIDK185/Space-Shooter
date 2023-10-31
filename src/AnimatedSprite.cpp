@@ -12,7 +12,7 @@ AnimatedSprite::AnimatedSprite(SDL_Renderer *renderer, std::string path, float s
 	  IMG_TYPES(img_types),
 	  ANIMATIONS_PER_SECOND(animations_per_second),
 	  IMGPartRect({0, 0, (int)frame_width, (int)frame_height}),
-	  nextTickTime(animations_per_second > 0 ? SDL_GetTicks64() + 1000 / animations_per_second : 0)
+	  nextTickTime(0)
 {
 	SetRectSize(frame_width * scale, frame_height * scale);
 
