@@ -84,7 +84,10 @@ void SecondTimer::Start()
 	}
 
 	timerID = SDL_AddTimer(intervalMilliseconds, Callback, &counterMilliseconds);
-	Started = true;
+	if (timerID > 0)
+	{
+		Started = true;
+	}
 
 	return;
 }
