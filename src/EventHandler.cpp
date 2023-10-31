@@ -30,7 +30,6 @@ bool EventHandler::Handle_Escape()
 {
 	if (currentGame->currentGameState != GAME_PAUSED)
 	{
-		currentGame->startTimer.Stop();
 		currentGame->pausedTicks = SDL_GetTicks64();
 		currentGame->volumeController.Mute();
 		currentGame->lastGameState = currentGame->currentGameState;
@@ -38,7 +37,6 @@ bool EventHandler::Handle_Escape()
 		return true;
 	}
 
-	currentGame->startTimer.Start();
 	currentGame->totalTimePaused += SDL_GetTicks64() - currentGame->pausedTicks;
 	currentGame->volumeController.Unmute();
 	currentGame->currentGameState = currentGame->lastGameState;
