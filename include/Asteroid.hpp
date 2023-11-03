@@ -21,6 +21,8 @@ public:
 
 	void Move(int screen_width, int screen_height, float delta_time_seconds);
 
+	void Randomize(int screen_width, int screen_height);
+
 	void Render() const override;
 };
 

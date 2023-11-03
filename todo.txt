@@ -6,6 +6,9 @@ Game over screen
  -> High score
  -> Restarting Game
 
+Player
+ -> Reset option
+
 Pause Screen
  -> Dim brightness (filter)
 

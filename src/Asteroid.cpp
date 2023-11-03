@@ -7,17 +7,9 @@ Asteroid::Asteroid(SDL_Renderer *renderer, std::string path, float scale, float 
 	: IMGSprite::IMGSprite(renderer, path, scale, radius),
 	  Velocity(velocity)
 {
-	std::random_device rd;
-	std::mt19937 gen(rd());
+	Randomize(screen_width, screen_height);
 
-	std::uniform_int_distribution<> random_angle(0, 359);
-
-	Angle = static_cast<unsigned int>(random_angle(gen));
-
-	std::uniform_int_distribution<> random_x_pos(0, screen_width - Rect.w);
-	std::uniform_int_distribution<> random_y_pos(0, screen_height - Rect.h);
-
-	SetRectPos(random_x_pos(gen), random_y_pos(gen));
+	return;
 }
 
 void Asteroid::Move(int screen_width, int screen_height, float delta_time_seconds)
@@ -45,7 +37,26 @@ void Asteroid::Move(int screen_width, int screen_height, float delta_time_second
 	return;
 }
 
+void Asteroid::Randomize(int screen_width, int screen_height)
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	std::uniform_int_distribution<> random_angle(0, 359);
+
+	Angle = static_cast<unsigned int>(random_angle(gen));
+
+	std::uniform_int_distribution<> random_x_pos(0, screen_width - Rect.w);
+	std::uniform_int_distribution<> random_y_pos(0, screen_height - Rect.h);
+
+	SetRectPos(random_x_pos(gen), random_y_pos(gen));
+
+	return;
+}
+
 void Asteroid::Render() const
 {
 	SDL_RenderCopyExF(destRenderer, Texture, nullptr, &Rect, Angle, nullptr, SDL_FLIP_NONE);
+
+	return;
 }

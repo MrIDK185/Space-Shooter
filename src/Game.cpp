@@ -171,18 +171,44 @@ void Game::CreateObjects()
 
 void Game::Reset()
 {
-
-	Score = Config.START_SCORE;
-
 	currentGameState = TITLE_SCREEN;
 	lastGameState = TITLE_SCREEN;
 
-	objectsGameOver.ClearAll();
-	objectsGamePaused.ClearAll();
-	objectsGameRunning.ClearAll();
-	objectsTitleScreen.ClearAll();
+	startTimer.Reset();
 
-	CreateObjects();
+	Score = Config.START_SCORE;
+	std::wstring current_score = std::to_wstring(Score);
+	objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
+	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
+	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
+
+	objectsTitleScreen.Texts.at("startText")->SetMessage(Config.START_TEXT);
+	SDL_FRect text_rect = objectsTitleScreen.Texts.at("startText")->GetRect();
+	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
+
+	for (const auto &[name, player] : objectsGameRunning.Players)
+	{
+		SDL_Rect player_rect = player->GetIMGPartRect();
+		player->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2),
+						   static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
+		player->SetGemCollected(false);
+		player->SetCollectionTicks(0);
+		player->SetAngle(0);
+		player->SetVelocity(0);
+	}
+
+	for (const auto &gem : objectsGameRunning.Gems)
+	{
+		gem->Randomize(screenWidth, screenHeight, GetCurrentTime());
+	}
+
+	for (const auto &asteroid : objectsGameRunning.Asteroids)
+	{
+		asteroid->Randomize(screenWidth, screenHeight);
+	}
+
+	objectsGameRunning.Musics.at("backgroundMusic")->Stop();
+	objectsTitleScreen.Musics.at("menuMusic")->Play();
 
 	return;
 }
@@ -373,7 +399,7 @@ void Game::HandleGameOver()
 	}
 
 	std::shared_ptr<Text> game_over = objectsGameOver.Texts.at("gameOver");
-	std::wstring game_over_text = game_over->GetMessage();
+	std::wstring game_over_text = Config.GAME_OVER_TEXT;
 	boost::algorithm::replace_all(game_over_text, L"{S}", current_score);
 	boost::algorithm::replace_all(game_over_text, L"{HS}", high_score);
 	game_over->SetMessage(game_over_text);
