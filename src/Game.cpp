@@ -6,6 +6,7 @@
 #include "Sound.hpp"
 
 #include <iostream>
+#include <boost/algorithm/string/replace.hpp>
 
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
@@ -245,7 +246,7 @@ void Game::UpdateScore(int amount)
 {
 	if (amount < 0 && Score < static_cast<unsigned int>(abs(amount)))
 	{
-		currentGameState = GAME_OVER;
+		HandleGameOver();
 		return;
 	}
 
@@ -337,6 +338,27 @@ void Game::CheckCollisions()
 			UpdateScore(-1);
 		}
 	}
+
+	return;
+}
+
+void Game::HandleGameOver()
+{
+	currentGameState = GAME_OVER;
+
+	std::wstring current_score = std::to_wstring(Score);
+	std::wstring high_score = std::to_wstring(Highscore);
+	if (Score > Highscore)
+	{
+		Highscore = Score;
+		high_score = current_score;
+	}
+
+	std::shared_ptr<Text> game_over = objectsGameOver.Texts.at("gameOver");
+	std::wstring game_over_text = game_over->GetMessage();
+	boost::algorithm::replace_all(game_over_text, L"{S}", current_score);
+	boost::algorithm::replace_all(game_over_text, L"{HS}", high_score);
+	game_over->SetMessage(game_over_text);
 
 	return;
 }

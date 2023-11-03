@@ -26,7 +26,8 @@ public:
 	unsigned int
 		screenWidth = 1920,
 		screenHeight = 1080,
-		Score = 0;
+		Score = 0,
+		Highscore = 0;
 
 	Configuration Config;
 	EventHandler gameEvents;
@@ -73,6 +74,7 @@ public:
 	void HandleAsteroids();
 	void HandleGems();
 	void CheckCollisions();
+	void HandleGameOver();
 
 	//* Rendering
 	void UpdateRenderScale();
