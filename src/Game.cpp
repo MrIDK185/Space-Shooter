@@ -353,7 +353,7 @@ void Game::CheckCollisions()
 				continue;
 			}
 
-			UpdateScore(-1);
+			HandleGameOver();
 		}
 	}
 
