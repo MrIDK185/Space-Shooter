@@ -60,6 +60,7 @@ public:
 	//* Initialization
 	void SetupGame();
 	void CreateObjects();
+	void Reset();
 
 	//* Game modes
 	void GameTitleScreen();

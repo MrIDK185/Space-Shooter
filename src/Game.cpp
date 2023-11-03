@@ -169,6 +169,24 @@ void Game::CreateObjects()
 	return;
 }
 
+void Game::Reset()
+{
+
+	Score = Config.START_SCORE;
+
+	currentGameState = TITLE_SCREEN;
+	lastGameState = TITLE_SCREEN;
+
+	objectsGameOver.ClearAll();
+	objectsGamePaused.ClearAll();
+	objectsGameRunning.ClearAll();
+	objectsTitleScreen.ClearAll();
+
+	CreateObjects();
+
+	return;
+}
+
 //* Game modes
 void Game::GameTitleScreen()
 {

@@ -51,6 +51,12 @@ bool EventHandler::Handle_Return()
 		return false;
 	}
 
+	if (currentGame->currentGameState == GAME_OVER)
+	{
+		currentGame->Reset();
+		return true;
+	}
+
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
 	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
