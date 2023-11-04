@@ -191,10 +191,7 @@ void Game::Reset()
 		SDL_Rect player_rect = player->GetIMGPartRect();
 		player->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2),
 						   static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
-		player->SetGemCollected(false);
-		player->SetCollectionTicks(0);
-		player->SetAngle(0);
-		player->SetVelocity(0);
+		player->Reset(Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION);
 	}
 
 	for (const auto &gem : objectsGameRunning.Gems)

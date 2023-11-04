@@ -81,6 +81,8 @@ public:
 
 	void HandleInput(int screen_width, int screen_height, float delta_time_seconds, const Uint8 *keyboard);
 
+	void Reset(float acceleration, float max_velocity, float friction);
+
 	void Render() const override;
 };
 

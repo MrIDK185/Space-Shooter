@@ -2,12 +2,10 @@ Sound handling
  -> callback to stop function when finished playing
 
 Game over screen
- -> Score handling
- -> High score
- -> Restarting Game
+ -> Center Text
 
-Player
- -> Reset option
+Sprite
+ -> SetPos automatic offset calculation inside
 
 Pause Screen
  -> Dim brightness (filter)

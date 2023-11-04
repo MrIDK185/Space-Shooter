@@ -226,6 +226,19 @@ void Player::HandleInput(int screen_width, int screen_height, float delta_time_s
 	return;
 }
 
+void Player::Reset(float acceleration, float max_velocity, float friction)
+{
+	SetGemCollected(false);
+	SetCollectionTicks(0);
+	SetAngle(0);
+	SetVelocity(0);
+	SetAcceleration(acceleration);
+	SetMaxVelocity(max_velocity);
+	SetFriction(friction);
+
+	return;
+}
+
 void Player::Render() const
 {
 	SDL_RenderCopyExF(destRenderer, Texture, &IMGPartRect, &Rect, Angle, nullptr, SDL_FLIP_NONE);
