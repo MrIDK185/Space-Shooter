@@ -31,7 +31,7 @@ public:
 
 	void SetRectSize(float width, float height);
 
-	void SetRectPos(float pos_x, float pos_y);
+	virtual void SetRectPos(float pos_x, float pos_y);
 
 	virtual void Render() const;
 };

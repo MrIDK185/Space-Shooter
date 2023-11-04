@@ -55,8 +55,8 @@ void Sprite::SetRectSize(float width, float height)
 
 void Sprite::SetRectPos(float pos_x, float pos_y)
 {
-	Rect.x = pos_x;
-	Rect.y = pos_y;
+	Rect.x = pos_x - Rect.w / 2;
+	Rect.y = pos_y - Rect.h / 2;
 
 	return;
 }

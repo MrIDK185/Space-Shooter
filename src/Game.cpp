@@ -119,8 +119,7 @@ void Game::CreateObjects()
 
 	objectsTitleScreen.Texts["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH,
 																   Config.START_TEXT_SIZE, Config.START_TEXT_COLOR);
-	SDL_FRect text_rect = objectsTitleScreen.Texts.at("startText")->GetRect();
-	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
+	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	objectsTitleScreen.Chunks["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3");
 
@@ -137,15 +136,13 @@ void Game::CreateObjects()
 	objectsGameRunning.Gems.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
 
 	objectsGameRunning.Players["Player1"] = Player::NewPlayer(Config, Renderer, "assets/images/player.png");
-	SDL_Rect player_rect = objectsGameRunning.Players.at("Player1")->GetIMGPartRect();
-	objectsGameRunning.Players.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2),
-														 static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
+	objectsGameRunning.Players.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2),
+														 static_cast<float>(screenHeight / 2));
 
 	std::wstring current_score = std::to_wstring(Score);
 	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH,
 																   Config.INGAME_TEXT_SIZE, Config.INGAME_TEXT_COLOR);
-	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
-	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
+	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0);
 
 	objectsGameRunning.Chunks["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3");
 
@@ -163,8 +160,7 @@ void Game::CreateObjects()
 
 	objectsGameOver.Texts["gameOver"] = std::make_shared<Text>(Renderer, Config.GAME_OVER_TEXT, Config.FONT_PATH,
 															   Config.GAME_OVER_TEXT_SIZE, Config.GAME_OVER_TEXT_COLOR);
-	SDL_FRect game_over_rect = objectsGameOver.Texts.at("gameOver")->GetRect();
-	objectsGameOver.Texts.at("gameOver")->SetRectPos(static_cast<float>(screenWidth / 2) - game_over_rect.w / 2, static_cast<float>(screenHeight / 2) - game_over_rect.h / 2);
+	objectsGameOver.Texts.at("gameOver")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	return;
 }
@@ -179,18 +175,15 @@ void Game::Reset()
 	Score = Config.START_SCORE;
 	std::wstring current_score = std::to_wstring(Score);
 	objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
-	SDL_FRect score_rect = objectsGameRunning.Texts.at("scoreText")->GetRect();
-	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
+	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0);
 
 	objectsTitleScreen.Texts.at("startText")->SetMessage(Config.START_TEXT);
-	SDL_FRect text_rect = objectsTitleScreen.Texts.at("startText")->GetRect();
-	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2) - text_rect.w / 2, static_cast<float>(screenHeight / 2) - text_rect.h / 2);
+	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	for (const auto &[name, player] : objectsGameRunning.Players)
 	{
-		SDL_Rect player_rect = player->GetIMGPartRect();
-		player->SetRectPos(static_cast<float>(screenWidth / 2) - static_cast<float>(player_rect.w / 2),
-						   static_cast<float>(screenHeight / 2) - static_cast<float>(player_rect.h / 2));
+		player->SetRectPos(static_cast<float>(screenWidth / 2),
+						   static_cast<float>(screenHeight / 2));
 		player->Reset(Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION);
 	}
 
@@ -297,8 +290,7 @@ void Game::UpdateScore(int amount)
 	std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
 
 	scoreText->SetMessage(current_score);
-	SDL_FRect score_rect = scoreText->GetRect();
-	scoreText->SetRectPos(static_cast<float>(screenWidth) - score_rect.w, 0);
+	scoreText->SetRectPos(static_cast<float>(screenWidth), 0);
 
 	return;
 }

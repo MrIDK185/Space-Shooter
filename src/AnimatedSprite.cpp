@@ -85,6 +85,14 @@ SDL_Rect AnimatedSprite::GetIMGPartRect() const
 	return IMGPartRect;
 }
 
+void AnimatedSprite::SetRectPos(float pos_x, float pos_y)
+{
+	Rect.x = pos_x - IMGPartRect.w / 2;
+	Rect.y = pos_y - IMGPartRect.h / 2;
+
+	return;
+}
+
 Uint64 AnimatedSprite::GetNextTickTime() const
 {
 	return nextTickTime;

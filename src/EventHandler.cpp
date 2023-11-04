@@ -61,8 +61,7 @@ bool EventHandler::Handle_Return()
 	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
 	startText->SetMessage(countdown_str.c_str());
-	SDL_FRect text_rect = startText->GetRect();
-	startText->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
+	startText->SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
 
 	currentGame->objectsTitleScreen.Musics.at("menuMusic")->Stop();
 	currentGame->objectsTitleScreen.Chunks.at("startSound")->Play();
@@ -141,8 +140,7 @@ bool EventHandler::Handle_TimerDecrement()
 	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
 	startText->SetMessage(countdown_str);
-	SDL_FRect text_rect = startText->GetRect();
-	startText->SetRectPos(currentGame->screenWidth / 2 - text_rect.w / 2, currentGame->screenHeight / 2 - text_rect.h / 2);
+	startText->SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
 
 	return true;
 }
