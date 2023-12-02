@@ -27,7 +27,7 @@ while test $# -gt 0; do
       ;;
 
     --libs)
-      echo -lSDL2main -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+      echo -lSDL2main -lSDL2_image -lSDL2_mixer -lSDL2_ttf -ljxl
       ;;
   esac
   shift
