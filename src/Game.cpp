@@ -142,7 +142,7 @@ void Game::CreateObjects()
 	std::wstring current_score = std::to_wstring(Score);
 	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH,
 																   Config.INGAME_TEXT_SIZE, Config.INGAME_TEXT_COLOR);
-	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0);
+	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
 	objectsGameRunning.Chunks["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3");
 
@@ -290,7 +290,7 @@ void Game::UpdateScore(int amount)
 	std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
 
 	scoreText->SetMessage(current_score);
-	scoreText->SetRectPos(static_cast<float>(screenWidth), 0);
+	scoreText->SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
 	return;
 }

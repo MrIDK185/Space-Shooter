@@ -51,7 +51,7 @@ public:
 
 	SDL_Rect GetIMGPartRect() const;
 
-	void SetRectPos(float pos_x, float pos_y) override;
+	void SetRectPos(float pos_x, float pos_y, Alignments align = CENTER) override;
 
 	Uint64 GetNextTickTime() const;
 

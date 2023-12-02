@@ -3,6 +3,15 @@
 
 #include <SDL2/SDL.h>
 
+typedef enum
+{
+	NW,
+	NE,
+	SE,
+	SW,
+	CENTER
+} Alignments;
+
 class Sprite
 {
 protected:
@@ -31,7 +40,7 @@ public:
 
 	void SetRectSize(float width, float height);
 
-	virtual void SetRectPos(float pos_x, float pos_y);
+	virtual void SetRectPos(float pos_x, float pos_y, Alignments align = CENTER);
 
 	virtual void Render() const;
 };

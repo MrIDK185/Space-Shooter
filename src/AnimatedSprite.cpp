@@ -85,10 +85,32 @@ SDL_Rect AnimatedSprite::GetIMGPartRect() const
 	return IMGPartRect;
 }
 
-void AnimatedSprite::SetRectPos(float pos_x, float pos_y)
+void AnimatedSprite::SetRectPos(float pos_x, float pos_y, Alignments align)
 {
-	Rect.x = pos_x - IMGPartRect.w / 2;
-	Rect.y = pos_y - IMGPartRect.h / 2;
+	switch (align)
+	{
+	case NW:
+		break;
+	case NE:
+		pos_x -= IMGPartRect.w;
+		break;
+	case SE:
+		pos_x -= IMGPartRect.w;
+		pos_y -= IMGPartRect.h;
+		break;
+	case SW:
+		pos_y -= IMGPartRect.h;
+		break;
+	case CENTER:
+		pos_x -= IMGPartRect.w / 2;
+		pos_y -= IMGPartRect.h / 2;
+		break;
+	default:
+		break;
+	}
+
+	Rect.x = pos_x;
+	Rect.y = pos_y;
 
 	return;
 }
