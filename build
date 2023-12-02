@@ -39,7 +39,7 @@ elif [ "$1" = "debug" ]; then
 
 elif [ "$1" = "release" ]; then
     echo -e "${WHITE}Starting build(Release)..." && echo $'\n'
-    ${CC} `./project-config --cflags` `sdl2-config --cflags` -s -O2 -m64 `sdl2-config --libs` `./project-config --libs`
+    ${CC} `./project-config --cflags` `sdl2-config --cflags` -s -O3 -m64 `sdl2-config --libs` `./project-config --libs`
     if [ "$?" == 0 ]; then
 	    echo -e "${GREEN}${BOLD}Build successful"
 		exit 0
