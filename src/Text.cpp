@@ -105,8 +105,7 @@ void Text::SetTextCentered()
 
 	SDL_SetRenderTarget(destRenderer, nullptr);
 
-	int width,
-		height;
+	int width, height;
 	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
 	SetRectSize(width, height);
 
@@ -144,6 +143,7 @@ std::wstring Text::GetMessage() const
 void Text::SetMessage(std::wstring new_message, bool centered)
 {
 	Message = new_message;
+	SDL_DestroyTexture(Texture);
 	centered ? SetTextCentered() : SetText();
 
 	return;

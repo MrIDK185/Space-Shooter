@@ -176,7 +176,7 @@ void Game::Reset()
 	Score = Config.START_SCORE;
 	std::wstring current_score = std::to_wstring(Score);
 	objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
-	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0);
+	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
 	objectsTitleScreen.Texts.at("startText")->SetMessage(Config.START_TEXT);
 	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
@@ -393,6 +393,7 @@ void Game::HandleGameOver()
 	boost::algorithm::replace_all(game_over_text, L"{S}", current_score);
 	boost::algorithm::replace_all(game_over_text, L"{HS}", high_score);
 	game_over->SetMessage(game_over_text);
+	game_over->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	return;
 }
