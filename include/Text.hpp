@@ -19,18 +19,19 @@ private:
 	SDL_Color fontColor;
 
 	void SetText();
+	void SetTextCentered();
 
 public:
 	//*non-static
 
 	Text(SDL_Renderer *renderer, std::wstring message, std::string font_path, unsigned int font_size,
-		 SDL_Color font_color);
+		 SDL_Color font_color, bool centered = true);
 
 	~Text() override;
 
 	std::wstring GetMessage() const;
 
-	void SetMessage(std::wstring new_message);
+	void SetMessage(std::wstring new_message, bool centered = true);
 
 	std::string GetPath() const;
 

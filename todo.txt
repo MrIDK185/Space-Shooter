@@ -6,9 +6,6 @@ Sound handling
 Game over screen | Text class
  -> Center Text, new function for multiline input
 
-Pause Screen
- -> Dim brightness (filter)
-
 Asteroid functionality
  -> movement
  -> breaking
