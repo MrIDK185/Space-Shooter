@@ -153,6 +153,7 @@ void Game::CreateObjects()
 	//* Game Paused
 
 	objectsGamePaused.IMGSprites["pauseIcon"] = std::make_shared<IMGSprite>(Renderer, "assets/images/pause-button.png", 0.3, 0);
+	objectsGamePaused.IMGSprites["darkenOverlay"] = std::make_shared<IMGSprite>(Renderer, "assets/images/Overlay.png", 1, 0);
 
 	//* Game Over
 
