@@ -1,11 +1,3 @@
-Sound handling
- -> Sound handler class: SoundChunk requests channel, free one is returned by handler,
-    handler stores used channels mapped to music/chunk, and hass callback function
- -> callback to stop function when finished playing
-
-Game over screen | Text class
- -> Center Text, new function for multiline input
-
 Asteroid functionality
  -> movement
  -> breaking

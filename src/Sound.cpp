@@ -1,7 +1,5 @@
 #include "Sound.hpp"
 
-#include <SDL2/SDL_mixer.h>
-
 /*------------ soundChunk ------------*/
 
 //*non-static(private)
@@ -15,9 +13,10 @@ void soundChunk::LoadChunk()
 
 //*non-static(public)
 
-soundChunk::soundChunk(std::string path)
+soundChunk::soundChunk(std::string path, channelControl *controller)
 	: Path(path),
-	  Volume(MIX_MAX_VOLUME)
+	  Volume(MIX_MAX_VOLUME),
+	  channelController(controller)
 {
 	LoadChunk();
 
@@ -28,6 +27,7 @@ soundChunk::~soundChunk()
 {
 	Mix_FreeChunk(Chunk);
 	Chunk = nullptr;
+	channelController = nullptr;
 
 	return;
 }
@@ -96,11 +96,23 @@ soundState soundChunk::GetCurrentSoundState()
 	return currentSoundState;
 }
 
+void soundChunk::SetCurrentSoundState(soundState new_state)
+{
+	if (currentSoundState == new_state)
+	{
+		return;
+	}
+
+	currentSoundState = new_state;
+}
+
 void soundChunk::Play()
 {
-	Channel = Mix_PlayChannel(-1, Chunk, 0);
+	Channel = channelController->getFreeChannel(this);
+
 	if (Channel >= 0)
 	{
+		Mix_PlayChannel(Channel, Chunk, 0);
 		currentSoundState = PLAYING;
 	}
 
@@ -313,6 +325,31 @@ void volumeControl::toggleMute()
 	}
 
 	Unmute();
+
+	return;
+}
+
+/*------------ ChannelControl ------------*/
+
+int channelControl::getFreeChannel(soundChunk *chunk)
+{
+	for (int idx = 0; idx < freeChannels.size(); ++idx)
+	{
+		if (freeChannels[idx])
+		{
+			freeChannels[idx] = false;
+			usedChannels[idx] = chunk;
+			return idx;
+		}
+	}
+
+	return -1;
+}
+
+void channelControl::channelFinished(int channel)
+{
+	freeChannels[channel] = true;
+	usedChannels[channel]->SetCurrentSoundState(STOPPED);
 
 	return;
 }

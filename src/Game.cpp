@@ -12,6 +12,15 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
+static channelControl *channelControllerInstance = nullptr;
+
+static void channelFinishedCallback(int channel)
+{
+	channelControllerInstance->channelFinished(channel);
+
+	return;
+}
+
 int Game::Run()
 {
 	SetupGame();
@@ -93,6 +102,9 @@ void Game::SetupGame()
 	gameEvents = EventHandler(this);
 	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, this);
 
+	channelControllerInstance = &channelController;
+	Mix_ChannelFinished(channelFinishedCallback);
+
 	SDL_DisplayMode display_mode;
 	SDL_GetCurrentDisplayMode(0, &display_mode);
 	screenWidth = display_mode.w;
@@ -121,7 +133,7 @@ void Game::CreateObjects()
 																   Config.START_TEXT_SIZE, Config.START_TEXT_COLOR);
 	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
-	objectsTitleScreen.Chunks["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3");
+	objectsTitleScreen.Chunks["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3", &channelController);
 
 	objectsTitleScreen.Musics["menuMusic"] = std::make_shared<soundMusic>("assets/sounds/menu_music.mp3");
 	objectsTitleScreen.Musics.at("menuMusic")->Play();
@@ -144,9 +156,9 @@ void Game::CreateObjects()
 																   Config.INGAME_TEXT_SIZE, Config.INGAME_TEXT_COLOR);
 	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
-	objectsGameRunning.Chunks["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3");
+	objectsGameRunning.Chunks["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3", &channelController);
 
-	objectsGameRunning.Chunks["gemMissed"] = std::make_shared<soundChunk>("assets/sounds/gem_missed.wav");
+	objectsGameRunning.Chunks["gemMissed"] = std::make_shared<soundChunk>("assets/sounds/gem_missed.wav", &channelController);
 
 	objectsGameRunning.Musics["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
 

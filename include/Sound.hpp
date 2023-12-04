@@ -2,9 +2,11 @@
 #define SOUND_HPP
 
 #include <string>
+#include <array>
 
-typedef struct Mix_Chunk Mix_Chunk;
-typedef struct _Mix_Music Mix_Music;
+#include <SDL2/SDL_mixer.h>
+
+struct channelControl;
 
 typedef enum
 {
@@ -27,12 +29,14 @@ private:
 	int Volume;
 	soundState currentSoundState = STOPPED;
 
+	channelControl *channelController = nullptr;
+
 	void LoadChunk();
 
 public:
 	//*non-static
 
-	explicit soundChunk(std::string path);
+	explicit soundChunk(std::string path, channelControl *controller);
 
 	~soundChunk();
 
@@ -53,6 +57,8 @@ public:
 	void SetVolume(int new_volume);
 
 	soundState GetCurrentSoundState();
+
+	void SetCurrentSoundState(soundState new_state);
 
 	void Play();
 
@@ -131,6 +137,22 @@ struct volumeControl
 
 	volumeControl() = default;
 	~volumeControl() = default;
+};
+
+/*------------ ChannelControl ------------*/
+
+struct channelControl
+{
+private:
+	std::array<bool, MIX_CHANNELS> freeChannels = {true};
+	std::array<soundChunk *, MIX_CHANNELS> usedChannels = {nullptr};
+
+public:
+	int getFreeChannel(soundChunk *chunk);
+	void channelFinished(int channel);
+
+	channelControl() = default;
+	~channelControl() = default;
 };
 
 #endif //! SOUND_HPP

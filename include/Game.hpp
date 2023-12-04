@@ -39,6 +39,7 @@ public:
 	Uint64 totalTimePaused = 0;
 
 	volumeControl volumeController;
+	channelControl channelController;
 
 	gameState currentGameState;
 	gameState lastGameState;
