@@ -61,7 +61,7 @@ int InitializeSubsystems()
 		return -1;
 	}
 	std::cout << "Opening audio device...\n\n";
-	if (Mix_OpenAudio(48000, AUDIO_F32SYS, 2, 4096) < 0)
+	if (Mix_OpenAudio(192000, AUDIO_F32SYS, 8, 8192) < 0)
 	{
 		ShowSDLErrorMessage();
 		return -1;
