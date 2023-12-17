@@ -2,3 +2,6 @@ Asteroid functionality
  -> movement
  -> breaking
  -> collision, damage
+
+Game Objects
+ -> std::unique_ptr instead of shared
