@@ -4,9 +4,9 @@
 
 //*static(public)
 
-std::shared_ptr<Gem> Gem::NewGem(Configuration &config, SDL_Renderer *renderer, std::string path, int screen_width, int screen_height)
+std::unique_ptr<Gem> Gem::NewGem(Configuration &config, SDL_Renderer *renderer, std::string path, int screen_width, int screen_height)
 {
-	return std::make_shared<Gem>(renderer, path, config.GEM_SCALE, config.GEM_RADIUS, config.GEM_FRAME_WIDTH,
+	return std::make_unique<Gem>(renderer, path, config.GEM_SCALE, config.GEM_RADIUS, config.GEM_FRAME_WIDTH,
 								 config.GEM_FRAME_HEIGHT, config.GEM_IMG_FRAMES, config.GEM_IMG_TYPES, 0, config.GEM_BLINK_DURATION,
 								 config.GEM_LIFETIME_DURATION, config.GEM_MINIMUM_BRIGHTNESS, config.GEM_MAXIMUM_BRIGHTNESS,
 								 config.GEM_BLINK_FACTOR, screen_width, screen_height);

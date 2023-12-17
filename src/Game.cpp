@@ -127,22 +127,22 @@ void Game::CreateObjects()
 {
 	//* Title screen
 
-	objectsTitleScreen.IMGSprites["startBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
+	objectsTitleScreen.IMGSprites["startBackground"] = std::make_unique<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
 
-	objectsTitleScreen.Texts["startText"] = std::make_shared<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH,
+	objectsTitleScreen.Texts["startText"] = std::make_unique<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH,
 																   Config.START_TEXT_SIZE, Config.START_TEXT_COLOR);
 	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
-	objectsTitleScreen.Chunks["startSound"] = std::make_shared<soundChunk>("assets/sounds/game_start.mp3", &channelController);
+	objectsTitleScreen.Chunks["startSound"] = std::make_unique<soundChunk>("assets/sounds/game_start.mp3", &channelController);
 
-	objectsTitleScreen.Musics["menuMusic"] = std::make_shared<soundMusic>("assets/sounds/menu_music.mp3");
+	objectsTitleScreen.Musics["menuMusic"] = std::make_unique<soundMusic>("assets/sounds/menu_music.mp3");
 	objectsTitleScreen.Musics.at("menuMusic")->Play();
 
 	//* Game running
 
-	objectsGameRunning.IMGSprites["gameBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background.png", 1, 0);
+	objectsGameRunning.IMGSprites["gameBackground"] = std::make_unique<IMGSprite>(Renderer, "assets/images/background.png", 1, 0);
 
-	objectsGameRunning.Asteroids.push_back(std::make_shared<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200,
+	objectsGameRunning.Asteroids.push_back(std::make_unique<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200,
 																	  screenWidth, screenHeight));
 
 	objectsGameRunning.Gems.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
@@ -152,26 +152,26 @@ void Game::CreateObjects()
 														 static_cast<float>(screenHeight / 2));
 
 	std::wstring current_score = std::to_wstring(Score);
-	objectsGameRunning.Texts["scoreText"] = std::make_shared<Text>(Renderer, current_score, Config.FONT_PATH,
+	objectsGameRunning.Texts["scoreText"] = std::make_unique<Text>(Renderer, current_score, Config.FONT_PATH,
 																   Config.INGAME_TEXT_SIZE, Config.INGAME_TEXT_COLOR);
 	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
-	objectsGameRunning.Chunks["gemCollected"] = std::make_shared<soundChunk>("assets/sounds/gem_collected.mp3", &channelController);
+	objectsGameRunning.Chunks["gemCollected"] = std::make_unique<soundChunk>("assets/sounds/gem_collected.mp3", &channelController);
 
-	objectsGameRunning.Chunks["gemMissed"] = std::make_shared<soundChunk>("assets/sounds/gem_missed.wav", &channelController);
+	objectsGameRunning.Chunks["gemMissed"] = std::make_unique<soundChunk>("assets/sounds/gem_missed.wav", &channelController);
 
-	objectsGameRunning.Musics["backgroundMusic"] = std::make_shared<soundMusic>("assets/sounds/background_music.mp3");
+	objectsGameRunning.Musics["backgroundMusic"] = std::make_unique<soundMusic>("assets/sounds/background_music.mp3");
 
 	//* Game Paused
 
-	objectsGamePaused.IMGSprites["pauseIcon"] = std::make_shared<IMGSprite>(Renderer, "assets/images/pause-button.png", 0.3, 0);
-	objectsGamePaused.IMGSprites["darkenOverlay"] = std::make_shared<IMGSprite>(Renderer, "assets/images/Overlay.png", 1, 0);
+	objectsGamePaused.IMGSprites["pauseIcon"] = std::make_unique<IMGSprite>(Renderer, "assets/images/pause-button.png", 0.3, 0);
+	objectsGamePaused.IMGSprites["darkenOverlay"] = std::make_unique<IMGSprite>(Renderer, "assets/images/Overlay.png", 1, 0);
 
 	//* Game Over
 
-	objectsGameOver.IMGSprites["endBackground"] = std::make_shared<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
+	objectsGameOver.IMGSprites["endBackground"] = std::make_unique<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
 
-	objectsGameOver.Texts["gameOver"] = std::make_shared<Text>(Renderer, Config.GAME_OVER_TEXT, Config.FONT_PATH,
+	objectsGameOver.Texts["gameOver"] = std::make_unique<Text>(Renderer, Config.GAME_OVER_TEXT, Config.FONT_PATH,
 															   Config.GAME_OVER_TEXT_SIZE, Config.GAME_OVER_TEXT_COLOR);
 	objectsGameOver.Texts.at("gameOver")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
@@ -300,7 +300,7 @@ void Game::UpdateScore(int amount)
 	Score += amount;
 
 	std::wstring current_score = std::to_wstring(Score);
-	std::shared_ptr<Text> scoreText = objectsGameRunning.Texts.at("scoreText");
+	std::unique_ptr<Text> &scoreText = objectsGameRunning.Texts.at("scoreText");
 
 	scoreText->SetMessage(current_score);
 	scoreText->SetRectPos(static_cast<float>(screenWidth), 0, NE);
@@ -321,7 +321,7 @@ void Game::HandlePlayers()
 
 void Game::HandleAsteroids()
 {
-	for (const std::shared_ptr<Asteroid> &asteroid : objectsGameRunning.Asteroids)
+	for (const auto &asteroid : objectsGameRunning.Asteroids)
 	{
 		asteroid->Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
 	}
@@ -331,7 +331,7 @@ void Game::HandleAsteroids()
 
 void Game::HandleGems()
 {
-	for (const std::shared_ptr<Gem> &gem : objectsGameRunning.Gems)
+	for (const auto &gem : objectsGameRunning.Gems)
 	{
 		if (currentTicks >= gem->GetBlinkTicks())
 		{
@@ -352,9 +352,9 @@ void Game::CheckCollisions()
 {
 	for (const auto &[name, player] : objectsGameRunning.Players)
 	{
-		for (const std::shared_ptr<Gem> &gem : objectsGameRunning.Gems)
+		for (const auto &gem : objectsGameRunning.Gems)
 		{
-			if (!gem->Collideswith(player))
+			if (!gem->Collideswith(*player))
 			{
 				continue;
 			}
@@ -374,9 +374,9 @@ void Game::CheckCollisions()
 			player->SetCollectionTicks(currentTicks);
 		}
 
-		for (const std::shared_ptr<Asteroid> &asteroid : objectsGameRunning.Asteroids)
+		for (const auto &asteroid : objectsGameRunning.Asteroids)
 		{
-			if (!asteroid->Collideswith(player))
+			if (!asteroid->Collideswith(*player))
 			{
 				continue;
 			}
@@ -400,7 +400,7 @@ void Game::HandleGameOver()
 		high_score = current_score;
 	}
 
-	std::shared_ptr<Text> game_over = objectsGameOver.Texts.at("gameOver");
+	std::unique_ptr<Text> &game_over = objectsGameOver.Texts.at("gameOver");
 	std::wstring game_over_text = Config.GAME_OVER_TEXT;
 	boost::algorithm::replace_all(game_over_text, L"{S}", current_score);
 	boost::algorithm::replace_all(game_over_text, L"{HS}", high_score);

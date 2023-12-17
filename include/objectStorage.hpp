@@ -6,26 +6,33 @@
 #include <unordered_map>
 #include <memory>
 
-class IMGSprite;
+#include "IMGSprite.hpp"
+#include "Asteroid.hpp"
+#include "Gem.hpp"
+#include "Player.hpp"
+#include "Text.hpp"
+#include "Sound.hpp"
+
+/*class IMGSprite;
 class Asteroid;
 class Gem;
 class Player;
 class Text;
 class soundChunk;
-class soundMusic;
+class soundMusic;*/
 
 struct objectStorage
 {
 public:
 	//* Storages
-	std::unordered_map<std::string, std::shared_ptr<IMGSprite>> IMGSprites;
-	std::unordered_map<std::string, std::shared_ptr<Player>> Players;
-	std::unordered_map<std::string, std::shared_ptr<Text>> Texts;
-	std::unordered_map<std::string, std::shared_ptr<soundChunk>> Chunks;
-	std::unordered_map<std::string, std::shared_ptr<soundMusic>> Musics;
+	std::unordered_map<std::string, std::unique_ptr<IMGSprite>> IMGSprites;
+	std::unordered_map<std::string, std::unique_ptr<Player>> Players;
+	std::unordered_map<std::string, std::unique_ptr<Text>> Texts;
+	std::unordered_map<std::string, std::unique_ptr<soundChunk>> Chunks;
+	std::unordered_map<std::string, std::unique_ptr<soundMusic>> Musics;
 
-	std::vector<std::shared_ptr<Asteroid>> Asteroids;
-	std::vector<std::shared_ptr<Gem>> Gems;
+	std::vector<std::unique_ptr<Asteroid>> Asteroids;
+	std::vector<std::unique_ptr<Gem>> Gems;
 
 	//* Cleanup
 	void ClearAll();

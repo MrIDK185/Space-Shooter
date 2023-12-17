@@ -58,7 +58,7 @@ bool EventHandler::Handle_Return()
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
+	std::unique_ptr<Text> &startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
 	startText->SetMessage(countdown_str.c_str());
 	startText->SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
@@ -137,7 +137,7 @@ bool EventHandler::Handle_TimerDecrement()
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	std::shared_ptr<Text> startText = currentGame->objectsTitleScreen.Texts.at("startText");
+	std::unique_ptr<Text> &startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
 	startText->SetMessage(countdown_str);
 	startText->SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
@@ -156,7 +156,7 @@ bool EventHandler::Handle_TimerStop()
 
 	currentGame->currentGameState = GAME_STARTED;
 
-	for (std::shared_ptr<Gem> gem : currentGame->objectsGameRunning.Gems)
+	for (const auto &gem : currentGame->objectsGameRunning.Gems)
 	{
 		gem->UpdateTicks(currentGame->currentTicks);
 	}

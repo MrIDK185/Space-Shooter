@@ -2,9 +2,9 @@
 
 //* static(public)
 
-std::shared_ptr<Player> Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path)
+std::unique_ptr<Player> Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path)
 {
-	return std::make_shared<Player>(renderer, path, config.PLAYER_SCALE, config.PLAYER_RADIUS, config.PLAYER_FRAME_WIDTH,
+	return std::make_unique<Player>(renderer, path, config.PLAYER_SCALE, config.PLAYER_RADIUS, config.PLAYER_FRAME_WIDTH,
 									config.PLAYER_FRAME_HEIGHT, config.PLAYER_IMG_FRAMES, config.PLAYER_IMG_TYPES,
 									config.PLAYER_ANIMATIONS_PER_SECOND, config.PLAYER_ACCELEARION, config.PLAYER_MAX_VELOCITY,
 									config.PLAYER_FRICTION, config.PLAYER_EFFECT_DURATION_SECONDS, config.PLAYER_ROTATION_SPEED);

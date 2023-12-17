@@ -38,7 +38,7 @@ public:
 
 	void SetRadius(float radius);
 
-	bool Collideswith(std::shared_ptr<IMGSprite> sprite) const;
+	bool Collideswith(const IMGSprite &sprite) const;
 };
 
 #endif //! IMG_SPRITE_HPP

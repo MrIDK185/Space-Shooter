@@ -5,3 +5,4 @@ Asteroid functionality
 
 Game Objects
  -> std::unique_ptr instead of shared
+ -> static instead of heap

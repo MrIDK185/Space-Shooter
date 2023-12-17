@@ -72,15 +72,15 @@ void IMGSprite::SetRadius(float radius)
 	return;
 }
 
-bool IMGSprite::Collideswith(std::shared_ptr<IMGSprite> sprite) const
+bool IMGSprite::Collideswith(const IMGSprite &sprite) const
 {
 	float self_radius = Radius;
 	SDL_FRect self_rect = Rect;
 	int self_centerx = self_rect.x + self_rect.w / 2;
 	int self_centery = self_rect.y + self_rect.h / 2;
 
-	float sprite_radius = sprite->GetRadius();
-	SDL_FRect sprite_rect = sprite->GetRect();
+	float sprite_radius = sprite.GetRadius();
+	SDL_FRect sprite_rect = sprite.GetRect();
 	int sprite_centerx = sprite_rect.x + sprite_rect.w / 2;
 	int sprite_centery = sprite_rect.y + sprite_rect.h / 2;
 
