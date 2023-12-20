@@ -25,14 +25,14 @@ struct objectStorage
 {
 public:
 	//* Storages
-	std::unordered_map<std::string, std::unique_ptr<IMGSprite>> IMGSprites;
-	std::unordered_map<std::string, std::unique_ptr<Player>> Players;
-	std::unordered_map<std::string, std::unique_ptr<Text>> Texts;
-	std::unordered_map<std::string, std::unique_ptr<soundChunk>> Chunks;
-	std::unordered_map<std::string, std::unique_ptr<soundMusic>> Musics;
+	std::unordered_map<std::string, IMGSprite> IMGSprites;
+	std::unordered_map<std::string, Player> Players;
+	std::unordered_map<std::string, Text> Texts;
+	std::unordered_map<std::string, soundChunk> Chunks;
+	std::unordered_map<std::string, soundMusic> Musics;
 
-	std::vector<std::unique_ptr<Asteroid>> Asteroids;
-	std::vector<std::unique_ptr<Gem>> Gems;
+	std::vector<Asteroid> Asteroids;
+	std::vector<Gem> Gems;
 
 	//* Cleanup
 	void ClearAll();

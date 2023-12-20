@@ -4,12 +4,12 @@
 
 //*static(public)
 
-std::unique_ptr<Gem> Gem::NewGem(Configuration &config, SDL_Renderer *renderer, std::string path, int screen_width, int screen_height)
+Gem Gem::NewGem(Configuration &config, SDL_Renderer *renderer, std::string path, int screen_width, int screen_height)
 {
-	return std::make_unique<Gem>(renderer, path, config.GEM_SCALE, config.GEM_RADIUS, config.GEM_FRAME_WIDTH,
-								 config.GEM_FRAME_HEIGHT, config.GEM_IMG_FRAMES, config.GEM_IMG_TYPES, 0, config.GEM_BLINK_DURATION,
-								 config.GEM_LIFETIME_DURATION, config.GEM_MINIMUM_BRIGHTNESS, config.GEM_MAXIMUM_BRIGHTNESS,
-								 config.GEM_BLINK_FACTOR, screen_width, screen_height);
+	return Gem(renderer, path, config.GEM_SCALE, config.GEM_RADIUS, config.GEM_FRAME_WIDTH,
+			   config.GEM_FRAME_HEIGHT, config.GEM_IMG_FRAMES, config.GEM_IMG_TYPES, 0, config.GEM_BLINK_DURATION,
+			   config.GEM_LIFETIME_DURATION, config.GEM_MINIMUM_BRIGHTNESS, config.GEM_MAXIMUM_BRIGHTNESS,
+			   config.GEM_BLINK_FACTOR, screen_width, screen_height);
 }
 
 //*non-static(public)
@@ -138,7 +138,7 @@ void Gem::UpdateTicks(Uint64 current_ticks)
 void Gem::Blink(float delta_time_seconds)
 {
 	Uint8 brightness_value;
-	SDL_GetTextureColorMod(Texture, &brightness_value, nullptr, nullptr);
+	SDL_GetTextureColorMod(Texture.get(), &brightness_value, nullptr, nullptr);
 	float next_brightness_value = static_cast<float>(brightness_value);
 
 	next_brightness_value += static_cast<float>(blinkFactor) * static_cast<float>(signedFactor) * delta_time_seconds;
@@ -154,7 +154,7 @@ void Gem::Blink(float delta_time_seconds)
 		signedFactor = INCREMENT;
 	}
 
-	SDL_SetTextureColorMod(Texture, next_brightness_value, next_brightness_value, next_brightness_value);
+	SDL_SetTextureColorMod(Texture.get(), next_brightness_value, next_brightness_value, next_brightness_value);
 
 	return;
 }
@@ -179,7 +179,7 @@ void Gem::Randomize(int screen_width, int screen_height, Uint64 current_ticks)
 	SetRectPos(new_x, new_y);
 
 	UpdateTicks(current_ticks);
-	SDL_SetTextureColorMod(Texture, 255, 255, 255);
+	SDL_SetTextureColorMod(Texture.get(), 255, 255, 255);
 
 	return;
 }

@@ -1,4 +1,5 @@
 #include "Sprite.hpp"
+#include <iostream>
 
 //*non-static(public)
 
@@ -8,10 +9,11 @@ Sprite::Sprite(SDL_Renderer *renderer) : destRenderer(renderer)
 
 Sprite::~Sprite()
 {
-	SDL_DestroyTexture(Texture);
+	// SDL_DestroyTexture(Texture);
 	Texture = nullptr;
 
 	destRenderer = nullptr;
+	std::cout << "Sprite destructor called\n";
 
 	return;
 }
@@ -28,14 +30,14 @@ void Sprite::SetRenderer(SDL_Renderer *renderer)
 	return;
 }
 
-SDL_Texture *Sprite::GetTexture() const
+unique_ptr_deleter<SDL_Texture> Sprite::GetTexture()
 {
-	return Texture;
+	return std::move(Texture);
 }
 
 void Sprite::SetTexture(SDL_Texture *texture)
 {
-	Texture = texture;
+	Texture.reset(texture);
 
 	return;
 }
@@ -85,7 +87,7 @@ void Sprite::SetRectPos(float pos_x, float pos_y, Alignments align)
 
 void Sprite::Render() const
 {
-	SDL_RenderCopyF(destRenderer, Texture, nullptr, &Rect);
+	SDL_RenderCopyF(destRenderer, Texture.get(), nullptr, &Rect);
 
 	return;
 }

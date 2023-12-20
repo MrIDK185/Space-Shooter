@@ -2,12 +2,12 @@
 
 //* static(public)
 
-std::unique_ptr<Player> Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path)
+Player Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path)
 {
-	return std::make_unique<Player>(renderer, path, config.PLAYER_SCALE, config.PLAYER_RADIUS, config.PLAYER_FRAME_WIDTH,
-									config.PLAYER_FRAME_HEIGHT, config.PLAYER_IMG_FRAMES, config.PLAYER_IMG_TYPES,
-									config.PLAYER_ANIMATIONS_PER_SECOND, config.PLAYER_ACCELEARION, config.PLAYER_MAX_VELOCITY,
-									config.PLAYER_FRICTION, config.PLAYER_EFFECT_DURATION_SECONDS, config.PLAYER_ROTATION_SPEED);
+	return Player(renderer, path, config.PLAYER_SCALE, config.PLAYER_RADIUS, config.PLAYER_FRAME_WIDTH,
+				  config.PLAYER_FRAME_HEIGHT, config.PLAYER_IMG_FRAMES, config.PLAYER_IMG_TYPES,
+				  config.PLAYER_ANIMATIONS_PER_SECOND, config.PLAYER_ACCELEARION, config.PLAYER_MAX_VELOCITY,
+				  config.PLAYER_FRICTION, config.PLAYER_EFFECT_DURATION_SECONDS, config.PLAYER_ROTATION_SPEED);
 }
 
 //* non-static(private)
@@ -241,7 +241,7 @@ void Player::Reset(float acceleration, float max_velocity, float friction)
 
 void Player::Render() const
 {
-	SDL_RenderCopyExF(destRenderer, Texture, &IMGPartRect, &Rect, Angle, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyExF(destRenderer, Texture.get(), &IMGPartRect, &Rect, Angle, nullptr, SDL_FLIP_NONE);
 
 	return;
 }

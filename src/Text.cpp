@@ -25,10 +25,10 @@ void Text::SetText()
 	std::unique_ptr<Uint16[]> unicodeMessage = to_uint16(Message);
 
 	SDL_Surface *messageSurface = TTF_RenderUNICODE_Blended_Wrapped(Font, unicodeMessage.get(), fontColor, 0);
-	Texture = SDL_CreateTextureFromSurface(destRenderer, messageSurface);
+	SetTexture(SDL_CreateTextureFromSurface(destRenderer, messageSurface));
 
 	int width, height;
-	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
+	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
 	SetRectSize(width, height);
 
 	SDL_FreeSurface(messageSurface);
@@ -75,10 +75,10 @@ void Text::SetTextCentered()
 	int total_height = lineHeight * textLines.size();
 	float yPosition = 0;
 
-	Texture = SDL_CreateTexture(destRenderer, SDL_PIXELFORMAT_RGBA32,
-								SDL_TEXTUREACCESS_TARGET, total_width, total_height);
-	SDL_SetTextureBlendMode(Texture, SDL_BLENDMODE_BLEND);
-	SDL_SetRenderTarget(destRenderer, Texture);
+	SetTexture(SDL_CreateTexture(destRenderer, SDL_PIXELFORMAT_RGBA32,
+								 SDL_TEXTUREACCESS_TARGET, total_width, total_height));
+	SDL_SetTextureBlendMode(Texture.get(), SDL_BLENDMODE_BLEND);
+	SDL_SetRenderTarget(destRenderer, Texture.get());
 
 	for (auto &line : textLines)
 	{
@@ -106,7 +106,7 @@ void Text::SetTextCentered()
 	SDL_SetRenderTarget(destRenderer, nullptr);
 
 	int width, height;
-	SDL_QueryTexture(Texture, nullptr, nullptr, &width, &height);
+	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
 	SetRectSize(width, height);
 
 	return;
@@ -143,7 +143,7 @@ std::wstring Text::GetMessage() const
 void Text::SetMessage(std::wstring new_message, bool centered)
 {
 	Message = new_message;
-	SDL_DestroyTexture(Texture);
+	SDL_DestroyTexture(Texture.get());
 	centered ? SetTextCentered() : SetText();
 
 	return;
@@ -187,7 +187,7 @@ void Text::SetFontColor(SDL_Color new_font_color)
 
 void Text::Render() const
 {
-	SDL_RenderCopyF(destRenderer, Texture, nullptr, &Rect);
+	SDL_RenderCopyF(destRenderer, Texture.get(), nullptr, &Rect);
 
 	return;
 }

@@ -1,4 +1,5 @@
 #include "Sound.hpp"
+#include <iostream>
 
 /*------------ soundChunk ------------*/
 
@@ -6,7 +7,7 @@
 
 void soundChunk::LoadChunk()
 {
-	Chunk = Mix_LoadWAV(Path.c_str());
+	SetChunk(Mix_LoadWAV(Path.c_str()));
 
 	return;
 }
@@ -25,9 +26,10 @@ soundChunk::soundChunk(std::string path, channelControl *controller)
 
 soundChunk::~soundChunk()
 {
-	Mix_FreeChunk(Chunk);
+	// Mix_FreeChunk(Chunk);
 	Chunk = nullptr;
 	channelController = nullptr;
+	std::cout << "SoundChunk destructor called\n";
 
 	return;
 }
@@ -45,14 +47,14 @@ void soundChunk::SetPath(std::string path)
 	return;
 }
 
-Mix_Chunk *soundChunk::GetChunk() const
+unique_ptr_deleter<Mix_Chunk> soundChunk::GetChunk()
 {
-	return Chunk;
+	return std::move(Chunk);
 }
 
 void soundChunk::SetChunk(Mix_Chunk *chunk)
 {
-	Chunk = chunk;
+	Chunk.reset(chunk);
 
 	return;
 }
@@ -86,7 +88,7 @@ void soundChunk::SetVolume(int new_volume)
 	}
 
 	Volume = new_volume;
-	Mix_VolumeChunk(Chunk, Volume);
+	Mix_VolumeChunk(Chunk.get(), Volume);
 
 	return;
 }
@@ -112,7 +114,7 @@ void soundChunk::Play()
 
 	if (Channel >= 0)
 	{
-		Mix_PlayChannel(Channel, Chunk, 0);
+		Mix_PlayChannel(Channel, Chunk.get(), 0);
 		currentSoundState = PLAYING;
 	}
 
@@ -166,7 +168,7 @@ void soundChunk::Stop()
 
 void soundMusic::LoadMusic()
 {
-	Music = Mix_LoadMUS(Path.c_str());
+	SetMusic(Mix_LoadMUS(Path.c_str()));
 
 	return;
 }
@@ -183,20 +185,21 @@ soundMusic::soundMusic(std::string path)
 
 soundMusic::~soundMusic()
 {
-	Mix_FreeMusic(Music);
+	// Mix_FreeMusic(Music);
 	Music = nullptr;
+	std::cout << "SoundMusic destructor called\n";
 
 	return;
 }
 
-Mix_Music *soundMusic::GetMusic() const
+unique_ptr_deleter<Mix_Music> soundMusic::GetMusic()
 {
-	return Music;
+	return std::move(Music);
 }
 
 void soundMusic::SetMusic(Mix_Music *music)
 {
-	Music = music;
+	Music.reset(music);
 
 	return;
 }
@@ -208,7 +211,7 @@ soundState soundMusic::GetCurrentSoundState()
 
 void soundMusic::Play()
 {
-	if (Mix_PlayMusic(Music, -1) == 0)
+	if (Mix_PlayMusic(Music.get(), -1) == 0)
 	{
 		currentSoundState = PLAYING;
 	}

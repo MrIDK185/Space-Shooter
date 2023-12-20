@@ -31,8 +31,8 @@ private:
 public:
 	//*static
 
-	static std::unique_ptr<Gem> NewGem(Configuration &config, SDL_Renderer *renderer, std::string path,
-									   int screen_width, int screen_height);
+	static Gem NewGem(Configuration &config, SDL_Renderer *renderer, std::string path,
+					  int screen_width, int screen_height);
 
 	//*non-static
 

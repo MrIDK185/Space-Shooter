@@ -30,7 +30,7 @@ private:
 public:
 	//* static
 
-	static std::unique_ptr<Player> NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path);
+	static Player NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path);
 
 	//*non-static
 

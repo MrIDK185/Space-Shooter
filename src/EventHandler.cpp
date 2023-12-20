@@ -58,13 +58,13 @@ bool EventHandler::Handle_Return()
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	std::unique_ptr<Text> &startText = currentGame->objectsTitleScreen.Texts.at("startText");
+	Text &startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
-	startText->SetMessage(countdown_str.c_str());
-	startText->SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
+	startText.SetMessage(countdown_str.c_str());
+	startText.SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
 
-	currentGame->objectsTitleScreen.Musics.at("menuMusic")->Stop();
-	currentGame->objectsTitleScreen.Chunks.at("startSound")->Play();
+	currentGame->objectsTitleScreen.Musics.at("menuMusic").Stop();
+	currentGame->objectsTitleScreen.Chunks.at("startSound").Play();
 
 	currentGame->startTimer.Start();
 
@@ -137,10 +137,10 @@ bool EventHandler::Handle_TimerDecrement()
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	std::unique_ptr<Text> &startText = currentGame->objectsTitleScreen.Texts.at("startText");
+	Text &startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
-	startText->SetMessage(countdown_str);
-	startText->SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
+	startText.SetMessage(countdown_str);
+	startText.SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
 
 	return true;
 }
@@ -156,13 +156,13 @@ bool EventHandler::Handle_TimerStop()
 
 	currentGame->currentGameState = GAME_STARTED;
 
-	for (const auto &gem : currentGame->objectsGameRunning.Gems)
+	for (auto &gem : currentGame->objectsGameRunning.Gems)
 	{
-		gem->UpdateTicks(currentGame->currentTicks);
+		gem.UpdateTicks(currentGame->currentTicks);
 	}
 
-	currentGame->objectsTitleScreen.Chunks.at("startSound")->Stop();
-	currentGame->objectsGameRunning.Musics.at("backgroundMusic")->Play();
+	currentGame->objectsTitleScreen.Chunks.at("startSound").Stop();
+	currentGame->objectsGameRunning.Musics.at("backgroundMusic").Play();
 
 	return true;
 }

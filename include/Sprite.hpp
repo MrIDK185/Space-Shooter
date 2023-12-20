@@ -1,7 +1,13 @@
 #ifndef SPRITE_HPP
 #define SPRITE_HPP
 
+#include <memory>
+#include <iostream>
+
 #include <SDL2/SDL.h>
+
+template <typename T>
+using unique_ptr_deleter = std::unique_ptr<T, void (*)(T *)>;
 
 typedef enum
 {
@@ -14,11 +20,19 @@ typedef enum
 
 class Sprite
 {
+private:
+	static inline void textureDestructor(SDL_Texture *texture)
+	{
+		std::cout << "Destroyed Texture\n";
+		SDL_DestroyTexture(texture);
+	}
+
 protected:
 	//*non-static
 
 	SDL_Renderer *destRenderer;
-	SDL_Texture *Texture = nullptr;
+	// SDL_Texture *Texture = nullptr;
+	unique_ptr_deleter<SDL_Texture> Texture = {nullptr, textureDestructor};
 	SDL_FRect Rect = {0, 0, 0, 0};
 
 public:
@@ -32,7 +46,7 @@ public:
 
 	void SetRenderer(SDL_Renderer *renderer);
 
-	SDL_Texture *GetTexture() const;
+	unique_ptr_deleter<SDL_Texture> GetTexture();
 
 	void SetTexture(SDL_Texture *texture);
 

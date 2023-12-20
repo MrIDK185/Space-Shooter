@@ -150,7 +150,7 @@ void AnimatedSprite::Animate(Uint64 current_ticks)
 
 void AnimatedSprite::Render() const
 {
-	SDL_RenderCopyF(destRenderer, Texture, &IMGPartRect, &Rect);
+	SDL_RenderCopyF(destRenderer, Texture.get(), &IMGPartRect, &Rect);
 
 	return;
 }

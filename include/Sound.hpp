@@ -3,8 +3,13 @@
 
 #include <string>
 #include <array>
+#include <memory>
+#include <iostream>
 
 #include <SDL2/SDL_mixer.h>
+
+template <typename T>
+using unique_ptr_deleter = std::unique_ptr<T, void (*)(T *)>;
 
 struct channelControl;
 
@@ -20,11 +25,17 @@ typedef enum
 class soundChunk
 {
 private:
+	static inline void chunkDestructor(Mix_Chunk *chunk)
+	{
+		std::cout << "Chunk destructor called\n";
+		Mix_FreeChunk(chunk);
+	}
 	//*non-static
 
 	std::string Path;
 
-	Mix_Chunk *Chunk = nullptr;
+	// Mix_Chunk *Chunk = nullptr;
+	unique_ptr_deleter<Mix_Chunk> Chunk = {nullptr, chunkDestructor};
 	int Channel = -1;
 	int Volume;
 	soundState currentSoundState = STOPPED;
@@ -44,7 +55,7 @@ public:
 
 	void SetPath(std::string path);
 
-	Mix_Chunk *GetChunk() const;
+	unique_ptr_deleter<Mix_Chunk> GetChunk();
 
 	void SetChunk(Mix_Chunk *chunk);
 
@@ -74,11 +85,17 @@ public:
 class soundMusic
 {
 private:
+	static inline void musicDestructor(Mix_Music *music)
+	{
+		std::cout << "Music destructor called\n";
+		Mix_FreeMusic(music);
+	}
 	//*non-static
 
 	std::string Path;
 
-	Mix_Music *Music = nullptr;
+	// Mix_Music *Music = nullptr;
+	unique_ptr_deleter<Mix_Music> Music = {nullptr, musicDestructor};
 	soundState currentSoundState = STOPPED;
 
 	void LoadMusic();
@@ -90,7 +107,7 @@ public:
 
 	~soundMusic();
 
-	Mix_Music *GetMusic() const;
+	unique_ptr_deleter<Mix_Music> GetMusic();
 
 	void SetMusic(Mix_Music *music);
 

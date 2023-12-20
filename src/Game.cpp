@@ -127,53 +127,96 @@ void Game::CreateObjects()
 {
 	//* Title screen
 
-	objectsTitleScreen.IMGSprites["startBackground"] = std::make_unique<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
+	std::cout << "1...\n";
+	objectsTitleScreen.IMGSprites.emplace(std::piecewise_construct,
+										  std::forward_as_tuple("startBackground"),
+										  std::forward_as_tuple(Renderer, "assets/images/background_blurred.png", 0, 0));
 
-	objectsTitleScreen.Texts["startText"] = std::make_unique<Text>(Renderer, Config.START_TEXT, Config.FONT_PATH,
-																   Config.START_TEXT_SIZE, Config.START_TEXT_COLOR);
-	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	std::cout << "2...\n";
+	objectsTitleScreen.Texts.emplace(std::piecewise_construct,
+									 std::forward_as_tuple("startText"),
+									 std::forward_as_tuple(Renderer, Config.START_TEXT, Config.FONT_PATH,
+														   Config.START_TEXT_SIZE, Config.START_TEXT_COLOR));
+	objectsTitleScreen.Texts.at("startText").SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
-	objectsTitleScreen.Chunks["startSound"] = std::make_unique<soundChunk>("assets/sounds/game_start.mp3", &channelController);
+	std::cout << "3...\n";
+	objectsTitleScreen.Chunks.emplace(std::piecewise_construct,
+									  std::forward_as_tuple("startSound"),
+									  std::forward_as_tuple("assets/sounds/game_start.mp3", &channelController));
 
-	objectsTitleScreen.Musics["menuMusic"] = std::make_unique<soundMusic>("assets/sounds/menu_music.mp3");
-	objectsTitleScreen.Musics.at("menuMusic")->Play();
+	std::cout << "4...\n";
+	objectsTitleScreen.Musics.emplace(std::piecewise_construct,
+									  std::forward_as_tuple("menuMusic"),
+									  std::forward_as_tuple("assets/sounds/menu_music.mp3"));
+	objectsTitleScreen.Musics.at("menuMusic").Play();
 
 	//* Game running
 
-	objectsGameRunning.IMGSprites["gameBackground"] = std::make_unique<IMGSprite>(Renderer, "assets/images/background.png", 1, 0);
+	std::cout << "5...\n";
+	objectsGameRunning.IMGSprites.emplace(std::piecewise_construct,
+										  std::forward_as_tuple("gameBackground"),
+										  std::forward_as_tuple(Renderer, "assets/images/background.png", 1, 0));
 
-	objectsGameRunning.Asteroids.push_back(std::make_unique<Asteroid>(Renderer, "assets/images/asteroid1.png", 1, 60, 200,
-																	  screenWidth, screenHeight));
+	std::cout << "6...\n";
+	// objectsGameRunning.Asteroids.emplace_back(Renderer, "assets/images/asteroid1.png", 1, 60, 200,
+	// screenWidth, screenHeight);
 
-	objectsGameRunning.Gems.push_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
+	std::cout << "7...\n";
+	// objectsGameRunning.Gems.emplace_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
 
-	objectsGameRunning.Players["Player1"] = Player::NewPlayer(Config, Renderer, "assets/images/player.png");
-	objectsGameRunning.Players.at("Player1")->SetRectPos(static_cast<float>(screenWidth / 2),
-														 static_cast<float>(screenHeight / 2));
+	std::cout << "8...\n";
+	// objectsGameRunning.Players.emplace("Player1",
+	// Player::NewPlayer(Config, Renderer, "assets/images/player.png"));
+	// objectsGameRunning.Players.at("Player1").SetRectPos(static_cast<float>(screenWidth / 2),
+	// static_cast<float>(screenHeight / 2));
 
 	std::wstring current_score = std::to_wstring(Score);
-	objectsGameRunning.Texts["scoreText"] = std::make_unique<Text>(Renderer, current_score, Config.FONT_PATH,
-																   Config.INGAME_TEXT_SIZE, Config.INGAME_TEXT_COLOR);
-	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0, NE);
+	std::cout << "9...\n";
+	objectsGameRunning.Texts.emplace(std::piecewise_construct,
+									 std::forward_as_tuple("scoreText"),
+									 std::forward_as_tuple(Renderer, current_score, Config.FONT_PATH,
+														   Config.INGAME_TEXT_SIZE, Config.INGAME_TEXT_COLOR));
+	objectsGameRunning.Texts.at("scoreText").SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
-	objectsGameRunning.Chunks["gemCollected"] = std::make_unique<soundChunk>("assets/sounds/gem_collected.mp3", &channelController);
+	std::cout << "10...\n";
+	objectsGameRunning.Chunks.emplace(std::piecewise_construct,
+									  std::forward_as_tuple("gemCollected"),
+									  std::forward_as_tuple("assets/sounds/gem_collected.mp3", &channelController));
 
-	objectsGameRunning.Chunks["gemMissed"] = std::make_unique<soundChunk>("assets/sounds/gem_missed.wav", &channelController);
+	std::cout << "11...\n";
+	objectsGameRunning.Chunks.emplace(std::piecewise_construct,
+									  std::forward_as_tuple("gemMissed"),
+									  std::forward_as_tuple("assets/sounds/gem_missed.wav", &channelController));
 
-	objectsGameRunning.Musics["backgroundMusic"] = std::make_unique<soundMusic>("assets/sounds/background_music.mp3");
+	std::cout << "12...\n";
+	objectsGameRunning.Musics.emplace(std::piecewise_construct,
+									  std::forward_as_tuple("backgroundMusic"),
+									  std::forward_as_tuple("assets/sounds/background_music.mp3"));
 
 	//* Game Paused
 
-	objectsGamePaused.IMGSprites["pauseIcon"] = std::make_unique<IMGSprite>(Renderer, "assets/images/pause-button.png", 0.3, 0);
-	objectsGamePaused.IMGSprites["darkenOverlay"] = std::make_unique<IMGSprite>(Renderer, "assets/images/Overlay.png", 1, 0);
+	std::cout << "13...\n";
+	objectsGamePaused.IMGSprites.emplace(std::piecewise_construct,
+										 std::forward_as_tuple("pauseIcon"),
+										 std::forward_as_tuple(Renderer, "assets/images/pause-button.png", 0.3, 0));
+	std::cout << "14...\n";
+	objectsGamePaused.IMGSprites.emplace(std::piecewise_construct,
+										 std::forward_as_tuple("darkenOverlay"),
+										 std::forward_as_tuple(Renderer, "assets/images/Overlay.png", 1, 0));
 
 	//* Game Over
 
-	objectsGameOver.IMGSprites["endBackground"] = std::make_unique<IMGSprite>(Renderer, "assets/images/background_blurred.png", 1, 0);
+	std::cout << "15...\n";
+	objectsGameOver.IMGSprites.emplace(std::piecewise_construct,
+									   std::forward_as_tuple("endBackground"),
+									   std::forward_as_tuple(Renderer, "assets/images/background_blurred.png", 1, 0));
 
-	objectsGameOver.Texts["gameOver"] = std::make_unique<Text>(Renderer, Config.GAME_OVER_TEXT, Config.FONT_PATH,
-															   Config.GAME_OVER_TEXT_SIZE, Config.GAME_OVER_TEXT_COLOR);
-	objectsGameOver.Texts.at("gameOver")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	std::cout << "16...\n";
+	objectsGameOver.Texts.emplace(std::piecewise_construct,
+								  std::forward_as_tuple("gameOver"),
+								  std::forward_as_tuple(Renderer, Config.GAME_OVER_TEXT, Config.FONT_PATH,
+														Config.GAME_OVER_TEXT_SIZE, Config.GAME_OVER_TEXT_COLOR));
+	objectsGameOver.Texts.at("gameOver").SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	return;
 }
@@ -187,31 +230,31 @@ void Game::Reset()
 
 	Score = Config.START_SCORE;
 	std::wstring current_score = std::to_wstring(Score);
-	objectsGameRunning.Texts.at("scoreText")->SetMessage(current_score);
-	objectsGameRunning.Texts.at("scoreText")->SetRectPos(static_cast<float>(screenWidth), 0, NE);
+	objectsGameRunning.Texts.at("scoreText").SetMessage(current_score);
+	objectsGameRunning.Texts.at("scoreText").SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
-	objectsTitleScreen.Texts.at("startText")->SetMessage(Config.START_TEXT);
-	objectsTitleScreen.Texts.at("startText")->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	objectsTitleScreen.Texts.at("startText").SetMessage(Config.START_TEXT);
+	objectsTitleScreen.Texts.at("startText").SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
-	for (const auto &[name, player] : objectsGameRunning.Players)
+	for (auto &[name, player] : objectsGameRunning.Players)
 	{
-		player->SetRectPos(static_cast<float>(screenWidth / 2),
-						   static_cast<float>(screenHeight / 2));
-		player->Reset(Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION);
+		player.SetRectPos(static_cast<float>(screenWidth / 2),
+						  static_cast<float>(screenHeight / 2));
+		player.Reset(Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION);
 	}
 
-	for (const auto &gem : objectsGameRunning.Gems)
+	for (auto &gem : objectsGameRunning.Gems)
 	{
-		gem->Randomize(screenWidth, screenHeight, GetCurrentTime());
+		gem.Randomize(screenWidth, screenHeight, GetCurrentTime());
 	}
 
-	for (const auto &asteroid : objectsGameRunning.Asteroids)
+	for (auto &asteroid : objectsGameRunning.Asteroids)
 	{
-		asteroid->Randomize(screenWidth, screenHeight);
+		asteroid.Randomize(screenWidth, screenHeight);
 	}
 
-	objectsGameRunning.Musics.at("backgroundMusic")->Stop();
-	objectsTitleScreen.Musics.at("menuMusic")->Play();
+	objectsGameRunning.Musics.at("backgroundMusic").Stop();
+	objectsTitleScreen.Musics.at("menuMusic").Play();
 
 	return;
 }
@@ -300,20 +343,20 @@ void Game::UpdateScore(int amount)
 	Score += amount;
 
 	std::wstring current_score = std::to_wstring(Score);
-	std::unique_ptr<Text> &scoreText = objectsGameRunning.Texts.at("scoreText");
+	Text &scoreText = objectsGameRunning.Texts.at("scoreText");
 
-	scoreText->SetMessage(current_score);
-	scoreText->SetRectPos(static_cast<float>(screenWidth), 0, NE);
+	scoreText.SetMessage(current_score);
+	scoreText.SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
 	return;
 }
 
 void Game::HandlePlayers()
 {
-	for (const auto &[name, player] : objectsGameRunning.Players)
+	for (auto &[name, player] : objectsGameRunning.Players)
 	{
-		player->UpdateGemCollected(currentTicks);
-		player->HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
+		player.UpdateGemCollected(currentTicks);
+		player.HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
 	}
 
 	return;
@@ -321,9 +364,9 @@ void Game::HandlePlayers()
 
 void Game::HandleAsteroids()
 {
-	for (const auto &asteroid : objectsGameRunning.Asteroids)
+	for (auto &asteroid : objectsGameRunning.Asteroids)
 	{
-		asteroid->Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
+		asteroid.Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
 	}
 
 	return;
@@ -331,17 +374,17 @@ void Game::HandleAsteroids()
 
 void Game::HandleGems()
 {
-	for (const auto &gem : objectsGameRunning.Gems)
+	for (auto &gem : objectsGameRunning.Gems)
 	{
-		if (currentTicks >= gem->GetBlinkTicks())
+		if (currentTicks >= gem.GetBlinkTicks())
 		{
-			gem->Blink(gameClock.deltaTimeSeconds);
+			gem.Blink(gameClock.deltaTimeSeconds);
 		}
-		if (currentTicks >= gem->GetLifetimeTicks())
+		if (currentTicks >= gem.GetLifetimeTicks())
 		{
 			UpdateScore(-1);
-			objectsGameRunning.Chunks.at("gemMissed")->Play();
-			gem->Randomize(screenWidth, screenHeight, currentTicks);
+			objectsGameRunning.Chunks.at("gemMissed").Play();
+			gem.Randomize(screenWidth, screenHeight, currentTicks);
 		}
 	}
 
@@ -350,33 +393,33 @@ void Game::HandleGems()
 
 void Game::CheckCollisions()
 {
-	for (const auto &[name, player] : objectsGameRunning.Players)
+	for (auto &[name, player] : objectsGameRunning.Players)
 	{
-		for (const auto &gem : objectsGameRunning.Gems)
+		for (auto &gem : objectsGameRunning.Gems)
 		{
-			if (!gem->Collideswith(*player))
+			if (!gem.Collideswith(player))
 			{
 				continue;
 			}
 
 			UpdateScore(1);
-			objectsGameRunning.Chunks.at("gemCollected")->Play();
+			objectsGameRunning.Chunks.at("gemCollected").Play();
 
-			gem->Randomize(screenWidth, screenHeight, currentTicks);
+			gem.Randomize(screenWidth, screenHeight, currentTicks);
 
-			if (!player->GetGemCollected())
+			if (!player.GetGemCollected())
 			{
-				player->SetMaxVelocity(player->GetMaxVelocity() + Config.PLAYER_MAX_VELOCITY_BOOST);
-				player->SetAcceleration(player->GetAcceleration() + Config.PLAYER_ACCELEARION_BOOST);
-				player->SetGemCollected(true);
+				player.SetMaxVelocity(player.GetMaxVelocity() + Config.PLAYER_MAX_VELOCITY_BOOST);
+				player.SetAcceleration(player.GetAcceleration() + Config.PLAYER_ACCELEARION_BOOST);
+				player.SetGemCollected(true);
 			}
 
-			player->SetCollectionTicks(currentTicks);
+			player.SetCollectionTicks(currentTicks);
 		}
 
 		for (const auto &asteroid : objectsGameRunning.Asteroids)
 		{
-			if (!asteroid->Collideswith(*player))
+			if (!asteroid.Collideswith(player))
 			{
 				continue;
 			}
@@ -400,12 +443,12 @@ void Game::HandleGameOver()
 		high_score = current_score;
 	}
 
-	std::unique_ptr<Text> &game_over = objectsGameOver.Texts.at("gameOver");
+	Text &game_over = objectsGameOver.Texts.at("gameOver");
 	std::wstring game_over_text = Config.GAME_OVER_TEXT;
 	boost::algorithm::replace_all(game_over_text, L"{S}", current_score);
 	boost::algorithm::replace_all(game_over_text, L"{HS}", high_score);
-	game_over->SetMessage(game_over_text);
-	game_over->SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	game_over.SetMessage(game_over_text);
+	game_over.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	return;
 }
@@ -427,23 +470,23 @@ void Game::RenderObjects(objectStorage *storage)
 {
 	for (const auto &[name, element] : storage->IMGSprites)
 	{
-		element->Render();
+		element.Render();
 	}
 	for (const auto &element : storage->Asteroids)
 	{
-		element->Render();
+		element.Render();
 	}
 	for (const auto &element : storage->Gems)
 	{
-		element->Render();
+		element.Render();
 	}
 	for (const auto &[name, element] : storage->Players)
 	{
-		element->Render();
+		element.Render();
 	}
 	for (const auto &[name, element] : storage->Texts)
 	{
-		element->Render();
+		element.Render();
 	}
 
 	return;
@@ -451,13 +494,13 @@ void Game::RenderObjects(objectStorage *storage)
 
 void Game::AnimateObjects(objectStorage *storage)
 {
-	for (const auto &[name, element] : storage->Players)
+	for (auto &[name, element] : storage->Players)
 	{
-		element->Animate(currentTicks);
+		element.Animate(currentTicks);
 	}
-	for (const auto &element : storage->Gems)
+	for (auto &element : storage->Gems)
 	{
-		element->Animate(currentTicks);
+		element.Animate(currentTicks);
 	}
 
 	return;
