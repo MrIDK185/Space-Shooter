@@ -5,7 +5,10 @@
 #include "EventHandler.hpp"
 #include "objectStorage.hpp"
 #include "Time.hpp"
-#include "Sound.hpp"
+#include "soundChunk.hpp"
+#include "soundMusic.hpp"
+#include "volumeControl.hpp"
+#include "channelControl.hpp"
 
 typedef enum gameState
 {

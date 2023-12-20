@@ -4,27 +4,20 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-#include <memory>
 
 #include "IMGSprite.hpp"
 #include "Asteroid.hpp"
 #include "Gem.hpp"
 #include "Player.hpp"
 #include "Text.hpp"
-#include "Sound.hpp"
-
-/*class IMGSprite;
-class Asteroid;
-class Gem;
-class Player;
-class Text;
-class soundChunk;
-class soundMusic;*/
+#include "soundChunk.hpp"
+#include "soundMusic.hpp"
 
 struct objectStorage
 {
 public:
 	//* Storages
+
 	std::unordered_map<std::string, IMGSprite> IMGSprites;
 	std::unordered_map<std::string, Player> Players;
 	std::unordered_map<std::string, Text> Texts;
@@ -35,9 +28,11 @@ public:
 	std::vector<Gem> Gems;
 
 	//* Cleanup
+
 	void ClearAll();
 
 	//* Constructor/Destructor
+
 	objectStorage() = default;
 	~objectStorage() = default;
 };

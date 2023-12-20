@@ -3,7 +3,6 @@
 #include "Player.hpp"
 #include "Gem.hpp"
 #include "Text.hpp"
-#include "Sound.hpp"
 
 #include <iostream>
 #include <boost/algorithm/string/replace.hpp>
