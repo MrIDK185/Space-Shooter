@@ -1,11 +1,9 @@
-#include "Text.hpp"
-
-#include <SDL2/SDL_ttf.h>
-#include <memory>
 #include <sstream>
 #include <vector>
 
-std::unique_ptr<Uint16[]> to_uint16(std::wstring /*&*/ message)
+#include "Text.hpp"
+
+std::unique_ptr<Uint16[]> to_uint16(std::wstring message)
 {
 	size_t array_size = message.length() + 1;
 	std::unique_ptr<Uint16[]> unicodeMessage(new Uint16[array_size]);
@@ -18,13 +16,20 @@ std::unique_ptr<Uint16[]> to_uint16(std::wstring /*&*/ message)
 	return unicodeMessage;
 }
 
-//*non-static(private)
+//* non-static(private)
+
+void Text::LoadFont()
+{
+	SetFont(TTF_OpenFont(Path.c_str(), fontSize));
+
+	return;
+}
 
 void Text::SetText()
 {
 	std::unique_ptr<Uint16[]> unicodeMessage = to_uint16(Message);
 
-	SDL_Surface *messageSurface = TTF_RenderUNICODE_Blended_Wrapped(Font, unicodeMessage.get(), fontColor, 0);
+	SDL_Surface *messageSurface = TTF_RenderUNICODE_Blended_Wrapped(Font.get(), unicodeMessage.get(), fontColor, 0);
 	SetTexture(SDL_CreateTextureFromSurface(destRenderer, messageSurface));
 
 	int width, height;
@@ -67,11 +72,11 @@ void Text::SetTextCentered()
 	for (auto character : longest_line)
 	{
 		int char_width = 0;
-		TTF_GlyphMetrics32(Font, character, nullptr, nullptr, nullptr, nullptr, &char_width);
+		TTF_GlyphMetrics32(Font.get(), character, nullptr, nullptr, nullptr, nullptr, &char_width);
 		total_width += char_width;
 	}
 
-	float lineHeight = static_cast<float>(TTF_FontLineSkip(Font));
+	float lineHeight = static_cast<float>(TTF_FontLineSkip(Font.get()));
 	int total_height = lineHeight * textLines.size();
 	float yPosition = 0;
 
@@ -83,7 +88,7 @@ void Text::SetTextCentered()
 	for (auto &line : textLines)
 	{
 		std::unique_ptr<Uint16[]> unicodeMessage = to_uint16(line);
-		SDL_Surface *lineSurface = TTF_RenderUNICODE_Blended(Font, unicodeMessage.get(), fontColor);
+		SDL_Surface *lineSurface = TTF_RenderUNICODE_Blended(Font.get(), unicodeMessage.get(), fontColor);
 		if (lineSurface == nullptr)
 		{
 			break;
@@ -112,24 +117,32 @@ void Text::SetTextCentered()
 	return;
 }
 
-//*non-static(public)
+//* non-static(public)
 
-Text::Text(SDL_Renderer *renderer, std::wstring message, std::string font_path, unsigned int font_size,
-		   SDL_Color font_color, bool centered)
-	: Sprite(renderer),
-	  Message(message),
-	  Font(TTF_OpenFont(font_path.c_str(), font_size)),
-	  fontColor(font_color)
-
+Text::Text(TextData text_data, bool centered)
+	: Sprite(text_data.destRenderer),
+	  Message(text_data.Message),
+	  fontColor(text_data.fontColor),
+	  fontSize(text_data.fontSize)
 {
+	LoadFont();
 	centered ? SetTextCentered() : SetText();
 
 	return;
 }
 
+Text::Text(Text &&obj)
+	: Sprite(std::move(obj)),
+	  Message(obj.Message),
+	  Path(obj.Path),
+	  Font(std::move(obj.Font)),
+	  fontColor(obj.fontColor),
+	  fontSize(obj.fontSize)
+{
+}
+
 Text::~Text()
 {
-	TTF_CloseFont(Font);
 	Font = nullptr;
 
 	return;
@@ -161,14 +174,14 @@ void Text::SetPath(std::string path)
 	return;
 }
 
-TTF_Font *Text::GetFont() const
+unique_ptr_deleter<TTF_Font> Text::GetFont()
 {
-	return Font;
+	return std::move(Font);
 }
 
 void Text::SetFont(TTF_Font *new_font)
 {
-	Font = new_font;
+	Font.reset(new_font);
 
 	return;
 }
@@ -181,6 +194,18 @@ SDL_Color Text::GetFontColor() const
 void Text::SetFontColor(SDL_Color new_font_color)
 {
 	fontColor = new_font_color;
+
+	return;
+}
+
+unsigned int Text::GetFontSize()
+{
+	return fontSize;
+}
+
+void Text::SetFontSize(unsigned int font_size)
+{
+	fontSize = font_size;
 
 	return;
 }

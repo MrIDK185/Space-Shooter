@@ -1,31 +1,51 @@
 #ifndef TEXT_HPP
 #define TEXT_HPP
 
-#include "Sprite.hpp"
-
 #include <string>
 
-typedef struct _TTF_Font TTF_Font;
+#include <SDL2/SDL_ttf.h>
+
+#include "Sprite.hpp"
+
+typedef struct
+{
+	SDL_Renderer *destRenderer;
+
+	std::wstring Message;
+
+	std::string fontPath;
+
+	unsigned int fontSize;
+
+	SDL_Color fontColor;
+} TextData;
 
 class Text : public Sprite
 {
 private:
+	//* static
+
+	static inline void fontDestructor(TTF_Font *font) { TTF_CloseFont(font); }
+
 	//*non-static
 
 	std::wstring Message;
 	std::string Path;
 
-	TTF_Font *Font;
+	unique_ptr_deleter<TTF_Font> Font = {nullptr, fontDestructor};
 	SDL_Color fontColor;
+	unsigned int fontSize;
 
+	void LoadFont();
 	void SetText();
 	void SetTextCentered();
 
 public:
 	//*non-static
 
-	Text(SDL_Renderer *renderer, std::wstring message, std::string font_path, unsigned int font_size,
-		 SDL_Color font_color, bool centered = true);
+	Text(TextData text_data, bool centered = true);
+
+	explicit Text(Text &&obj);
 
 	~Text() override;
 
@@ -37,13 +57,17 @@ public:
 
 	void SetPath(std::string path);
 
-	TTF_Font *GetFont() const;
+	unique_ptr_deleter<TTF_Font> GetFont();
 
 	void SetFont(TTF_Font *new_font);
 
 	SDL_Color GetFontColor() const;
 
 	void SetFontColor(SDL_Color new_font_color);
+
+	unsigned int GetFontSize();
+
+	void SetFontSize(unsigned int font_size);
 
 	void Render() const override;
 };
