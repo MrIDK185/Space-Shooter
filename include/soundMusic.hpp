@@ -32,6 +32,8 @@ public:
 
 	explicit soundMusic(std::string path);
 
+	explicit soundMusic(soundMusic &&obj);
+
 	~soundMusic();
 
 	unique_ptr_deleter<Mix_Music> GetMusic();

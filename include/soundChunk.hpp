@@ -38,6 +38,8 @@ public:
 
 	explicit soundChunk(std::string path, channelControl *controller);
 
+	explicit soundChunk(soundChunk &&obj);
+
 	~soundChunk();
 
 	std::string GetPath() const;

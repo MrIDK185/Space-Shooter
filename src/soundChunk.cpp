@@ -22,6 +22,16 @@ soundChunk::soundChunk(std::string path, channelControl *controller)
 	return;
 }
 
+soundChunk::soundChunk(soundChunk &&obj)
+	: Path(obj.Path),
+	  Chunk(std::move(obj.Chunk)),
+	  Channel(obj.Channel),
+	  Volume(obj.Volume),
+	  currentSoundState(obj.currentSoundState),
+	  channelController(obj.channelController)
+{
+}
+
 soundChunk::~soundChunk()
 {
 	Chunk = nullptr;

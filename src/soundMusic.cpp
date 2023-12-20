@@ -19,6 +19,13 @@ soundMusic::soundMusic(std::string path)
 	return;
 }
 
+soundMusic::soundMusic(soundMusic &&obj)
+	: Path(obj.Path),
+	  Music(std::move(obj.Music)),
+	  currentSoundState(obj.currentSoundState)
+{
+}
+
 soundMusic::~soundMusic()
 {
 	Music = nullptr;
