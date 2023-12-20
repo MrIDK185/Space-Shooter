@@ -1,9 +1,8 @@
 #include "Sound.hpp"
-#include <iostream>
 
 /*------------ soundChunk ------------*/
 
-//*non-static(private)
+//* non-static(private)
 
 void soundChunk::LoadChunk()
 {
@@ -12,7 +11,7 @@ void soundChunk::LoadChunk()
 	return;
 }
 
-//*non-static(public)
+//* non-static(public)
 
 soundChunk::soundChunk(std::string path, channelControl *controller)
 	: Path(path),
@@ -26,10 +25,8 @@ soundChunk::soundChunk(std::string path, channelControl *controller)
 
 soundChunk::~soundChunk()
 {
-	// Mix_FreeChunk(Chunk);
 	Chunk = nullptr;
 	channelController = nullptr;
-	std::cout << "SoundChunk destructor called\n";
 
 	return;
 }
@@ -164,7 +161,7 @@ void soundChunk::Stop()
 
 /*------------ soundMusic ------------*/
 
-//*non-static(private)
+//* non-static(private)
 
 void soundMusic::LoadMusic()
 {
@@ -173,7 +170,7 @@ void soundMusic::LoadMusic()
 	return;
 }
 
-//*non-static(public)
+//* non-static(public)
 
 soundMusic::soundMusic(std::string path)
 	: Path(path)
@@ -185,9 +182,7 @@ soundMusic::soundMusic(std::string path)
 
 soundMusic::~soundMusic()
 {
-	// Mix_FreeMusic(Music);
 	Music = nullptr;
-	std::cout << "SoundMusic destructor called\n";
 
 	return;
 }
