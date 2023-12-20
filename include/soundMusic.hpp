@@ -6,15 +6,10 @@
 
 #include <SDL2/SDL_mixer.h>
 
+#include "soundState.hpp"
+
 template <typename T>
 using unique_ptr_deleter = std::unique_ptr<T, void (*)(T *)>;
-
-typedef enum
-{
-	PLAYING,
-	PAUSED,
-	STOPPED
-} soundState;
 
 class soundMusic
 {
