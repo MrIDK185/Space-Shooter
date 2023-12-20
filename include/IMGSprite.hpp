@@ -1,15 +1,25 @@
 #ifndef IMG_SPRITE_HPP
 #define IMG_SPRITE_HPP
 
+#include <string>
+
 #include "Sprite.hpp"
 
-#include <string>
-#include <memory>
+typedef struct
+{
+	SDL_Renderer *destRenderer;
+
+	std::string IMGPath;
+
+	float
+		Scale,
+		Radius;
+} SpriteData;
 
 class IMGSprite : public Sprite
 {
 protected:
-	//*non-static
+	//* non-static
 
 	std::string IMGPath;
 
@@ -20,9 +30,11 @@ protected:
 	void LoadImage();
 
 public:
-	//*non-static
+	//* non-static
 
-	IMGSprite(SDL_Renderer *renderer, std::string path, float scale, float radius);
+	IMGSprite(SpriteData sprite_data);
+
+	explicit IMGSprite(IMGSprite &&obj);
 
 	~IMGSprite() override = default;
 

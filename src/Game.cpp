@@ -161,7 +161,7 @@ void Game::CreateObjects()
 	// objectsGameRunning.Asteroids.emplace_back(Renderer, "assets/images/asteroid1.png", 1, 60, 200,
 	// screenWidth, screenHeight);
 
-	std::cout << "7...\n";
+	// std::cout << "7...\n";
 	// objectsGameRunning.Gems.emplace_back(Gem::NewGem(Config, Renderer, "assets/images/gems.png", screenWidth, screenHeight));
 
 	std::cout << "8...\n";

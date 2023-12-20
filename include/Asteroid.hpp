@@ -3,6 +3,11 @@
 
 #include "IMGSprite.hpp"
 
+typedef struct
+{
+	float Velocity;
+} AsteroidData;
+
 class Asteroid : public IMGSprite
 {
 private:
@@ -15,7 +20,9 @@ private:
 public:
 	//* non-static
 
-	Asteroid(SDL_Renderer *renderer, std::string path, float scale, float radius, float velocity, int screen_width, int screen_height);
+	Asteroid(SpriteData sprite_data, AsteroidData asteroid_data);
+
+	explicit Asteroid(Asteroid &&obj);
 
 	~Asteroid() override = default;
 

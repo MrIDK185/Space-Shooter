@@ -1,22 +1,32 @@
 #include "AnimatedSprite.hpp"
 
-//*non-static(public)
+//* non-static(public)
 
-AnimatedSprite::AnimatedSprite(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
-							   const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
-							   const unsigned int animations_per_second)
-	: IMGSprite::IMGSprite(renderer, path, scale, radius),
-	  FRAME_WIDTH(frame_width),
-	  FRAME_HEIGHT(frame_height),
-	  IMG_FRAMES(img_frames),
-	  IMG_TYPES(img_types),
-	  ANIMATIONS_PER_SECOND(animations_per_second),
-	  IMGPartRect({0, 0, (int)frame_width, (int)frame_height}),
+AnimatedSprite::AnimatedSprite(SpriteData sprite_data, AnimationData animation_data)
+	: IMGSprite(sprite_data),
+	  FRAME_WIDTH(animation_data.FRAME_WIDTH),
+	  FRAME_HEIGHT(animation_data.FRAME_HEIGHT),
+	  IMG_FRAMES(animation_data.IMG_FRAMES),
+	  IMG_TYPES(animation_data.IMG_TYPES),
+	  ANIMATIONS_PER_SECOND(animation_data.ANIMATIONS_PER_SECOND),
+	  IMGPartRect({0, 0, (int)FRAME_WIDTH, (int)FRAME_HEIGHT}),
 	  nextTickTime(0)
 {
-	SetRectSize(frame_width * scale, frame_height * scale);
+	SetRectSize(FRAME_WIDTH * Scale, FRAME_HEIGHT * Scale);
 
 	return;
+}
+
+AnimatedSprite::AnimatedSprite(AnimatedSprite &&obj)
+	: IMGSprite(std::move(obj)),
+	  FRAME_WIDTH(obj.FRAME_WIDTH),
+	  FRAME_HEIGHT(obj.FRAME_HEIGHT),
+	  IMG_FRAMES(obj.IMG_FRAMES),
+	  IMG_TYPES(obj.IMG_TYPES),
+	  ANIMATIONS_PER_SECOND(obj.ANIMATIONS_PER_SECOND),
+	  IMGPartRect(obj.IMGPartRect),
+	  nextTickTime(obj.nextTickTime)
+{
 }
 
 unsigned int AnimatedSprite::GetFrameWidth() const

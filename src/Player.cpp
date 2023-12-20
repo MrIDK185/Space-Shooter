@@ -1,15 +1,5 @@
 #include "Player.hpp"
 
-//* static(public)
-
-Player Player::NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path)
-{
-	return Player(renderer, path, config.PLAYER_SCALE, config.PLAYER_RADIUS, config.PLAYER_FRAME_WIDTH,
-				  config.PLAYER_FRAME_HEIGHT, config.PLAYER_IMG_FRAMES, config.PLAYER_IMG_TYPES,
-				  config.PLAYER_ANIMATIONS_PER_SECOND, config.PLAYER_ACCELEARION, config.PLAYER_MAX_VELOCITY,
-				  config.PLAYER_FRICTION, config.PLAYER_EFFECT_DURATION_SECONDS, config.PLAYER_ROTATION_SPEED);
-}
-
 //* non-static(private)
 
 void Player::UpdateAngle(float delta_time_seconds, const Uint8 *keyboard)
@@ -66,17 +56,27 @@ void Player::UpdateVelocity(float delta_time_seconds, const Uint8 *keyboard)
 
 //* non-static(public)
 
-Player::Player(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
-			   const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
-			   const unsigned int animations_per_second, float acceleration, float max_velocity, float friction,
-			   unsigned int effect_duration_seconds, unsigned int rotation_speed)
-	: AnimatedSprite(renderer, path, scale, radius, frame_width, frame_height, img_frames, img_types,
-					 animations_per_second),
-	  Acceleration(acceleration),
-	  maxVelocity(max_velocity),
-	  Friction(friction),
-	  effectDuration(effect_duration_seconds * 1000),
-	  rotationSpeed(rotation_speed)
+Player::Player(SpriteData sprite_data, AnimationData animation_data, PlayerData player_data)
+	: AnimatedSprite(sprite_data, animation_data),
+	  Acceleration(player_data.Acceleration),
+	  maxVelocity(player_data.maxVelocity),
+	  Friction(player_data.Friction),
+	  effectDuration(player_data.effectDuration * 1000),
+	  rotationSpeed(player_data.rotationSpeed)
+{
+}
+
+Player::Player(Player &&obj)
+	: AnimatedSprite(std::move(obj)),
+	  Acceleration(obj.Acceleration),
+	  Velocity(obj.Velocity),
+	  maxVelocity(obj.maxVelocity),
+	  Angle(obj.Angle),
+	  Friction(obj.Friction),
+	  effectDuration(obj.effectDuration * 1000),
+	  rotationSpeed(obj.rotationSpeed),
+	  collectionTicks(obj.collectionTicks),
+	  gemCollected(obj.gemCollected)
 {
 }
 

@@ -1,34 +1,30 @@
-#include "Gem.hpp"
-
 #include <random>
 
-//*static(public)
+#include "Gem.hpp"
 
-Gem Gem::NewGem(Configuration &config, SDL_Renderer *renderer, std::string path, int screen_width, int screen_height)
+//* non-static(public)
+
+Gem::Gem(SpriteData sprite_data, AnimationData animation_data, GemData gem_data)
+	: AnimatedSprite(sprite_data, animation_data),
+	  blinkDuration(gem_data.blinkDuration),
+	  lifetimeDuration(gem_data.lifetimeDuration),
+	  minimumBrightness(gem_data.minimumBrightness),
+	  maximumBrightness(gem_data.maximumBrightness),
+	  blinkFactor(gem_data.blinkFactor)
 {
-	return Gem(renderer, path, config.GEM_SCALE, config.GEM_RADIUS, config.GEM_FRAME_WIDTH,
-			   config.GEM_FRAME_HEIGHT, config.GEM_IMG_FRAMES, config.GEM_IMG_TYPES, 0, config.GEM_BLINK_DURATION,
-			   config.GEM_LIFETIME_DURATION, config.GEM_MINIMUM_BRIGHTNESS, config.GEM_MAXIMUM_BRIGHTNESS,
-			   config.GEM_BLINK_FACTOR, screen_width, screen_height);
 }
 
-//*non-static(public)
-
-Gem::Gem(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
-		 const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
-		 const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration,
-		 unsigned int minimum_brightness, unsigned int maximum_brightness, unsigned int blink_factor,
-		 int screen_width, int screen_height)
-	: AnimatedSprite(renderer, path, scale, radius, frame_width, frame_height, img_frames, img_types, animations_per_second),
-	  blinkDuration(blink_duration),
-	  lifetimeDuration(lifetime_duration),
-	  minimumBrightness(minimum_brightness),
-	  maximumBrightness(maximum_brightness),
-	  blinkFactor(blink_factor)
+Gem::Gem(Gem &&obj)
+	: AnimatedSprite(std::move(obj)),
+	  blinkTicks(obj.blinkTicks),
+	  lifetimeTicks(obj.lifetimeTicks),
+	  blinkDuration(obj.blinkDuration),
+	  lifetimeDuration(obj.lifetimeDuration),
+	  minimumBrightness(obj.minimumBrightness),
+	  maximumBrightness(obj.maximumBrightness),
+	  blinkFactor(obj.blinkFactor),
+	  signedFactor(obj.signedFactor)
 {
-	Randomize(screen_width, screen_height, 0);
-
-	return;
 }
 
 Uint64 Gem::GetBlinkTicks() const

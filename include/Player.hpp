@@ -1,13 +1,26 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "Configuration.hpp"
 #include "AnimatedSprite.hpp"
+
+typedef struct
+{
+	float
+		Acceleration,
+		Velocity = 0,
+		maxVelocity,
+		Angle = 0,
+		Friction;
+
+	unsigned int
+		effectDuration,
+		rotationSpeed;
+} PlayerData;
 
 class Player : public AnimatedSprite
 {
 private:
-	//*non-static
+	//* non-static
 
 	float
 		Acceleration,
@@ -28,16 +41,11 @@ private:
 	void UpdateVelocity(float delta_time_seconds, const Uint8 *keyboard);
 
 public:
-	//* static
+	//* non-static
 
-	static Player NewPlayer(Configuration &config, SDL_Renderer *renderer, std::string path);
+	Player(SpriteData sprite_data, AnimationData animation_data, PlayerData player_data);
 
-	//*non-static
-
-	Player(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
-		   const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
-		   const unsigned int animations_per_second, float acceleration, float max_velocity, float friction,
-		   unsigned int effect_duration_seconds, unsigned int rotation_speed);
+	explicit Player(Player &&obj);
 
 	~Player() override = default;
 

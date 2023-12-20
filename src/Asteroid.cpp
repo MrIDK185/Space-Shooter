@@ -1,15 +1,20 @@
-#include <Asteroid.hpp>
-
 #include <random>
 
-Asteroid::Asteroid(SDL_Renderer *renderer, std::string path, float scale, float radius, float velocity,
-				   int screen_width, int screen_height)
-	: IMGSprite::IMGSprite(renderer, path, scale, radius),
-	  Velocity(velocity)
-{
-	Randomize(screen_width, screen_height);
+#include <Asteroid.hpp>
 
-	return;
+//* non-static(public)
+
+Asteroid::Asteroid(SpriteData sprite_data, AsteroidData asteroid_data)
+	: IMGSprite(sprite_data),
+	  Velocity(asteroid_data.Velocity)
+{
+}
+
+Asteroid::Asteroid(Asteroid &&obj)
+	: IMGSprite(std::move(obj)),
+	  Angle(obj.Angle),
+	  Velocity(obj.Velocity)
+{
 }
 
 void Asteroid::Move(int screen_width, int screen_height, float delta_time_seconds)

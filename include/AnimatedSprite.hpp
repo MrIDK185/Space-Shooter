@@ -3,10 +3,20 @@
 
 #include "IMGSprite.hpp"
 
+typedef struct
+{
+	const unsigned int
+		FRAME_WIDTH,
+		FRAME_HEIGHT,
+		IMG_FRAMES,
+		IMG_TYPES,
+		ANIMATIONS_PER_SECOND;
+} AnimationData;
+
 class AnimatedSprite : public IMGSprite
 {
 protected:
-	//*non-static
+	//* non-static
 
 	const unsigned int
 		FRAME_WIDTH,
@@ -25,9 +35,9 @@ protected:
 public:
 	//* non-static
 
-	AnimatedSprite(SDL_Renderer *renderer, std::string path, float scale, float radius,
-				   const unsigned int frame_width, const unsigned int frame_height,
-				   const unsigned int img_frames, const unsigned int img_types, const unsigned int animations_per_second);
+	AnimatedSprite(SpriteData sprite_data, AnimationData animation_data);
+
+	explicit AnimatedSprite(AnimatedSprite &&obj);
 
 	~AnimatedSprite() override = default;
 

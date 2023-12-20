@@ -1,7 +1,6 @@
 #ifndef GEM_HPP
 #define GEM_HPP
 
-#include "Configuration.hpp"
 #include "AnimatedSprite.hpp"
 
 typedef enum
@@ -10,10 +9,20 @@ typedef enum
 	DECREMENT = -1
 } Sign;
 
+typedef struct
+{
+	unsigned int
+		blinkDuration,
+		lifetimeDuration,
+		minimumBrightness,
+		maximumBrightness,
+		blinkFactor;
+} GemData;
+
 class Gem : public AnimatedSprite
 {
 private:
-	//*non-static
+	//* non-static
 
 	Uint64
 		blinkTicks,
@@ -29,18 +38,11 @@ private:
 	Sign signedFactor = DECREMENT;
 
 public:
-	//*static
+	//* non-static
 
-	static Gem NewGem(Configuration &config, SDL_Renderer *renderer, std::string path,
-					  int screen_width, int screen_height);
+	Gem(SpriteData sprite_data, AnimationData animation_data, GemData gem_data);
 
-	//*non-static
-
-	Gem(SDL_Renderer *renderer, std::string path, float scale, float radius, const unsigned int frame_width,
-		const unsigned int frame_height, const unsigned int img_frames, const unsigned int img_types,
-		const unsigned int animations_per_second, unsigned int blink_duration, unsigned int lifetime_duration,
-		unsigned int minimum_brightness, unsigned int maximum_brightness, unsigned int blink_factor,
-		int screen_width, int screen_height);
+	explicit Gem(Gem &&obj);
 
 	~Gem() override = default;
 

@@ -1,19 +1,22 @@
 #include "Sprite.hpp"
-#include <iostream>
 
-//*non-static(public)
+//* non-static(public)
 
 Sprite::Sprite(SDL_Renderer *renderer) : destRenderer(renderer)
 {
 }
 
+Sprite::Sprite(Sprite &&obj)
+	: destRenderer(obj.destRenderer),
+	  Texture(std::move(obj.Texture)),
+	  Rect(obj.Rect)
+{
+}
+
 Sprite::~Sprite()
 {
-	// SDL_DestroyTexture(Texture);
 	Texture = nullptr;
-
 	destRenderer = nullptr;
-	std::cout << "Sprite destructor called\n";
 
 	return;
 }

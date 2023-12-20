@@ -21,16 +21,24 @@ void IMGSprite::LoadImage()
 
 //* non-static(public)
 
-IMGSprite::IMGSprite(SDL_Renderer *renderer, std::string path, float scale, float radius)
-	: Sprite(renderer),
-	  IMGPath(path),
-	  Scale(scale),
-	  Radius(radius * scale)
+IMGSprite::IMGSprite(SpriteData sprite_data)
+	: Sprite(sprite_data.destRenderer),
+	  IMGPath(sprite_data.IMGPath),
+	  Scale(sprite_data.Scale),
+	  Radius(sprite_data.Radius * Scale)
 {
 	LoadImage();
-	SetScale(scale);
+	SetScale(Scale);
 
 	return;
+}
+
+IMGSprite::IMGSprite(IMGSprite &&obj)
+	: Sprite(std::move(obj)),
+	  IMGPath(obj.IMGPath),
+	  Scale(obj.Scale),
+	  Radius(obj.Radius)
+{
 }
 
 std::string IMGSprite::GetIMGPath() const
