@@ -73,14 +73,12 @@ void Text::SetTextCentered()
 		total_width += char_width;
 	}
 
-	float lineHeight = static_cast<float>(TTF_FontLineSkip(Font.get()));
+	int lineHeight = TTF_FontLineSkip(Font.get());
 	int total_height = lineHeight * textLines.size();
-	float yPosition = 0;
+	int yPosition = 0;
 
-	SetTexture(SDL_CreateTexture(destRenderer, SDL_PIXELFORMAT_RGBA32,
-								 SDL_TEXTUREACCESS_TARGET, total_width, total_height));
-	SDL_SetTextureBlendMode(Texture.get(), SDL_BLENDMODE_BLEND);
-	SDL_SetRenderTarget(destRenderer, Texture.get());
+	SetSurface(SDL_CreateRGBSurfaceWithFormat(0, total_width, total_height, 32, SDL_PIXELFORMAT_RGBA32));
+	SDL_SetSurfaceBlendMode(Surface.get(), SDL_BLENDMODE_BLEND);
 
 	for (auto &line : textLines)
 	{
@@ -92,19 +90,17 @@ void Text::SetTextCentered()
 			break;
 		}
 
-		float lineWidth = static_cast<float>(lineSurface->w);
-		float xPos = (total_width - lineWidth) / 2;
+		int lineWidth = lineSurface->w;
+		int xPos = (total_width - lineWidth) / 2;
 
-		unique_ptr_deleter<SDL_Texture> lineTexture = {SDL_CreateTextureFromSurface(destRenderer, lineSurface.get()),
-													   textureDestructor};
-		SDL_FRect dstRect = {xPos, yPosition, lineWidth, lineHeight};
+		SDL_Rect dstRect = {xPos, yPosition, lineWidth, lineHeight};
 
-		SDL_RenderCopyF(destRenderer, lineTexture.get(), nullptr, &dstRect);
+		SDL_BlitSurface(lineSurface.get(), nullptr, Surface.get(), &dstRect);
 
 		yPosition += lineHeight;
 	}
 
-	SDL_SetRenderTarget(destRenderer, nullptr);
+	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
 
 	int width, height;
 	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
