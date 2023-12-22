@@ -20,7 +20,7 @@ std::unique_ptr<Uint16[]> to_uint16(std::wstring message)
 
 void Text::LoadFont()
 {
-	SetFont(TTF_OpenFont(Path.c_str(), fontSize));
+	SetFont(TTF_OpenFont(fontPath.c_str(), fontSize));
 
 	return;
 }
@@ -29,15 +29,12 @@ void Text::SetText()
 {
 	std::unique_ptr<Uint16[]> unicodeMessage = to_uint16(Message);
 
-	SDL_Surface *messageSurface = TTF_RenderUNICODE_Blended_Wrapped(Font.get(), unicodeMessage.get(), fontColor, 0);
-	SetTexture(SDL_CreateTextureFromSurface(destRenderer, messageSurface));
+	SetSurface(TTF_RenderUNICODE_Blended_Wrapped(Font.get(), unicodeMessage.get(), fontColor, 0));
+	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
 
 	int width, height;
 	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
 	SetRectSize(width, height);
-
-	SDL_FreeSurface(messageSurface);
-	messageSurface = nullptr;
 
 	return;
 }
@@ -88,7 +85,8 @@ void Text::SetTextCentered()
 	for (auto &line : textLines)
 	{
 		std::unique_ptr<Uint16[]> unicodeMessage = to_uint16(line);
-		SDL_Surface *lineSurface = TTF_RenderUNICODE_Blended(Font.get(), unicodeMessage.get(), fontColor);
+		unique_ptr_deleter<SDL_Surface> lineSurface = {TTF_RenderUNICODE_Blended(Font.get(), unicodeMessage.get(), fontColor),
+													   surfaceDestructor};
 		if (lineSurface == nullptr)
 		{
 			break;
@@ -97,13 +95,11 @@ void Text::SetTextCentered()
 		float lineWidth = static_cast<float>(lineSurface->w);
 		float xPos = (total_width - lineWidth) / 2;
 
-		SDL_Texture *lineTexture = SDL_CreateTextureFromSurface(destRenderer, lineSurface);
+		unique_ptr_deleter<SDL_Texture> lineTexture = {SDL_CreateTextureFromSurface(destRenderer, lineSurface.get()),
+													   textureDestructor};
 		SDL_FRect dstRect = {xPos, yPosition, lineWidth, lineHeight};
 
-		SDL_RenderCopyF(destRenderer, lineTexture, nullptr, &dstRect);
-
-		SDL_FreeSurface(lineSurface);
-		SDL_DestroyTexture(lineTexture);
+		SDL_RenderCopyF(destRenderer, lineTexture.get(), nullptr, &dstRect);
 
 		yPosition += lineHeight;
 	}
@@ -122,6 +118,7 @@ void Text::SetTextCentered()
 Text::Text(TextData text_data, bool centered)
 	: Sprite(text_data.destRenderer),
 	  Message(text_data.Message),
+	  fontPath(text_data.fontPath),
 	  fontColor(text_data.fontColor),
 	  fontSize(text_data.fontSize)
 {
@@ -131,11 +128,24 @@ Text::Text(TextData text_data, bool centered)
 	return;
 }
 
+Text::Text(const Text &obj)
+	: Sprite(obj),
+	  Message(obj.Message),
+	  Font(nullptr, fontDestructor),
+	  fontPath(obj.fontPath),
+	  fontColor(obj.fontColor),
+	  fontSize(obj.fontSize)
+{
+	LoadFont();
+
+	return;
+}
+
 Text::Text(Text &&obj)
 	: Sprite(std::move(obj)),
 	  Message(obj.Message),
-	  Path(obj.Path),
 	  Font(std::move(obj.Font)),
+	  fontPath(obj.fontPath),
 	  fontColor(obj.fontColor),
 	  fontSize(obj.fontSize)
 {
@@ -162,18 +172,6 @@ void Text::SetMessage(std::wstring new_message, bool centered)
 	return;
 }
 
-std::string Text::GetPath() const
-{
-	return Path;
-}
-
-void Text::SetPath(std::string path)
-{
-	Path = path;
-
-	return;
-}
-
 unique_ptr_deleter<TTF_Font> Text::GetFont()
 {
 	return std::move(Font);
@@ -182,6 +180,18 @@ unique_ptr_deleter<TTF_Font> Text::GetFont()
 void Text::SetFont(TTF_Font *new_font)
 {
 	Font.reset(new_font);
+
+	return;
+}
+
+std::string Text::GetFontPath() const
+{
+	return fontPath;
+}
+
+void Text::SetFontPath(std::string path)
+{
+	fontPath = path;
 
 	return;
 }

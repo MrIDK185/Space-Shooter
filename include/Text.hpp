@@ -15,9 +15,9 @@ typedef struct
 
 	std::string fontPath;
 
-	unsigned int fontSize;
-
 	SDL_Color fontColor;
+
+	unsigned int fontSize;
 } TextData;
 
 class Text : public Sprite
@@ -30,9 +30,9 @@ private:
 	//*non-static
 
 	std::wstring Message;
-	std::string Path;
 
 	unique_ptr_deleter<TTF_Font> Font = {nullptr, fontDestructor};
+	std::string fontPath;
 	SDL_Color fontColor;
 	unsigned int fontSize;
 
@@ -45,6 +45,8 @@ public:
 
 	Text(TextData text_data, bool centered = true);
 
+	explicit Text(const Text &obj);
+
 	explicit Text(Text &&obj);
 
 	~Text() override;
@@ -53,13 +55,13 @@ public:
 
 	void SetMessage(std::wstring new_message, bool centered = true);
 
-	std::string GetPath() const;
-
-	void SetPath(std::string path);
-
 	unique_ptr_deleter<TTF_Font> GetFont();
 
 	void SetFont(TTF_Font *new_font);
+
+	std::string GetFontPath() const;
+
+	void SetFontPath(std::string path);
 
 	SDL_Color GetFontColor() const;
 
