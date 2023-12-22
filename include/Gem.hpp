@@ -42,6 +42,8 @@ public:
 
 	Gem(SpriteData sprite_data, AnimationData animation_data, GemData gem_data);
 
+	explicit Gem(const Gem &obj);
+
 	explicit Gem(Gem &&obj);
 
 	~Gem() override = default;

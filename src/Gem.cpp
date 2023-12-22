@@ -14,6 +14,19 @@ Gem::Gem(SpriteData sprite_data, AnimationData animation_data, GemData gem_data)
 {
 }
 
+Gem::Gem(const Gem &obj)
+	: AnimatedSprite(obj),
+	  blinkTicks(obj.blinkTicks),
+	  lifetimeTicks(obj.lifetimeTicks),
+	  blinkDuration(obj.blinkDuration),
+	  lifetimeDuration(obj.lifetimeDuration),
+	  minimumBrightness(obj.minimumBrightness),
+	  maximumBrightness(obj.maximumBrightness),
+	  blinkFactor(obj.blinkFactor),
+	  signedFactor(obj.signedFactor)
+{
+}
+
 Gem::Gem(Gem &&obj)
 	: AnimatedSprite(std::move(obj)),
 	  blinkTicks(obj.blinkTicks),
