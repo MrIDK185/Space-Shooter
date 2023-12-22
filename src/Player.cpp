@@ -66,6 +66,20 @@ Player::Player(SpriteData sprite_data, AnimationData animation_data, PlayerData 
 {
 }
 
+Player::Player(const Player &obj)
+	: AnimatedSprite(obj),
+	  Acceleration(obj.Acceleration),
+	  Velocity(obj.Velocity),
+	  maxVelocity(obj.maxVelocity),
+	  Angle(obj.Angle),
+	  Friction(obj.Friction),
+	  effectDuration(obj.effectDuration * 1000),
+	  rotationSpeed(obj.rotationSpeed),
+	  collectionTicks(obj.collectionTicks),
+	  gemCollected(obj.gemCollected)
+{
+}
+
 Player::Player(Player &&obj)
 	: AnimatedSprite(std::move(obj)),
 	  Acceleration(obj.Acceleration),

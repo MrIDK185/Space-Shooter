@@ -45,6 +45,8 @@ public:
 
 	Player(SpriteData sprite_data, AnimationData animation_data, PlayerData player_data);
 
+	explicit Player(const Player &obj);
+
 	explicit Player(Player &&obj);
 
 	~Player() override = default;
