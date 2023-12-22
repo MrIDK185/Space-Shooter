@@ -22,6 +22,8 @@ public:
 
 	Asteroid(SpriteData sprite_data, AsteroidData asteroid_data);
 
+	explicit Asteroid(const Asteroid &obj);
+
 	explicit Asteroid(Asteroid &&obj);
 
 	~Asteroid() override = default;

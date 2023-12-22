@@ -10,6 +10,13 @@ Asteroid::Asteroid(SpriteData sprite_data, AsteroidData asteroid_data)
 {
 }
 
+Asteroid::Asteroid(const Asteroid &obj)
+	: IMGSprite(obj),
+	  Angle(obj.Angle),
+	  Velocity(obj.Velocity)
+{
+}
+
 Asteroid::Asteroid(Asteroid &&obj)
 	: IMGSprite(std::move(obj)),
 	  Angle(obj.Angle),
