@@ -21,12 +21,14 @@ class Sprite
 {
 private:
 	//* static
+	static inline void surfaceDestructor(SDL_Surface *surface) { SDL_FreeSurface(surface); }
 	static inline void textureDestructor(SDL_Texture *texture) { SDL_DestroyTexture(texture); }
 
 protected:
 	//* non-static
 
 	SDL_Renderer *destRenderer;
+	unique_ptr_deleter<SDL_Surface> Surface = {nullptr, surfaceDestructor};
 	unique_ptr_deleter<SDL_Texture> Texture = {nullptr, textureDestructor};
 	SDL_FRect Rect = {0, 0, 0, 0};
 
@@ -35,6 +37,8 @@ public:
 
 	explicit Sprite(SDL_Renderer *renderer);
 
+	explicit Sprite(const Sprite &obj);
+
 	explicit Sprite(Sprite &&obj);
 
 	virtual ~Sprite();
@@ -42,6 +46,10 @@ public:
 	SDL_Renderer *GetRenderer() const;
 
 	void SetRenderer(SDL_Renderer *renderer);
+
+	unique_ptr_deleter<SDL_Surface> GetSurface();
+
+	void SetSurface(SDL_Surface *surface);
 
 	unique_ptr_deleter<SDL_Texture> GetTexture();
 

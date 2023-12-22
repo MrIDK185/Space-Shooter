@@ -6,8 +6,20 @@ Sprite::Sprite(SDL_Renderer *renderer) : destRenderer(renderer)
 {
 }
 
+Sprite::Sprite(const Sprite &obj)
+	: destRenderer(obj.destRenderer),
+	  Surface(new SDL_Surface(*obj.Surface), surfaceDestructor),
+	  Texture(nullptr, textureDestructor),
+	  Rect(obj.Rect)
+{
+	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
+
+	return;
+}
+
 Sprite::Sprite(Sprite &&obj)
 	: destRenderer(obj.destRenderer),
+	  Surface(std::move(obj.Surface)),
 	  Texture(std::move(obj.Texture)),
 	  Rect(obj.Rect)
 {
@@ -15,6 +27,7 @@ Sprite::Sprite(Sprite &&obj)
 
 Sprite::~Sprite()
 {
+	Surface = nullptr;
 	Texture = nullptr;
 	destRenderer = nullptr;
 
@@ -29,6 +42,18 @@ SDL_Renderer *Sprite::GetRenderer() const
 void Sprite::SetRenderer(SDL_Renderer *renderer)
 {
 	destRenderer = renderer;
+
+	return;
+}
+
+unique_ptr_deleter<SDL_Surface> Sprite::GetSurface()
+{
+	return std::move(Surface);
+}
+
+void Sprite::SetSurface(SDL_Surface *surface)
+{
+	Surface.reset(surface);
 
 	return;
 }
