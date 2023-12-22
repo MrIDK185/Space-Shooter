@@ -37,6 +37,8 @@ public:
 
 	AnimatedSprite(SpriteData sprite_data, AnimationData animation_data);
 
+	explicit AnimatedSprite(const AnimatedSprite &obj);
+
 	explicit AnimatedSprite(AnimatedSprite &&obj);
 
 	~AnimatedSprite() override = default;

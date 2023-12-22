@@ -17,6 +17,20 @@ AnimatedSprite::AnimatedSprite(SpriteData sprite_data, AnimationData animation_d
 	return;
 }
 
+AnimatedSprite::AnimatedSprite(const AnimatedSprite &obj)
+	: IMGSprite(obj),
+	  FRAME_WIDTH(obj.FRAME_WIDTH),
+	  FRAME_HEIGHT(obj.FRAME_HEIGHT),
+	  IMG_FRAMES(obj.IMG_FRAMES),
+	  IMG_TYPES(obj.IMG_TYPES),
+	  ANIMATIONS_PER_SECOND(obj.ANIMATIONS_PER_SECOND),
+	  animationFrame(obj.animationFrame),
+	  animationType(obj.animationType),
+	  IMGPartRect(obj.IMGPartRect),
+	  nextTickTime(obj.nextTickTime)
+{
+}
+
 AnimatedSprite::AnimatedSprite(AnimatedSprite &&obj)
 	: IMGSprite(std::move(obj)),
 	  FRAME_WIDTH(obj.FRAME_WIDTH),
@@ -24,6 +38,8 @@ AnimatedSprite::AnimatedSprite(AnimatedSprite &&obj)
 	  IMG_FRAMES(obj.IMG_FRAMES),
 	  IMG_TYPES(obj.IMG_TYPES),
 	  ANIMATIONS_PER_SECOND(obj.ANIMATIONS_PER_SECOND),
+	  animationFrame(obj.animationFrame),
+	  animationType(obj.animationType),
 	  IMGPartRect(obj.IMGPartRect),
 	  nextTickTime(obj.nextTickTime)
 {
