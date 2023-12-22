@@ -34,6 +34,8 @@ public:
 
 	IMGSprite(SpriteData sprite_data);
 
+	explicit IMGSprite(const IMGSprite &obj);
+
 	explicit IMGSprite(IMGSprite &&obj);
 
 	~IMGSprite() override = default;

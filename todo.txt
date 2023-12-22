@@ -9,3 +9,6 @@ Game Objects
 
 Sound
  ->ChannelControl for Music class
+
+Sprites
+ ->DRect instead of FRect

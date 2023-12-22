@@ -6,15 +6,12 @@
 
 void IMGSprite::LoadImage()
 {
-	SDL_Surface *loadedSurface = IMG_Load(IMGPath.c_str());
-	SetTexture(SDL_CreateTextureFromSurface(destRenderer, loadedSurface));
+	SetSurface(IMG_Load(IMGPath.c_str()));
+	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
 
 	int width, height;
 	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
 	SetRectSize(width, height);
-
-	SDL_FreeSurface(loadedSurface);
-	loadedSurface = nullptr;
 
 	return;
 }
@@ -31,6 +28,14 @@ IMGSprite::IMGSprite(SpriteData sprite_data)
 	SetScale(Scale);
 
 	return;
+}
+
+IMGSprite::IMGSprite(const IMGSprite &obj)
+	: Sprite(obj),
+	  IMGPath(obj.IMGPath),
+	  Scale(obj.Scale),
+	  Radius(obj.Radius)
+{
 }
 
 IMGSprite::IMGSprite(IMGSprite &&obj)
