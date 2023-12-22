@@ -19,12 +19,12 @@ typedef enum
 
 class Sprite
 {
-private:
+protected:
 	//* static
+
 	static inline void surfaceDestructor(SDL_Surface *surface) { SDL_FreeSurface(surface); }
 	static inline void textureDestructor(SDL_Texture *texture) { SDL_DestroyTexture(texture); }
 
-protected:
 	//* non-static
 
 	SDL_Renderer *destRenderer;
