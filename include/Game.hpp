@@ -63,6 +63,10 @@ public:
 
 	//* Initialization
 	void SetupGame();
+	void CreateObjectsTitleScreen();
+	void CreateObjectsGameRunning();
+	void CreateObjectsGamePaused();
+	void CreateObjectsGameOver();
 	void CreateObjects();
 	void Reset();
 

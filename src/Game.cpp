@@ -122,16 +122,10 @@ void Game::SetupGame()
 	return;
 }
 
-void Game::CreateObjects()
+void Game::CreateObjectsTitleScreen()
 {
 	SpriteData sprite_data;
 	TextData text_data;
-	AsteroidData asteroid_data;
-	AnimationData animation_data;
-	GemData gem_data;
-	PlayerData player_data;
-
-	//* Title Screen
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/background_blurred.png",
@@ -156,7 +150,17 @@ void Game::CreateObjects()
 														soundMusic("assets/sounds/menu_music.mp3"));
 	menu_music.first->second.Play();
 
-	//* Game running
+	return;
+}
+
+void Game::CreateObjectsGameRunning()
+{
+	SpriteData sprite_data;
+	TextData text_data;
+	AsteroidData asteroid_data;
+	AnimationData animation_data;
+	GemData gem_data;
+	PlayerData player_data;
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/background.png",
@@ -226,7 +230,12 @@ void Game::CreateObjects()
 	objectsGameRunning.Musics.emplace("backgroundMusic",
 									  soundMusic("assets/sounds/background_music.mp3"));
 
-	//* Game Paused
+	return;
+}
+
+void Game::CreateObjectsGamePaused()
+{
+	SpriteData sprite_data;
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/pause-button.png",
@@ -242,7 +251,13 @@ void Game::CreateObjects()
 	objectsGamePaused.IMGSprites.emplace("darkenOverlay",
 										 IMGSprite(sprite_data));
 
-	//* Game Over
+	return;
+}
+
+void Game::CreateObjectsGameOver()
+{
+	SpriteData sprite_data;
+	TextData text_data;
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/background_blurred.png",
@@ -259,6 +274,16 @@ void Game::CreateObjects()
 	auto game_over = objectsGameOver.Texts.emplace("gameOver",
 												   Text(text_data));
 	game_over.first->second.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+
+	return;
+}
+
+void Game::CreateObjects()
+{
+	CreateObjectsTitleScreen();
+	CreateObjectsGameRunning();
+	CreateObjectsGamePaused();
+	CreateObjectsGameOver();
 
 	return;
 }

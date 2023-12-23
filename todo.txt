@@ -4,7 +4,10 @@ Asteroid functionality
  -> collision, damage
 
 Game Objects
- -> clean up creation
+ -> create objects: use default data structs for:
+	-> Gem
+	-> Player
+	-> Asteroid
 
 Sound
  -> ChannelControl for Music class
