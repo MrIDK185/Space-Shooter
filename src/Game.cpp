@@ -124,117 +124,141 @@ void Game::SetupGame()
 
 void Game::CreateObjects()
 {
-	//* Title screen
+	SpriteData sprite_data;
+	TextData text_data;
+	AsteroidData asteroid_data;
+	AnimationData animation_data;
+	GemData gem_data;
+	PlayerData player_data;
 
-	std::cout << "1...\n";
-	SpriteData sprite_data = {Renderer, "assets/images/background_blurred.png", 1, 0};
-	objectsTitleScreen.IMGSprites.emplace(std::piecewise_construct,
-										  std::forward_as_tuple("startBackground"),
-										  std::forward_as_tuple(sprite_data));
+	//* Title Screen
 
-	std::cout << "2...\n";
-	TextData text_data = {Renderer, Config.START_TEXT, Config.FONT_PATH,
-						  Config.START_TEXT_COLOR, Config.START_TEXT_SIZE};
-	objectsTitleScreen.Texts.emplace(std::piecewise_construct,
-									 std::forward_as_tuple("startText"),
-									 std::forward_as_tuple(text_data));
-	objectsTitleScreen.Texts.at("startText").SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/background_blurred.png",
+				   .Scale = 1,
+				   .Radius = 0};
+	objectsTitleScreen.IMGSprites.emplace("startBackground",
+										  IMGSprite(sprite_data));
 
-	std::cout << "3...\n";
-	objectsTitleScreen.Chunks.emplace(std::piecewise_construct,
-									  std::forward_as_tuple("startSound"),
-									  std::forward_as_tuple("assets/sounds/game_start.mp3", &channelController));
+	text_data = {.destRenderer = Renderer,
+				 .Message = Config.START_TEXT,
+				 .fontPath = Config.FONT_PATH,
+				 .fontColor = Config.START_TEXT_COLOR,
+				 .fontSize = Config.START_TEXT_SIZE};
+	auto start_text = objectsTitleScreen.Texts.emplace("startText",
+													   Text(text_data));
+	start_text.first->second.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
-	std::cout << "4...\n";
-	objectsTitleScreen.Musics.emplace(std::piecewise_construct,
-									  std::forward_as_tuple("menuMusic"),
-									  std::forward_as_tuple("assets/sounds/menu_music.mp3"));
-	objectsTitleScreen.Musics.at("menuMusic").Play();
+	objectsTitleScreen.Chunks.emplace("startSound",
+									  soundChunk("assets/sounds/game_start.mp3", &channelController));
+
+	auto menu_music = objectsTitleScreen.Musics.emplace("menuMusic",
+														soundMusic("assets/sounds/menu_music.mp3"));
+	menu_music.first->second.Play();
 
 	//* Game running
 
-	std::cout << "5...\n";
-	sprite_data = {Renderer, "assets/images/background.png", 1, 0};
-	objectsGameRunning.IMGSprites.emplace(std::piecewise_construct,
-										  std::forward_as_tuple("gameBackground"),
-										  std::forward_as_tuple(sprite_data));
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/background.png",
+				   .Scale = 1,
+				   .Radius = 0};
+	objectsGameRunning.IMGSprites.emplace("gameBackground",
+										  IMGSprite(sprite_data));
 
-	std::cout << "6...\n";
-	sprite_data = {Renderer, "assets/images/asteroid1.png", 1, 60};
-	AsteroidData asteroid_data = {200};
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/asteroid1.png",
+				   .Scale = 1,
+				   .Radius = 60};
+	asteroid_data = {.Velocity = 200};
 	objectsGameRunning.Asteroids.emplace_back(Asteroid(sprite_data, asteroid_data));
 
-	std::cout << "7...\n";
-	sprite_data = {Renderer, "assets/images/gems.png", Config.GEM_SCALE, Config.GEM_RADIUS};
-	AnimationData animation_data = {Config.GEM_FRAME_WIDTH, Config.GEM_FRAME_HEIGHT, Config.GEM_IMG_FRAMES,
-									Config.GEM_IMG_TYPES, 0};
-	GemData gem_data = {Config.GEM_BLINK_DURATION, Config.GEM_LIFETIME_DURATION, Config.GEM_MINIMUM_BRIGHTNESS,
-						Config.GEM_MAXIMUM_BRIGHTNESS, Config.GEM_BLINK_FACTOR};
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/gems.png",
+				   .Scale = Config.GEM_SCALE,
+				   .Radius = Config.GEM_RADIUS};
+	animation_data = {.FRAME_WIDTH = Config.GEM_FRAME_WIDTH,
+					  .FRAME_HEIGHT = Config.GEM_FRAME_HEIGHT,
+					  .IMG_FRAMES = Config.GEM_IMG_FRAMES,
+					  .IMG_TYPES = Config.GEM_IMG_TYPES,
+					  .ANIMATIONS_PER_SECOND = 0};
+	gem_data = {.blinkDuration = Config.GEM_BLINK_DURATION,
+				.lifetimeDuration = Config.GEM_LIFETIME_DURATION,
+				.minimumBrightness = Config.GEM_MINIMUM_BRIGHTNESS,
+				.maximumBrightness = Config.GEM_MAXIMUM_BRIGHTNESS,
+				.blinkFactor = Config.GEM_BLINK_FACTOR};
 	objectsGameRunning.Gems.emplace_back(Gem(sprite_data, animation_data, gem_data));
 
-	std::cout << "8...\n";
-	sprite_data = {Renderer, "assets/images/player.png", Config.PLAYER_SCALE, Config.PLAYER_RADIUS};
-	animation_data = {Config.PLAYER_FRAME_WIDTH, Config.PLAYER_FRAME_HEIGHT, Config.PLAYER_IMG_FRAMES,
-					  Config.PLAYER_IMG_TYPES, Config.PLAYER_ANIMATIONS_PER_SECOND};
-	PlayerData player_data = {Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION,
-							  Config.PLAYER_EFFECT_DURATION_SECONDS, Config.PLAYER_ROTATION_SPEED};
-	objectsGameRunning.Players.emplace("Player1",
-									   Player(sprite_data, animation_data, player_data));
-	objectsGameRunning.Players.at("Player1").SetRectPos(static_cast<float>(screenWidth / 2),
-														static_cast<float>(screenHeight / 2));
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/player.png",
+				   .Scale = Config.PLAYER_SCALE,
+				   .Radius = Config.PLAYER_RADIUS};
+	animation_data = {.FRAME_WIDTH = Config.PLAYER_FRAME_WIDTH,
+					  .FRAME_HEIGHT = Config.PLAYER_FRAME_HEIGHT,
+					  .IMG_FRAMES = Config.PLAYER_IMG_FRAMES,
+					  .IMG_TYPES = Config.PLAYER_IMG_TYPES,
+					  .ANIMATIONS_PER_SECOND = Config.PLAYER_ANIMATIONS_PER_SECOND};
+	player_data = {.Acceleration = Config.PLAYER_ACCELEARION,
+				   .maxVelocity = Config.PLAYER_MAX_VELOCITY,
+				   .Friction = Config.PLAYER_FRICTION,
+				   .effectDuration = Config.PLAYER_EFFECT_DURATION_SECONDS,
+				   .rotationSpeed = Config.PLAYER_ROTATION_SPEED};
+	auto player = objectsGameRunning.Players.emplace("Player1",
+													 Player(sprite_data, animation_data, player_data));
+	player.first->second.SetRectPos(static_cast<float>(screenWidth / 2),
+									static_cast<float>(screenHeight / 2));
 
-	std::cout << "9...\n";
 	std::wstring current_score = std::to_wstring(Score);
-	text_data = {Renderer, current_score, Config.FONT_PATH,
-				 Config.INGAME_TEXT_COLOR, Config.INGAME_TEXT_SIZE};
-	objectsGameRunning.Texts.emplace(std::piecewise_construct,
-									 std::forward_as_tuple("scoreText"),
-									 std::forward_as_tuple(text_data));
-	objectsGameRunning.Texts.at("scoreText").SetRectPos(static_cast<float>(screenWidth), 0, NE);
+	text_data = {.destRenderer = Renderer,
+				 .Message = current_score,
+				 .fontPath = Config.FONT_PATH,
+				 .fontColor = Config.INGAME_TEXT_COLOR,
+				 .fontSize = Config.INGAME_TEXT_SIZE};
+	auto score_text = objectsGameRunning.Texts.emplace("scoreText",
+													   Text(text_data));
+	score_text.first->second.SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
-	std::cout << "10...\n";
-	objectsGameRunning.Chunks.emplace(std::piecewise_construct,
-									  std::forward_as_tuple("gemCollected"),
-									  std::forward_as_tuple("assets/sounds/gem_collected.mp3", &channelController));
+	objectsGameRunning.Chunks.emplace("gemCollected",
+									  soundChunk("assets/sounds/gem_collected.mp3", &channelController));
 
-	std::cout << "11...\n";
-	objectsGameRunning.Chunks.emplace(std::piecewise_construct,
-									  std::forward_as_tuple("gemMissed"),
-									  std::forward_as_tuple("assets/sounds/gem_missed.wav", &channelController));
+	objectsGameRunning.Chunks.emplace("gemMissed",
+									  soundChunk("assets/sounds/gem_missed.wav", &channelController));
 
-	std::cout << "12...\n";
-	objectsGameRunning.Musics.emplace(std::piecewise_construct,
-									  std::forward_as_tuple("backgroundMusic"),
-									  std::forward_as_tuple("assets/sounds/background_music.mp3"));
+	objectsGameRunning.Musics.emplace("backgroundMusic",
+									  soundMusic("assets/sounds/background_music.mp3"));
 
 	//* Game Paused
 
-	std::cout << "13...\n";
-	sprite_data = {Renderer, "assets/images/pause-button.png", 0.3, 0};
-	objectsGamePaused.IMGSprites.emplace(std::piecewise_construct,
-										 std::forward_as_tuple("pauseIcon"),
-										 std::forward_as_tuple(sprite_data));
-	std::cout << "14...\n";
-	sprite_data = {Renderer, "assets/images/Overlay.png", 1, 0};
-	objectsGamePaused.IMGSprites.emplace(std::piecewise_construct,
-										 std::forward_as_tuple("darkenOverlay"),
-										 std::forward_as_tuple(sprite_data));
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/pause-button.png",
+				   .Scale = 0.3,
+				   .Radius = 0};
+	objectsGamePaused.IMGSprites.emplace("pauseIcon",
+										 IMGSprite(sprite_data));
+
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/Overlay.png",
+				   .Scale = 1,
+				   .Radius = 0};
+	objectsGamePaused.IMGSprites.emplace("darkenOverlay",
+										 IMGSprite(sprite_data));
 
 	//* Game Over
 
-	std::cout << "15...\n";
-	sprite_data = {Renderer, "assets/images/background_blurred.png", 1, 0};
-	objectsGameOver.IMGSprites.emplace(std::piecewise_construct,
-									   std::forward_as_tuple("endBackground"),
-									   std::forward_as_tuple(sprite_data));
+	sprite_data = {.destRenderer = Renderer,
+				   .IMGPath = "assets/images/background_blurred.png",
+				   .Scale = 1,
+				   .Radius = 0};
+	objectsGameOver.IMGSprites.emplace("endBackground",
+									   IMGSprite(sprite_data));
 
-	std::cout << "16...\n";
-	text_data = {Renderer, Config.GAME_OVER_TEXT, Config.FONT_PATH,
-				 Config.GAME_OVER_TEXT_COLOR, Config.GAME_OVER_TEXT_SIZE};
-	objectsGameOver.Texts.emplace(std::piecewise_construct,
-								  std::forward_as_tuple("gameOver"),
-								  std::forward_as_tuple(text_data));
-	objectsGameOver.Texts.at("gameOver").SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	text_data = {.destRenderer = Renderer,
+				 .Message = Config.GAME_OVER_TEXT,
+				 .fontPath = Config.FONT_PATH,
+				 .fontColor = Config.GAME_OVER_TEXT_COLOR,
+				 .fontSize = Config.GAME_OVER_TEXT_SIZE};
+	auto game_over = objectsGameOver.Texts.emplace("gameOver",
+												   Text(text_data));
+	game_over.first->second.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	return;
 }

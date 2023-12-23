@@ -12,6 +12,7 @@ Sound
 Sprites
  -> DRect instead of FRect
  -> Check data types
+ -> Check const, etc for Data structs
 
 SoundChunk/Music:
  -> current Position
