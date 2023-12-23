@@ -127,7 +127,7 @@ void Game::CreateObjects()
 	//* Title screen
 
 	std::cout << "1...\n";
-	SpriteData sprite_data = {Renderer, "assets/images/background_blurred.png", 0, 0};
+	SpriteData sprite_data = {Renderer, "assets/images/background_blurred.png", 1, 0};
 	objectsTitleScreen.IMGSprites.emplace(std::piecewise_construct,
 										  std::forward_as_tuple("startBackground"),
 										  std::forward_as_tuple(sprite_data));

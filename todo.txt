@@ -4,7 +4,7 @@ Asteroid functionality
  -> collision, damage
 
 Game Objects
- -> static instead of heap
+ -> clean up creation
 
 Sound
  -> ChannelControl for Music class
