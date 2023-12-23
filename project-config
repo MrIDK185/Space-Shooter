@@ -12,6 +12,8 @@ BLUE='\033[0;34m'
 
 usage="${WHITE}Usage: $0 [--cflags] [--libs]"
 
+cpp_standard="c++20"
+
 if [ "$#" -lt 1 ]; then
     >&2 echo -e "${RED}${BOLD}Error: Too few arguments passed"
     >&2 echo -e ${usage}
@@ -21,7 +23,7 @@ fi
 while test $# -gt 0; do
   case $1 in
     --cflags)
-      echo -o main ./src/AnimatedSprite.cpp ./src/Asteroid.cpp ./src/channelControl.cpp ./src/Configuration.cpp ./src/EventHandler.cpp ./src/Game.cpp \
+      echo -std=${cpp_standard} -o main ./src/AnimatedSprite.cpp ./src/Asteroid.cpp ./src/channelControl.cpp ./src/Configuration.cpp ./src/EventHandler.cpp ./src/Game.cpp \
 	  ./src/Gem.cpp ./src/IMGSprite.cpp ./src/main.cpp ./src/objectStorage.cpp ./src/Player.cpp ./src/soundChunk.cpp ./src/soundMusic.cpp \
 	  ./src/Sprite.cpp ./src/Text.cpp ./src/Time.cpp ./src/volumeControl.cpp -I./include -Wall -Wextra -Wpedantic
       ;;
