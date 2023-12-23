@@ -5,7 +5,7 @@
 
 typedef struct
 {
-	const unsigned int
+	unsigned int
 		FRAME_WIDTH,
 		FRAME_HEIGHT,
 		IMG_FRAMES,

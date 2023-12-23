@@ -7,9 +7,7 @@ typedef struct
 {
 	float
 		Acceleration,
-		Velocity = 0,
 		maxVelocity,
-		Angle = 0,
 		Friction;
 
 	unsigned int
