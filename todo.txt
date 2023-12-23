@@ -4,11 +4,14 @@ Asteroid functionality
  -> collision, damage
 
 Game Objects
- -> std::unique_ptr instead of shared
  -> static instead of heap
 
 Sound
- ->ChannelControl for Music class
+ -> ChannelControl for Music class
 
 Sprites
- ->DRect instead of FRect
+ -> DRect instead of FRect
+ -> Check data types
+
+General
+ -> Typedefs, structs etc in own file
