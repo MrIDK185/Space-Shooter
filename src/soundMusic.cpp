@@ -19,6 +19,16 @@ soundMusic::soundMusic(std::string path)
 	return;
 }
 
+soundMusic::soundMusic(const soundMusic &obj)
+	: Path(obj.Path),
+	  Music(nullptr, musicDestructor),
+	  currentSoundState(obj.currentSoundState)
+{
+	LoadMusic();
+
+	return;
+}
+
 soundMusic::soundMusic(soundMusic &&obj)
 	: Path(obj.Path),
 	  Music(std::move(obj.Music)),
@@ -29,6 +39,18 @@ soundMusic::soundMusic(soundMusic &&obj)
 soundMusic::~soundMusic()
 {
 	Music = nullptr;
+
+	return;
+}
+
+std::string soundMusic::GetPath()
+{
+	return Path;
+}
+
+void soundMusic::SetPath(std::string path)
+{
+	Path = path;
 
 	return;
 }
@@ -48,6 +70,13 @@ void soundMusic::SetMusic(Mix_Music *music)
 soundState soundMusic::GetCurrentSoundState()
 {
 	return currentSoundState;
+}
+
+void soundMusic::SetCurrentSoundState(soundState state)
+{
+	currentSoundState = state;
+
+	return;
 }
 
 void soundMusic::Play()

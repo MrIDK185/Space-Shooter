@@ -32,15 +32,23 @@ public:
 
 	explicit soundMusic(std::string path);
 
+	explicit soundMusic(const soundMusic &obj);
+
 	explicit soundMusic(soundMusic &&obj);
 
 	~soundMusic();
+
+	std::string GetPath();
+
+	void SetPath(std::string path);
 
 	unique_ptr_deleter<Mix_Music> GetMusic();
 
 	void SetMusic(Mix_Music *music);
 
 	soundState GetCurrentSoundState();
+
+	void SetCurrentSoundState(soundState state);
 
 	void Play();
 
