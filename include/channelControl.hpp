@@ -10,7 +10,7 @@ class soundChunk;
 struct channelControl
 {
 private:
-	std::array<bool, MIX_CHANNELS> freeChannels = {true};
+	unsigned int activeChannels = 0;
 	std::array<soundChunk *, MIX_CHANNELS> usedChannels = {nullptr};
 
 public:

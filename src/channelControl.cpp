@@ -3,23 +3,23 @@
 
 int channelControl::getFreeChannel(soundChunk *chunk)
 {
-	for (int idx = 0; idx < freeChannels.size(); ++idx)
+	if (activeChannels >= MIX_CHANNELS)
 	{
-		if (freeChannels[idx])
-		{
-			freeChannels[idx] = false;
-			usedChannels[idx] = chunk;
-			return idx;
-		}
+		return -1;
 	}
 
-	return -1;
+	usedChannels[activeChannels] = chunk;
+	++activeChannels;
+	return activeChannels - 1;
 }
 
 void channelControl::channelFinished(int channel)
 {
-	freeChannels[channel] = true;
 	usedChannels[channel]->SetCurrentSoundState(STOPPED);
+	if (activeChannels > 0)
+	{
+		--activeChannels;
+	}
 
 	return;
 }
