@@ -49,6 +49,24 @@ elif [ "$1" = "release" ]; then
 
     fi
 
+elif [ "$1" = "compilation database" ]; then
+	echo -e "${WHITE}Starting to generate compilation database..." && echo $'\n'
+	${CC} -MJ .compilation_database.o.json \
+	`./project-config --cflags` `sdl2-config --cflags` `sdl2-config --libs` `./project-config --libs`
+    if [ "$?" == 0 ]; then
+	    echo -e "${GREEN}${BOLD}Build successful"
+	else
+	    >&2 echo $'\n' && >&2 echo -e "${RED}${BOLD}Build failed"
+    fi
+	sed -e '1s/^/[\n/' -e '$s/,$/\n]/' *.o.json > .compile_commands.json
+	if [ "$?" == 0 ]; then
+	    echo -e "${GREEN}${BOLD}Database creation successful"
+		exit 0
+	else
+	    >&2 echo $'\n' && >&2 echo -e "${RED}${BOLD}Database creation failed"
+		exit 1
+    fi
+
 else
     >&2 echo -e "${RED}${BOLD}Error: Unkonwn argument \"${YELLOW}${BOLD}$1${RED}${BOLD}\""
 	>&2 echo -e ${usage}
