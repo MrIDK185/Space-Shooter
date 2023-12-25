@@ -34,7 +34,7 @@ private:
 public:
 	//* non-static
 
-	explicit soundMusic(std::string path, channelControl *channel_control);
+	soundMusic(std::string path, channelControl *channel_control);
 
 	explicit soundMusic(const soundMusic &obj);
 

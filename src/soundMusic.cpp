@@ -23,8 +23,6 @@ soundMusic::soundMusic(std::string path, channelControl *channel_control)
 
 soundMusic::soundMusic(const soundMusic &obj)
 	: Path(obj.Path),
-	  Music(nullptr, musicDestructor),
-	  currentSoundState(obj.currentSoundState),
 	  channelController(obj.channelController)
 {
 	LoadMusic();

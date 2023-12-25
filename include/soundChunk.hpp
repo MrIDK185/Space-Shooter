@@ -36,7 +36,7 @@ private:
 public:
 	//* non-static
 
-	explicit soundChunk(std::string path, channelControl *controller);
+	soundChunk(std::string path, channelControl *controller);
 
 	explicit soundChunk(const soundChunk &obj);
 

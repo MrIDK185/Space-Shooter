@@ -3,15 +3,6 @@ Asteroid functionality
  -> breaking
  -> collision, damage
 
-Game Objects
- -> create objects: use default data structs for:
-	-> Gem
-	-> Player
-	-> Asteroid
-
-Sound
- -> ChannelControl for Music class
-
 Sprites
  -> Check data types
  -> Check const, etc for Data structs
