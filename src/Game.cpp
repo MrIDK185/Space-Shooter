@@ -112,6 +112,9 @@ void Game::SetupGame()
 	Mix_ChannelFinished(channelFinishedCallback);
 	Mix_HookMusicFinished(musicFinishedCallback);
 
+	Mix_AllocateChannels(MIX_CHANNELS);
+	Mix_ReserveChannels(MIX_CHANNELS);
+
 	SDL_DisplayMode display_mode;
 	SDL_GetCurrentDisplayMode(0, &display_mode);
 	screenWidth = display_mode.w;
