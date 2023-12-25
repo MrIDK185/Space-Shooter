@@ -45,7 +45,8 @@ while test $# -gt 0; do
 	  ./src/Sprite/Sprite.cpp \
 	  ./src/Sprite/Text.cpp \
 \
-	  ./src/Time/Time.cpp
+	  ./src/Time/Clock.cpp \
+	  ./src/Time/SecondTimer.cpp
       ;;
 
     --libs)
