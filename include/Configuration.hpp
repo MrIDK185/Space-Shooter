@@ -6,9 +6,6 @@
 
 #include <SDL2/SDL.h>
 
-typedef unsigned int uint32_t;
-typedef uint32_t Uint32;
-
 struct Configuration
 {
 private:

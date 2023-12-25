@@ -4,9 +4,7 @@
 #include <memory>
 
 #include <SDL2/SDL.h>
-
-template <typename T>
-using unique_ptr_deleter = std::unique_ptr<T, void (*)(T *)>;
+#include "uniquePointerDeleter.hpp"
 
 typedef enum
 {

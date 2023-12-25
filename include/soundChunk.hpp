@@ -7,9 +7,7 @@
 #include <SDL2/SDL_mixer.h>
 
 #include "soundState.hpp"
-
-template <typename T>
-using unique_ptr_deleter = std::unique_ptr<T, void (*)(T *)>;
+#include "uniquePointerDeleter.hpp"
 
 struct channelControl;
 

@@ -7,9 +7,5 @@ Sprites
  -> Check data types
  -> Check const, etc for Data structs
 
-SoundChunk/Music:
- -> current Position
- -> recreate object again and set position instead of deep copy
-
 General
  -> Typedefs, structs etc in own file
