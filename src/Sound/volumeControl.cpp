@@ -1,6 +1,6 @@
 #include <SDL2/SDL_mixer.h>
 
-#include "volumeControl.hpp"
+#include "Sound/volumeControl.hpp"
 
 void volumeControl::changeMasterVolume(int volume)
 {

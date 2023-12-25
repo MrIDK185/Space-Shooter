@@ -1,7 +1,7 @@
 #include <sstream>
 #include <vector>
 
-#include "Text.hpp"
+#include "Sprite/Text.hpp"
 
 std::unique_ptr<Uint16[]> to_uint16(std::wstring message)
 {

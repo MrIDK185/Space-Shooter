@@ -1,6 +1,6 @@
 #include <random>
 
-#include <Asteroid.hpp>
+#include <Sprite/Asteroid.hpp>
 
 //* non-static(public)
 

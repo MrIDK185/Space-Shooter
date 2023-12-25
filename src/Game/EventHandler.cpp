@@ -1,7 +1,7 @@
-#include "EventHandler.hpp"
-#include "Game.hpp"
-#include "Text.hpp"
-#include "Gem.hpp"
+#include "Game/EventHandler.hpp"
+#include "Game/Game.hpp"
+#include "Sprite/Text.hpp"
+#include "Sprite/Gem.hpp"
 
 #include <SDL2/SDL_mixer.h>
 

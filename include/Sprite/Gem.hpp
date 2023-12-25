@@ -1,7 +1,7 @@
 #ifndef GEM_HPP
 #define GEM_HPP
 
-#include "AnimatedSprite.hpp"
+#include "Sprite/AnimatedSprite.hpp"
 
 typedef enum
 {

@@ -1,4 +1,4 @@
-#include "Configuration.hpp"
+#include "Game/Configuration.hpp"
 
 #include <iostream>
 #include <fstream>

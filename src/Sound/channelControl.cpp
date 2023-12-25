@@ -1,6 +1,6 @@
-#include "channelControl.hpp"
-#include "soundChunk.hpp"
-#include "soundMusic.hpp"
+#include "Sound/channelControl.hpp"
+#include "Sound/soundChunk.hpp"
+#include "Sound/soundMusic.hpp"
 
 int channelControl::requestFreeChannel(soundChunk *chunk)
 {

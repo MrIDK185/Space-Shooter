@@ -5,13 +5,13 @@
 #include <vector>
 #include <unordered_map>
 
-#include "IMGSprite.hpp"
-#include "Asteroid.hpp"
-#include "Gem.hpp"
-#include "Player.hpp"
-#include "Text.hpp"
-#include "soundChunk.hpp"
-#include "soundMusic.hpp"
+#include "Sprite/IMGSprite.hpp"
+#include "Sprite/Asteroid.hpp"
+#include "Sprite/Gem.hpp"
+#include "Sprite/Player.hpp"
+#include "Sprite/Text.hpp"
+#include "Sound/soundChunk.hpp"
+#include "Sound/soundMusic.hpp"
 
 struct objectStorage
 {

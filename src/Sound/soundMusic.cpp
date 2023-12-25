@@ -1,5 +1,5 @@
-#include "soundMusic.hpp"
-#include "channelControl.hpp"
+#include "Sound/soundMusic.hpp"
+#include "Sound/channelControl.hpp"
 
 //* non-static(private)
 

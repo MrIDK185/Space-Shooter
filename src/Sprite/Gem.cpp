@@ -1,6 +1,6 @@
 #include <random>
 
-#include "Gem.hpp"
+#include "Sprite/Gem.hpp"
 
 //* non-static(public)
 

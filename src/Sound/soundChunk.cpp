@@ -1,5 +1,5 @@
-#include "soundChunk.hpp"
-#include "channelControl.hpp"
+#include "Sound/soundChunk.hpp"
+#include "Sound/channelControl.hpp"
 
 //* non-static(private)
 

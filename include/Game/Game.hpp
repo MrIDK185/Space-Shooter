@@ -1,17 +1,17 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "Configuration.hpp"
-#include "EventHandler.hpp"
-#include "objectStorage.hpp"
-#include "Time.hpp"
-#include "soundChunk.hpp"
-#include "soundMusic.hpp"
-#include "volumeControl.hpp"
-#include "channelControl.hpp"
-#include "Player.hpp"
-#include "Gem.hpp"
-#include "Asteroid.hpp"
+#include "Game/Configuration.hpp"
+#include "Game/EventHandler.hpp"
+#include "Game/objectStorage.hpp"
+#include "Time/Time.hpp"
+#include "Sound/soundChunk.hpp"
+#include "Sound/soundMusic.hpp"
+#include "Sound/volumeControl.hpp"
+#include "Sound/channelControl.hpp"
+#include "Sprite/Player.hpp"
+#include "Sprite/Gem.hpp"
+#include "Sprite/Asteroid.hpp"
 
 typedef enum gameState
 {

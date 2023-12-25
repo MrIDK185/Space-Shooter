@@ -1,6 +1,6 @@
 #define SDL_MAIN_HANDLED
 
-#include "Game.hpp"
+#include "Game/Game.hpp"
 
 #include <iostream>
 #include <SDL2/SDL_image.h>

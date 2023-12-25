@@ -1,8 +1,8 @@
-#include "Game.hpp"
-#include "Asteroid.hpp"
-#include "Player.hpp"
-#include "Gem.hpp"
-#include "Text.hpp"
+#include "Game/Game.hpp"
+#include "Sprite/Asteroid.hpp"
+#include "Sprite/Player.hpp"
+#include "Sprite/Gem.hpp"
+#include "Sprite/Text.hpp"
 
 #include <iostream>
 #include <boost/algorithm/string/replace.hpp>

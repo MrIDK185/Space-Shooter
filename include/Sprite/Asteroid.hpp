@@ -1,7 +1,7 @@
 #ifndef ASTEROID_HPP
 #define ASTEROID_HPP
 
-#include "IMGSprite.hpp"
+#include "Sprite/IMGSprite.hpp"
 
 typedef struct
 {

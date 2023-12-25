@@ -1,7 +1,7 @@
 #ifndef ANIMATED_SPRITE_HPP
 #define ANIMATED_SPRITE_HPP
 
-#include "IMGSprite.hpp"
+#include "Sprite/IMGSprite.hpp"
 
 typedef struct
 {

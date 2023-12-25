@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "Sprite.hpp"
+#include "Sprite/Sprite.hpp"
 
 typedef struct
 {

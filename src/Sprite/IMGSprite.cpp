@@ -1,4 +1,4 @@
-#include "IMGSprite.hpp"
+#include "Sprite/IMGSprite.hpp"
 
 #include <SDL2/SDL_image.h>
 

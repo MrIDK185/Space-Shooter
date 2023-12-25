@@ -1,4 +1,4 @@
-#include "AnimatedSprite.hpp"
+#include "Sprite/AnimatedSprite.hpp"
 
 //* non-static(public)
 

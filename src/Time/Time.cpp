@@ -1,5 +1,5 @@
-#include "Time.hpp"
-#include "Game.hpp"
+#include "Time/Time.hpp"
+#include "Game/Game.hpp"
 
 /*------------ Clock ------------*/
 

@@ -6,7 +6,7 @@
 
 #include <SDL2/SDL_mixer.h>
 
-#include "soundState.hpp"
+#include "Sound/soundState.hpp"
 #include "uniquePointerDeleter.hpp"
 
 struct channelControl;

@@ -5,7 +5,7 @@
 
 #include <SDL2/SDL_ttf.h>
 
-#include "Sprite.hpp"
+#include "Sprite/Sprite.hpp"
 
 typedef struct
 {
