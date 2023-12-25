@@ -11,6 +11,8 @@
 template <typename T>
 using unique_ptr_deleter = std::unique_ptr<T, void (*)(T *)>;
 
+struct channelControl;
+
 class soundMusic
 {
 private:
@@ -25,12 +27,14 @@ private:
 	unique_ptr_deleter<Mix_Music> Music = {nullptr, musicDestructor};
 	soundState currentSoundState = STOPPED;
 
+	channelControl *channelController = nullptr;
+
 	void LoadMusic();
 
 public:
 	//* non-static
 
-	explicit soundMusic(std::string path);
+	explicit soundMusic(std::string path, channelControl *channel_control);
 
 	explicit soundMusic(const soundMusic &obj);
 

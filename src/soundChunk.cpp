@@ -126,7 +126,7 @@ void soundChunk::SetCurrentSoundState(soundState new_state)
 
 void soundChunk::Play()
 {
-	Channel = channelController->getFreeChannel(this);
+	Channel = channelController->requestFreeChannel(this);
 
 	if (Channel >= 0)
 	{

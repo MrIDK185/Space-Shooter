@@ -20,6 +20,13 @@ static void channelFinishedCallback(int channel)
 	return;
 }
 
+static void musicFinishedCallback()
+{
+	channelControllerInstance->musicFinished();
+
+	return;
+}
+
 int Game::Run()
 {
 	SetupGame();
@@ -103,6 +110,7 @@ void Game::SetupGame()
 
 	channelControllerInstance = &channelController;
 	Mix_ChannelFinished(channelFinishedCallback);
+	Mix_HookMusicFinished(musicFinishedCallback);
 
 	SDL_DisplayMode display_mode;
 	SDL_GetCurrentDisplayMode(0, &display_mode);
@@ -117,7 +125,41 @@ void Game::SetupGame()
 	Renderer = SDL_CreateRenderer(Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	std::cout << "Creating objects...\n";
+	InitializeDefaultObjectData();
 	CreateObjects();
+
+	return;
+}
+
+void Game::InitializeDefaultObjectData()
+{
+	asteroidDataDefault.first = {.destRenderer = Renderer,
+								 .IMGPath = "assets/images/asteroid1.png",
+								 .Scale = 1,
+								 .Radius = 60};
+	asteroidDataDefault.second = {.Velocity = 200};
+
+	gemDataDefault.first = {.FRAME_WIDTH = Config.GEM_FRAME_WIDTH,
+							.FRAME_HEIGHT = Config.GEM_FRAME_HEIGHT,
+							.IMG_FRAMES = Config.GEM_IMG_FRAMES,
+							.IMG_TYPES = Config.GEM_IMG_TYPES,
+							.ANIMATIONS_PER_SECOND = 0};
+	gemDataDefault.second = {.blinkDuration = Config.GEM_BLINK_DURATION,
+							 .lifetimeDuration = Config.GEM_LIFETIME_DURATION,
+							 .minimumBrightness = Config.GEM_MINIMUM_BRIGHTNESS,
+							 .maximumBrightness = Config.GEM_MAXIMUM_BRIGHTNESS,
+							 .blinkFactor = Config.GEM_BLINK_FACTOR};
+
+	playerDataDefault.first = {.FRAME_WIDTH = Config.PLAYER_FRAME_WIDTH,
+							   .FRAME_HEIGHT = Config.PLAYER_FRAME_HEIGHT,
+							   .IMG_FRAMES = Config.PLAYER_IMG_FRAMES,
+							   .IMG_TYPES = Config.PLAYER_IMG_TYPES,
+							   .ANIMATIONS_PER_SECOND = Config.PLAYER_ANIMATIONS_PER_SECOND};
+	playerDataDefault.second = {.Acceleration = Config.PLAYER_ACCELEARION,
+								.maxVelocity = Config.PLAYER_MAX_VELOCITY,
+								.Friction = Config.PLAYER_FRICTION,
+								.effectDuration = Config.PLAYER_EFFECT_DURATION_SECONDS,
+								.rotationSpeed = Config.PLAYER_ROTATION_SPEED};
 
 	return;
 }
@@ -147,7 +189,7 @@ void Game::CreateObjectsTitleScreen()
 									  soundChunk("assets/sounds/game_start.mp3", &channelController));
 
 	auto menu_music = objectsTitleScreen.Musics.emplace("menuMusic",
-														soundMusic("assets/sounds/menu_music.mp3"));
+														soundMusic("assets/sounds/menu_music.mp3", &channelController));
 	menu_music.first->second.Play();
 
 	return;
@@ -157,10 +199,6 @@ void Game::CreateObjectsGameRunning()
 {
 	SpriteData sprite_data;
 	TextData text_data;
-	AsteroidData asteroid_data;
-	AnimationData animation_data;
-	GemData gem_data;
-	PlayerData player_data;
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/background.png",
@@ -169,45 +207,20 @@ void Game::CreateObjectsGameRunning()
 	objectsGameRunning.IMGSprites.emplace("gameBackground",
 										  IMGSprite(sprite_data));
 
-	sprite_data = {.destRenderer = Renderer,
-				   .IMGPath = "assets/images/asteroid1.png",
-				   .Scale = 1,
-				   .Radius = 60};
-	asteroid_data = {.Velocity = 200};
-	objectsGameRunning.Asteroids.emplace_back(Asteroid(sprite_data, asteroid_data));
+	objectsGameRunning.Asteroids.emplace_back(Asteroid(asteroidDataDefault.first, asteroidDataDefault.second));
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/gems.png",
 				   .Scale = Config.GEM_SCALE,
 				   .Radius = Config.GEM_RADIUS};
-	animation_data = {.FRAME_WIDTH = Config.GEM_FRAME_WIDTH,
-					  .FRAME_HEIGHT = Config.GEM_FRAME_HEIGHT,
-					  .IMG_FRAMES = Config.GEM_IMG_FRAMES,
-					  .IMG_TYPES = Config.GEM_IMG_TYPES,
-					  .ANIMATIONS_PER_SECOND = 0};
-	gem_data = {.blinkDuration = Config.GEM_BLINK_DURATION,
-				.lifetimeDuration = Config.GEM_LIFETIME_DURATION,
-				.minimumBrightness = Config.GEM_MINIMUM_BRIGHTNESS,
-				.maximumBrightness = Config.GEM_MAXIMUM_BRIGHTNESS,
-				.blinkFactor = Config.GEM_BLINK_FACTOR};
-	objectsGameRunning.Gems.emplace_back(Gem(sprite_data, animation_data, gem_data));
+	objectsGameRunning.Gems.emplace_back(Gem(sprite_data, gemDataDefault.first, gemDataDefault.second));
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/player.png",
 				   .Scale = Config.PLAYER_SCALE,
 				   .Radius = Config.PLAYER_RADIUS};
-	animation_data = {.FRAME_WIDTH = Config.PLAYER_FRAME_WIDTH,
-					  .FRAME_HEIGHT = Config.PLAYER_FRAME_HEIGHT,
-					  .IMG_FRAMES = Config.PLAYER_IMG_FRAMES,
-					  .IMG_TYPES = Config.PLAYER_IMG_TYPES,
-					  .ANIMATIONS_PER_SECOND = Config.PLAYER_ANIMATIONS_PER_SECOND};
-	player_data = {.Acceleration = Config.PLAYER_ACCELEARION,
-				   .maxVelocity = Config.PLAYER_MAX_VELOCITY,
-				   .Friction = Config.PLAYER_FRICTION,
-				   .effectDuration = Config.PLAYER_EFFECT_DURATION_SECONDS,
-				   .rotationSpeed = Config.PLAYER_ROTATION_SPEED};
 	auto player = objectsGameRunning.Players.emplace("Player1",
-													 Player(sprite_data, animation_data, player_data));
+													 Player(sprite_data, playerDataDefault.first, playerDataDefault.second));
 	player.first->second.SetRectPos(static_cast<float>(screenWidth / 2),
 									static_cast<float>(screenHeight / 2));
 
@@ -228,7 +241,7 @@ void Game::CreateObjectsGameRunning()
 									  soundChunk("assets/sounds/gem_missed.wav", &channelController));
 
 	objectsGameRunning.Musics.emplace("backgroundMusic",
-									  soundMusic("assets/sounds/background_music.mp3"));
+									  soundMusic("assets/sounds/background_music.mp3", &channelController));
 
 	return;
 }

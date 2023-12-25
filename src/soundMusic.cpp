@@ -1,4 +1,5 @@
 #include "soundMusic.hpp"
+#include "channelControl.hpp"
 
 //* non-static(private)
 
@@ -11,8 +12,9 @@ void soundMusic::LoadMusic()
 
 //* non-static(public)
 
-soundMusic::soundMusic(std::string path)
-	: Path(path)
+soundMusic::soundMusic(std::string path, channelControl *channel_control)
+	: Path(path),
+	  channelController(channel_control)
 {
 	LoadMusic();
 
@@ -22,7 +24,8 @@ soundMusic::soundMusic(std::string path)
 soundMusic::soundMusic(const soundMusic &obj)
 	: Path(obj.Path),
 	  Music(nullptr, musicDestructor),
-	  currentSoundState(obj.currentSoundState)
+	  currentSoundState(obj.currentSoundState),
+	  channelController(obj.channelController)
 {
 	LoadMusic();
 
@@ -32,7 +35,8 @@ soundMusic::soundMusic(const soundMusic &obj)
 soundMusic::soundMusic(soundMusic &&obj)
 	: Path(obj.Path),
 	  Music(std::move(obj.Music)),
-	  currentSoundState(obj.currentSoundState)
+	  currentSoundState(obj.currentSoundState),
+	  channelController(obj.channelController)
 {
 }
 
@@ -81,8 +85,11 @@ void soundMusic::SetCurrentSoundState(soundState state)
 
 void soundMusic::Play()
 {
-	if (Mix_PlayMusic(Music.get(), -1) == 0)
+	bool can_play = channelController->requestFreeMusic(this);
+
+	if (can_play)
 	{
+		Mix_PlayMusic(Music.get(), -1);
 		currentSoundState = PLAYING;
 	}
 

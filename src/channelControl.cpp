@@ -1,7 +1,8 @@
 #include "channelControl.hpp"
 #include "soundChunk.hpp"
+#include "soundMusic.hpp"
 
-int channelControl::getFreeChannel(soundChunk *chunk)
+int channelControl::requestFreeChannel(soundChunk *chunk)
 {
 	if (activeChannels >= MIX_CHANNELS)
 	{
@@ -20,6 +21,26 @@ void channelControl::channelFinished(int channel)
 	{
 		--activeChannels;
 	}
+
+	return;
+}
+
+bool channelControl::requestFreeMusic(soundMusic *music)
+{
+	if (!musicPlaying)
+	{
+		Music = music;
+		musicPlaying = true;
+		return true;
+	}
+
+	return false;
+}
+
+void channelControl::musicFinished()
+{
+	Music->SetCurrentSoundState(STOPPED);
+	musicPlaying = false;
 
 	return;
 }

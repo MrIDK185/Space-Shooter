@@ -9,6 +9,9 @@
 #include "soundMusic.hpp"
 #include "volumeControl.hpp"
 #include "channelControl.hpp"
+#include "Player.hpp"
+#include "Gem.hpp"
+#include "Asteroid.hpp"
 
 typedef enum gameState
 {
@@ -55,14 +58,20 @@ public:
 		objectsGamePaused,
 		objectsGameOver;
 
+	std::pair<SpriteData, AsteroidData> asteroidDataDefault;
+	std::pair<AnimationData, GemData> gemDataDefault;
+	std::pair<AnimationData, PlayerData> playerDataDefault;
+
 	//* Main loop
-	int Run();
+	int
+	Run();
 
 	//* Cleanup
 	void Cleanup();
 
 	//* Initialization
 	void SetupGame();
+	void InitializeDefaultObjectData();
 	void CreateObjectsTitleScreen();
 	void CreateObjectsGameRunning();
 	void CreateObjectsGamePaused();

@@ -13,7 +13,6 @@ Sound
  -> ChannelControl for Music class
 
 Sprites
- -> DRect instead of FRect
  -> Check data types
  -> Check const, etc for Data structs
 
