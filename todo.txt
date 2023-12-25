@@ -9,3 +9,6 @@ Sprites
 
 General
  -> Typedefs, structs etc in own file
+
+Time
+ -> Move each class into seperate file
