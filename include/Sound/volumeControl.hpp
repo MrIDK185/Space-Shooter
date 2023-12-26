@@ -1,19 +1,14 @@
 #ifndef VOLUME_CONTROL_HPP
 #define VOLUME_CONTROL_HPP
 
-typedef enum
-{
-	UNMUTED,
-	MUTED
-} volumeState;
+#include "volumeState.hpp"
 
 struct volumeControl
 {
 	int
 		masterVolume = 0,
 		lastMasterVolume = 0,
-		musicVolume = 0,
-		lastMusicVolume = 0;
+		musicVolume = 0;
 
 	float ratioMusicToChunk = 0.2;
 

@@ -12,7 +12,7 @@ void soundChunk::LoadChunk()
 
 //* non-static(public)
 
-soundChunk::soundChunk(std::string path, channelControl *controller)
+soundChunk::soundChunk(std::string &path, channelControl *controller)
 	: Path(path),
 	  Volume(MIX_MAX_VOLUME),
 	  channelController(controller)
@@ -55,7 +55,7 @@ std::string soundChunk::GetPath() const
 	return Path;
 }
 
-void soundChunk::SetPath(std::string path)
+void soundChunk::SetPath(std::string &path)
 {
 	Path = path;
 	LoadChunk();
@@ -122,15 +122,21 @@ void soundChunk::SetCurrentSoundState(soundState new_state)
 	}
 
 	currentSoundState = new_state;
+
+	return;
 }
 
 void soundChunk::Play()
 {
 	Channel = channelController->requestFreeChannel(this);
 
-	if (Channel >= 0)
+	if (Channel < 0)
 	{
-		Mix_PlayChannel(Channel, Chunk.get(), 0);
+		return;
+	}
+
+	if (Mix_PlayChannel(Channel, Chunk.get(), 0) >= 0)
+	{
 		currentSoundState = PLAYING;
 	}
 
@@ -139,7 +145,7 @@ void soundChunk::Play()
 
 void soundChunk::Pause()
 {
-	if (Channel < 0 || currentSoundState == PAUSED | currentSoundState == STOPPED)
+	if (Channel < 0 || currentSoundState == PAUSED || currentSoundState == STOPPED)
 	{
 		return;
 	}
@@ -152,7 +158,7 @@ void soundChunk::Pause()
 
 void soundChunk::Resume()
 {
-	if (Channel < 0 || currentSoundState == PLAYING | currentSoundState == STOPPED)
+	if (Channel < 0 || currentSoundState == PLAYING || currentSoundState == STOPPED)
 	{
 		return;
 	}

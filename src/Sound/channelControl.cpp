@@ -11,30 +11,29 @@ int channelControl::requestFreeChannel(soundChunk *chunk)
 
 	usedChannels[activeChannels] = chunk;
 	++activeChannels;
+
 	return activeChannels - 1;
 }
 
 void channelControl::channelFinished(int channel)
 {
 	usedChannels[channel]->SetCurrentSoundState(STOPPED);
-	if (activeChannels > 0)
-	{
-		--activeChannels;
-	}
+	activeChannels -= (activeChannels > 0);
 
 	return;
 }
 
 bool channelControl::requestFreeMusic(soundMusic *music)
 {
-	if (!musicPlaying)
+	if (musicPlaying)
 	{
-		Music = music;
-		musicPlaying = true;
-		return true;
+		return false;
 	}
 
-	return false;
+	Music = music;
+	musicPlaying = true;
+
+	return true;
 }
 
 void channelControl::musicFinished()

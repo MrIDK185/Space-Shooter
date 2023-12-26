@@ -29,7 +29,6 @@ void volumeControl::changeMasterVolume(int volume)
 void volumeControl::saveMasterVolume()
 {
 	lastMasterVolume = masterVolume;
-	lastMusicVolume = musicVolume;
 
 	return;
 }

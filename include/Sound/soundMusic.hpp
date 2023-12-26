@@ -2,7 +2,6 @@
 #define SOUND_MUSIC_HPP
 
 #include <string>
-#include <memory>
 
 #include <SDL2/SDL_mixer.h>
 
@@ -32,7 +31,7 @@ private:
 public:
 	//* non-static
 
-	soundMusic(std::string path, channelControl *channel_control);
+	soundMusic(std::string &path, channelControl *channel_control);
 
 	explicit soundMusic(const soundMusic &obj);
 
@@ -42,7 +41,7 @@ public:
 
 	std::string GetPath();
 
-	void SetPath(std::string path);
+	void SetPath(std::string &path);
 
 	unique_ptr_deleter<Mix_Music> GetMusic();
 
@@ -50,7 +49,7 @@ public:
 
 	soundState GetCurrentSoundState();
 
-	void SetCurrentSoundState(soundState state);
+	void SetCurrentSoundState(soundState new_state);
 
 	void Play();
 

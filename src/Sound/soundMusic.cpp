@@ -12,7 +12,7 @@ void soundMusic::LoadMusic()
 
 //* non-static(public)
 
-soundMusic::soundMusic(std::string path, channelControl *channel_control)
+soundMusic::soundMusic(std::string &path, channelControl *channel_control)
 	: Path(path),
 	  channelController(channel_control)
 {
@@ -41,6 +41,7 @@ soundMusic::soundMusic(soundMusic &&obj)
 soundMusic::~soundMusic()
 {
 	Music = nullptr;
+	channelController = nullptr;
 
 	return;
 }
@@ -50,7 +51,7 @@ std::string soundMusic::GetPath()
 	return Path;
 }
 
-void soundMusic::SetPath(std::string path)
+void soundMusic::SetPath(std::string &path)
 {
 	Path = path;
 
@@ -74,9 +75,14 @@ soundState soundMusic::GetCurrentSoundState()
 	return currentSoundState;
 }
 
-void soundMusic::SetCurrentSoundState(soundState state)
+void soundMusic::SetCurrentSoundState(soundState new_state)
 {
-	currentSoundState = state;
+	if (currentSoundState == new_state)
+	{
+		return;
+	}
+
+	currentSoundState = new_state;
 
 	return;
 }
@@ -85,9 +91,13 @@ void soundMusic::Play()
 {
 	bool can_play = channelController->requestFreeMusic(this);
 
-	if (can_play)
+	if (!can_play)
 	{
-		Mix_PlayMusic(Music.get(), -1);
+		return;
+	}
+
+	if (Mix_PlayMusic(Music.get(), -1) == 0)
+	{
 		currentSoundState = PLAYING;
 	}
 
@@ -96,7 +106,7 @@ void soundMusic::Play()
 
 void soundMusic::Pause()
 {
-	if (currentSoundState == PAUSED | currentSoundState == STOPPED)
+	if (currentSoundState == PAUSED || currentSoundState == STOPPED)
 	{
 		return;
 	}
