@@ -3,11 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-typedef enum
-{
-	TIMER_DECREMENT,
-	TIMER_STOP
-} timerEvent;
+#include "timerEvent.hpp"
 
 struct Game;
 
@@ -17,8 +13,6 @@ private:
 	SDL_TimerCallback Callback = nullptr;
 
 public:
-	//*non-static
-
 	unsigned int
 		durationMilliseconds = 0,
 		intervalMilliseconds = 0,
@@ -31,7 +25,9 @@ public:
 	bool Started = false;
 
 	explicit SecondTimer();
+
 	SecondTimer(unsigned int duration_milliseconds, unsigned int interval_milliseconds, Game *current_game);
+
 	~SecondTimer();
 
 	void Start();

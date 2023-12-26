@@ -4,6 +4,7 @@
 static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 {
 	SecondTimer *timer = static_cast<SecondTimer *>(param);
+
 	if (timer->currentGame->currentGameState == GAME_PAUSED)
 	{
 		return interval_milliseconds;
@@ -38,13 +39,8 @@ static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 	return 0;
 }
 
-//*non-static(public)
-
 SecondTimer::SecondTimer()
-	: Callback(TimerCallback),
-	  durationMilliseconds(0),
-	  intervalMilliseconds(0),
-	  counterMilliseconds(0)
+	: Callback(TimerCallback)
 {
 }
 
@@ -62,6 +58,7 @@ SecondTimer::SecondTimer(unsigned int duration_milliseconds, unsigned int interv
 SecondTimer::~SecondTimer()
 {
 	Callback = nullptr;
+	currentGame = nullptr;
 
 	return;
 }
