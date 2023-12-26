@@ -1,7 +1,7 @@
 #ifndef VOLUME_CONTROL_HPP
 #define VOLUME_CONTROL_HPP
 
-#include "volumeState.hpp"
+#include "Sound/volumeState.hpp"
 
 struct volumeControl
 {

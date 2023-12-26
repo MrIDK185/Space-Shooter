@@ -2,8 +2,8 @@
 #define GEM_HPP
 
 #include "Sprite/AnimatedSprite.hpp"
-#include "GemData.hpp"
-#include "Sign.hpp"
+#include "Sprite/GemData.hpp"
+#include "Sprite/Sign.hpp"
 
 class Gem : public AnimatedSprite
 {

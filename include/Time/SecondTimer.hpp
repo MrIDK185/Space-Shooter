@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "timerEvent.hpp"
+#include "Time/timerEvent.hpp"
 
 struct Game;
 

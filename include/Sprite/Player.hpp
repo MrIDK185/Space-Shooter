@@ -2,7 +2,7 @@
 #define PLAYER_HPP
 
 #include "Sprite/AnimatedSprite.hpp"
-#include "PlayerData.hpp"
+#include "Sprite/PlayerData.hpp"
 
 class Player : public AnimatedSprite
 {

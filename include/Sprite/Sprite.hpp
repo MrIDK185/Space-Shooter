@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "Alignments.hpp"
+#include "Sprite/Alignments.hpp"
 #include "uniquePointerDeleter.hpp"
 
 class Sprite

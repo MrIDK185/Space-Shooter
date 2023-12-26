@@ -4,7 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "Sprite/Sprite.hpp"
-#include "TextData.hpp"
+#include "Sprite/TextData.hpp"
 
 class Text : public Sprite
 {

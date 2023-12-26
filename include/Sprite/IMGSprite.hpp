@@ -2,7 +2,7 @@
 #define IMG_SPRITE_HPP
 
 #include "Sprite/Sprite.hpp"
-#include "SpriteData.hpp"
+#include "Sprite/SpriteData.hpp"
 
 class IMGSprite : public Sprite
 {
