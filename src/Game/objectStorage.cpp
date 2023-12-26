@@ -1,16 +1,14 @@
 #include "Game/objectStorage.hpp"
 
-//* public
-
 void objectStorage::ClearAll()
 {
-	IMGSprites.clear();
-	Players.clear();
 	Texts.clear();
+	IMGSprites.clear();
+	Asteroids.clear();
+	Gems.clear();
+	Players.clear();
 	Chunks.clear();
 	Musics.clear();
-	Gems.clear();
-	Asteroids.clear();
 
 	return;
 }
