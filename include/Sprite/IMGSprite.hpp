@@ -1,20 +1,8 @@
 #ifndef IMG_SPRITE_HPP
 #define IMG_SPRITE_HPP
 
-#include <string>
-
 #include "Sprite/Sprite.hpp"
-
-typedef struct
-{
-	SDL_Renderer *destRenderer;
-
-	std::string IMGPath;
-
-	float
-		Scale,
-		Radius;
-} SpriteData;
+#include "SpriteData.hpp"
 
 class IMGSprite : public Sprite
 {
@@ -27,7 +15,7 @@ protected:
 		Scale,
 		Radius;
 
-	void LoadImage();
+	void LoadImage(float scale = 1);
 
 public:
 	//* non-static
@@ -42,11 +30,11 @@ public:
 
 	std::string GetIMGPath() const;
 
-	void SetIMGPath(std::string img_path);
+	void SetIMGPath(std::string &img_path);
 
 	float GetScale() const;
 
-	void SetScale(float factor);
+	void SetScale(float scale);
 
 	float GetRadius() const;
 

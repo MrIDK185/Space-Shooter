@@ -2,22 +2,8 @@
 #define GEM_HPP
 
 #include "Sprite/AnimatedSprite.hpp"
-
-typedef enum
-{
-	INCREMENT = 1,
-	DECREMENT = -1
-} Sign;
-
-typedef struct
-{
-	unsigned int
-		blinkDuration,
-		lifetimeDuration,
-		minimumBrightness,
-		maximumBrightness,
-		blinkFactor;
-} GemData;
+#include "GemData.hpp"
+#include "Sign.hpp"
 
 class Gem : public AnimatedSprite
 {
@@ -25,8 +11,8 @@ private:
 	//* non-static
 
 	Uint64
-		blinkTicks,
-		lifetimeTicks;
+		blinkTicks = 0,
+		lifetimeTicks = 0;
 
 	unsigned int
 		blinkDuration,

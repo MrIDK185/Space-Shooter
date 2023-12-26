@@ -2,16 +2,7 @@
 #define ANIMATED_SPRITE_HPP
 
 #include "Sprite/IMGSprite.hpp"
-
-typedef struct
-{
-	unsigned int
-		FRAME_WIDTH,
-		FRAME_HEIGHT,
-		IMG_FRAMES,
-		IMG_TYPES,
-		ANIMATIONS_PER_SECOND;
-} AnimationData;
+#include "AnimationData.hpp"
 
 class AnimatedSprite : public IMGSprite
 {
@@ -30,7 +21,8 @@ protected:
 		animationType = 1;
 
 	SDL_Rect IMGPartRect;
-	Uint64 nextTickTime;
+
+	Uint64 nextTickTime = 0;
 
 public:
 	//* non-static

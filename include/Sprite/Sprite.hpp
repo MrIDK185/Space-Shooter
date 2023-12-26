@@ -1,19 +1,10 @@
 #ifndef SPRITE_HPP
 #define SPRITE_HPP
 
-#include <memory>
-
 #include <SDL2/SDL.h>
-#include "uniquePointerDeleter.hpp"
 
-typedef enum
-{
-	NW,
-	NE,
-	SE,
-	SW,
-	CENTER
-} Alignments;
+#include "Alignments.hpp"
+#include "uniquePointerDeleter.hpp"
 
 class Sprite
 {
@@ -21,13 +12,16 @@ protected:
 	//* static
 
 	static inline void surfaceDestructor(SDL_Surface *surface) { SDL_FreeSurface(surface); }
+
 	static inline void textureDestructor(SDL_Texture *texture) { SDL_DestroyTexture(texture); }
 
 	//* non-static
 
 	SDL_Renderer *destRenderer;
+
 	unique_ptr_deleter<SDL_Surface> Surface = {nullptr, surfaceDestructor};
 	unique_ptr_deleter<SDL_Texture> Texture = {nullptr, textureDestructor};
+
 	SDL_FRect Rect = {0, 0, 0, 0};
 
 public:

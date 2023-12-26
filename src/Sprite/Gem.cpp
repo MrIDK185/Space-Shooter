@@ -175,17 +175,12 @@ void Gem::Randomize(int screen_width, int screen_height, Uint64 current_ticks)
 
 	std::uniform_int_distribution<> random_type(1, IMG_TYPES);
 	std::uniform_int_distribution<> random_frame(1, IMG_FRAMES);
-	std::uniform_int_distribution<> random_x(0, screen_width - IMGPartRect.w);
-	std::uniform_int_distribution<> random_y(0, screen_height - IMGPartRect.h);
+	std::uniform_int_distribution<> random_x(0, screen_width - FRAME_WIDTH);
+	std::uniform_int_distribution<> random_y(0, screen_height - FRAME_HEIGHT);
 
-	int new_type = random_type(gen);
-	int new_frame = random_frame(gen);
-	int new_x = random_x(gen);
-	int new_y = random_y(gen);
-
-	SetAnimationType(new_type);
-	SetAnimationFrame(new_frame);
-	SetRectPos(new_x, new_y);
+	SetAnimationType(random_type(gen));
+	SetAnimationFrame(random_frame(gen));
+	SetRectPos(random_x(gen), random_y(gen));
 
 	UpdateTicks(current_ticks);
 	SDL_SetTextureColorMod(Texture.get(), 255, 255, 255);

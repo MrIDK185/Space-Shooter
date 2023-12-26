@@ -2,14 +2,14 @@
 
 //* non-static(public)
 
-Sprite::Sprite(SDL_Renderer *renderer) : destRenderer(renderer)
+Sprite::Sprite(SDL_Renderer *renderer)
+	: destRenderer(renderer)
 {
 }
 
 Sprite::Sprite(const Sprite &obj)
 	: destRenderer(obj.destRenderer),
 	  Surface(new SDL_Surface(*obj.Surface), surfaceDestructor),
-	  Texture(nullptr, textureDestructor),
 	  Rect(obj.Rect)
 {
 	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
@@ -27,9 +27,9 @@ Sprite::Sprite(Sprite &&obj)
 
 Sprite::~Sprite()
 {
+	destRenderer = nullptr;
 	Surface = nullptr;
 	Texture = nullptr;
-	destRenderer = nullptr;
 
 	return;
 }

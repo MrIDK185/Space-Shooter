@@ -6,6 +6,7 @@ Asteroid functionality
 Sprites
  -> Check data types
  -> Check const, etc for Data structs
+ -> Handle Durations with timers
 
 General
  -> Typedefs, structs etc in own file

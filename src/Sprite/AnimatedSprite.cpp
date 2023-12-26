@@ -9,8 +9,7 @@ AnimatedSprite::AnimatedSprite(SpriteData sprite_data, AnimationData animation_d
 	  IMG_FRAMES(animation_data.IMG_FRAMES),
 	  IMG_TYPES(animation_data.IMG_TYPES),
 	  ANIMATIONS_PER_SECOND(animation_data.ANIMATIONS_PER_SECOND),
-	  IMGPartRect({0, 0, (int)FRAME_WIDTH, (int)FRAME_HEIGHT}),
-	  nextTickTime(0)
+	  IMGPartRect({0, 0, (int)FRAME_WIDTH, (int)FRAME_HEIGHT})
 {
 	SetRectSize(FRAME_WIDTH * Scale, FRAME_HEIGHT * Scale);
 
@@ -118,18 +117,18 @@ void AnimatedSprite::SetRectPos(float pos_x, float pos_y, Alignments align)
 	case NW:
 		break;
 	case NE:
-		pos_x -= IMGPartRect.w;
+		pos_x -= FRAME_WIDTH;
 		break;
 	case SE:
-		pos_x -= IMGPartRect.w;
-		pos_y -= IMGPartRect.h;
+		pos_x -= FRAME_WIDTH;
+		pos_y -= FRAME_HEIGHT;
 		break;
 	case SW:
-		pos_y -= IMGPartRect.h;
+		pos_y -= FRAME_HEIGHT;
 		break;
 	case CENTER:
-		pos_x -= IMGPartRect.w / 2;
-		pos_y -= IMGPartRect.h / 2;
+		pos_x -= FRAME_WIDTH / 2;
+		pos_y -= FRAME_HEIGHT / 2;
 		break;
 	default:
 		break;
@@ -155,7 +154,7 @@ void AnimatedSprite::SetNextTickTime(Uint64 new_time)
 
 void AnimatedSprite::Animate(Uint64 current_ticks)
 {
-	if (current_ticks < nextTickTime | ANIMATIONS_PER_SECOND <= 0)
+	if (current_ticks < nextTickTime || ANIMATIONS_PER_SECOND <= 0)
 	{
 		return;
 	}

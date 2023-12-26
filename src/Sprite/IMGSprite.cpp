@@ -4,7 +4,7 @@
 
 //* non-static(protected)
 
-void IMGSprite::LoadImage()
+void IMGSprite::LoadImage(float scale /*1*/)
 {
 	SetSurface(IMG_Load(IMGPath.c_str()));
 	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
@@ -12,6 +12,7 @@ void IMGSprite::LoadImage()
 	int width, height;
 	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
 	SetRectSize(width, height);
+	SetScale(scale);
 
 	return;
 }
@@ -24,8 +25,7 @@ IMGSprite::IMGSprite(SpriteData sprite_data)
 	  Scale(sprite_data.Scale),
 	  Radius(sprite_data.Radius * Scale)
 {
-	LoadImage();
-	SetScale(Scale);
+	LoadImage(Scale);
 
 	return;
 }
@@ -51,10 +51,10 @@ std::string IMGSprite::GetIMGPath() const
 	return IMGPath;
 }
 
-void IMGSprite::SetIMGPath(std::string img_path)
+void IMGSprite::SetIMGPath(std::string &img_path)
 {
 	IMGPath = img_path;
-	LoadImage();
+	LoadImage(Scale);
 
 	return;
 }
@@ -64,11 +64,11 @@ float IMGSprite::GetScale() const
 	return Scale;
 }
 
-void IMGSprite::SetScale(float factor)
+void IMGSprite::SetScale(float scale)
 {
-	SetRectSize(Rect.w * factor, Rect.h * factor);
+	SetRectSize(Rect.w * scale, Rect.h * scale);
 
-	Scale = factor;
+	Scale = scale;
 
 	return;
 }
@@ -87,21 +87,19 @@ void IMGSprite::SetRadius(float radius)
 
 bool IMGSprite::Collideswith(const IMGSprite &sprite) const
 {
-	float self_radius = Radius;
-	SDL_FRect self_rect = Rect;
-	int self_centerx = self_rect.x + self_rect.w / 2;
-	int self_centery = self_rect.y + self_rect.h / 2;
+	float self_centerx = Rect.x + Rect.w / 2;
+	float self_centery = Rect.y + Rect.h / 2;
 
-	float sprite_radius = sprite.GetRadius();
 	SDL_FRect sprite_rect = sprite.GetRect();
-	int sprite_centerx = sprite_rect.x + sprite_rect.w / 2;
-	int sprite_centery = sprite_rect.y + sprite_rect.h / 2;
+	float sprite_centerx = sprite_rect.x + sprite_rect.w / 2;
+	float sprite_centery = sprite_rect.y + sprite_rect.h / 2;
 
-	int difference_x = self_centerx - sprite_centerx;
-	int difference_y = self_centery - sprite_centery;
-	float distance = sqrtf(difference_x * difference_x + difference_y * difference_y);
+	float difference_x = self_centerx - sprite_centerx;
+	float difference_y = self_centery - sprite_centery;
+	float distance = sqrtf(difference_x * difference_x +
+						   difference_y * difference_y);
 
-	if (distance <= self_radius + sprite_radius)
+	if (distance <= Radius + sprite.GetRadius())
 	{
 		return true;
 	}

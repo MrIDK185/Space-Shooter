@@ -15,11 +15,11 @@ void Player::UpdateAngle(float delta_time_seconds, const Uint8 *keyboard)
 
 	if (Angle >= 360)
 	{
-		Angle = 0;
+		Angle -= 360;
 	}
 	else if (Angle < 0)
 	{
-		Angle = 360 + Angle;
+		Angle += 360;
 	}
 
 	return;

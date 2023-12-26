@@ -127,7 +127,6 @@ Text::Text(TextData text_data, bool centered)
 Text::Text(const Text &obj)
 	: Sprite(obj),
 	  Message(obj.Message),
-	  Font(nullptr, fontDestructor),
 	  fontPath(obj.fontPath),
 	  fontColor(obj.fontColor),
 	  fontSize(obj.fontSize)
@@ -162,7 +161,6 @@ std::wstring Text::GetMessage() const
 void Text::SetMessage(std::wstring new_message, bool centered)
 {
 	Message = new_message;
-	SDL_DestroyTexture(Texture.get());
 	centered ? SetTextCentered() : SetText();
 
 	return;

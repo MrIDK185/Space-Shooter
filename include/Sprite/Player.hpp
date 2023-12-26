@@ -2,18 +2,7 @@
 #define PLAYER_HPP
 
 #include "Sprite/AnimatedSprite.hpp"
-
-typedef struct
-{
-	float
-		Acceleration,
-		maxVelocity,
-		Friction;
-
-	unsigned int
-		effectDuration,
-		rotationSpeed;
-} PlayerData;
+#include "PlayerData.hpp"
 
 class Player : public AnimatedSprite
 {

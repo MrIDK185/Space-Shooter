@@ -1,24 +1,10 @@
 #ifndef TEXT_HPP
 #define TEXT_HPP
 
-#include <string>
-
 #include <SDL2/SDL_ttf.h>
 
 #include "Sprite/Sprite.hpp"
-
-typedef struct
-{
-	SDL_Renderer *destRenderer;
-
-	std::wstring Message;
-
-	std::string fontPath;
-
-	SDL_Color fontColor;
-
-	unsigned int fontSize;
-} TextData;
+#include "TextData.hpp"
 
 class Text : public Sprite
 {
@@ -27,7 +13,7 @@ private:
 
 	static inline void fontDestructor(TTF_Font *font) { TTF_CloseFont(font); }
 
-	//*non-static
+	//* non-static
 
 	std::wstring Message;
 
@@ -41,7 +27,7 @@ private:
 	void SetTextCentered();
 
 public:
-	//*non-static
+	//* non-static
 
 	Text(TextData text_data, bool centered = true);
 

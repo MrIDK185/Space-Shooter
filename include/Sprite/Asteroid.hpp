@@ -2,11 +2,7 @@
 #define ASTEROID_HPP
 
 #include "Sprite/IMGSprite.hpp"
-
-typedef struct
-{
-	float Velocity;
-} AsteroidData;
+#include "AsteroidData.hpp"
 
 class Asteroid : public IMGSprite
 {
