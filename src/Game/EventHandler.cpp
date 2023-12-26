@@ -9,11 +9,6 @@
 
 bool EventHandler::Handle_WindowQuit()
 {
-	if (Event.type != SDL_WINDOWEVENT || Event.window.event != SDL_WINDOWEVENT_CLOSE)
-	{
-		return false;
-	}
-
 	currentGame->Running = false;
 
 	return true;
@@ -182,19 +177,28 @@ EventHandler::EventHandler(Game *current_game)
 EventHandler::~EventHandler()
 {
 	currentGame = nullptr;
+
+	return;
 }
 
 void EventHandler::HandleEvents()
 {
 	while (SDL_PollEvent(&Event))
 	{
-		if (Handle_WindowQuit())
+		switch (Event.type)
 		{
-			return;
-		}
+		case SDL_WINDOWEVENT:
+			switch (Event.window.event)
+			{
+			case SDL_WINDOWEVENT_CLOSE:
+				Handle_WindowQuit();
+				return;
+			default:
+				break;
+			}
+			break;
 
-		if (Event.type == SDL_USEREVENT)
-		{
+		case SDL_USEREVENT:
 			switch (Event.user.code)
 			{
 			case TIMER_DECREMENT:
@@ -206,36 +210,37 @@ void EventHandler::HandleEvents()
 			default:
 				break;
 			}
-		}
+			break;
 
-		if (Event.type != SDL_KEYDOWN)
-		{
-			continue;
-		}
+		case SDL_KEYDOWN:
+			switch (Event.key.keysym.sym)
+			{
+			case SDLK_q:
+				Handle_Q();
+				return;
+			case SDLK_ESCAPE:
+				Handle_Escape();
+				break;
+			case SDLK_RETURN:
+				Handle_Return();
+				break;
+			case SDLK_F11:
+				Handle_F11();
+				break;
+			case SDLK_KP_PLUS:
+				Handle_KP_Plus();
+				break;
+			case SDLK_KP_MINUS:
+				Handle_KP_Minus();
+				break;
+			case SDLK_m:
+				Handle_M();
+				break;
+			default:
+				break;
+			}
+			break;
 
-		switch (Event.key.keysym.sym)
-		{
-		case SDLK_q:
-			Handle_Q();
-			return;
-		case SDLK_ESCAPE:
-			Handle_Escape();
-			break;
-		case SDLK_RETURN:
-			Handle_Return();
-			break;
-		case SDLK_F11:
-			Handle_F11();
-			break;
-		case SDLK_KP_PLUS:
-			Handle_KP_Plus();
-			break;
-		case SDLK_KP_MINUS:
-			Handle_KP_Minus();
-			break;
-		case SDLK_m:
-			Handle_M();
-			break;
 		default:
 			break;
 		}

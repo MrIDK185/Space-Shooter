@@ -27,6 +27,8 @@ private:
 	bool Handle_TimerStop();
 
 public:
+	//* non-static
+
 	explicit EventHandler();
 	explicit EventHandler(Game *current_game);
 	~EventHandler();

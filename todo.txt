@@ -8,5 +8,5 @@ Sprites
  -> Check const, etc for Data structs
  -> Handle Durations with timers
 
-General
- -> Typedefs, structs etc in own file
+Events:
+ -> Create and Register user events (custom codes, data, etc)
