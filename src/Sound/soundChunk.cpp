@@ -12,7 +12,7 @@ void soundChunk::LoadChunk()
 
 //* non-static(public)
 
-soundChunk::soundChunk(std::string &path, channelControl *controller)
+soundChunk::soundChunk(std::string path, channelControl *controller)
 	: Path(path),
 	  Volume(MIX_MAX_VOLUME),
 	  channelController(controller)
@@ -55,7 +55,7 @@ std::string soundChunk::GetPath() const
 	return Path;
 }
 
-void soundChunk::SetPath(std::string &path)
+void soundChunk::SetPath(std::string path)
 {
 	Path = path;
 	LoadChunk();

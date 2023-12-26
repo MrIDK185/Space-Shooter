@@ -12,7 +12,7 @@ void soundMusic::LoadMusic()
 
 //* non-static(public)
 
-soundMusic::soundMusic(std::string &path, channelControl *channel_control)
+soundMusic::soundMusic(std::string path, channelControl *channel_control)
 	: Path(path),
 	  channelController(channel_control)
 {
@@ -51,7 +51,7 @@ std::string soundMusic::GetPath()
 	return Path;
 }
 
-void soundMusic::SetPath(std::string &path)
+void soundMusic::SetPath(std::string path)
 {
 	Path = path;
 

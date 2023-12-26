@@ -31,7 +31,7 @@ private:
 public:
 	//* non-static
 
-	soundMusic(std::string &path, channelControl *channel_control);
+	soundMusic(std::string path, channelControl *channel_control);
 
 	explicit soundMusic(const soundMusic &obj);
 
@@ -41,7 +41,7 @@ public:
 
 	std::string GetPath();
 
-	void SetPath(std::string &path);
+	void SetPath(std::string path);
 
 	unique_ptr_deleter<Mix_Music> GetMusic();
 

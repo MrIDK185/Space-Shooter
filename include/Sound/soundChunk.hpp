@@ -33,7 +33,7 @@ private:
 public:
 	//* non-static
 
-	soundChunk(std::string &path, channelControl *controller);
+	soundChunk(std::string path, channelControl *controller);
 
 	explicit soundChunk(const soundChunk &obj);
 
@@ -43,7 +43,7 @@ public:
 
 	std::string GetPath() const;
 
-	void SetPath(std::string &path);
+	void SetPath(std::string path);
 
 	unique_ptr_deleter<Mix_Chunk> GetChunk();
 
