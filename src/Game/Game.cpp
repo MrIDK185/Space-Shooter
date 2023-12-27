@@ -1,4 +1,6 @@
 #include "Game/Game.hpp"
+#include "Game/EventCode.hpp"
+#include "Game/EventType.hpp"
 #include "Sprite/Asteroid.hpp"
 #include "Sprite/Player.hpp"
 #include "Sprite/Gem.hpp"
@@ -105,8 +107,11 @@ void Game::SetupGame()
 	currentGameState = TITLE_SCREEN;
 	lastGameState = TITLE_SCREEN;
 
+	SDL_RegisterEvents(NUM_EVENTS);
 	gameEvents = EventHandler(this);
-	startTimer = SecondTimer(Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS, this);
+	startTimer = Timer(COUNTDOWN_DECREMENT, GAME_START,
+					   Config.COUNTDOWN_DURATION_MILLISECONDS, Config.COUNTDOWN_INTERVAL_MILLISECONDS,
+					   &currentGameState);
 
 	channelControllerInstance = &channelController;
 	Mix_ChannelFinished(channelFinishedCallback);
@@ -308,8 +313,6 @@ void Game::Reset()
 {
 	currentGameState = TITLE_SCREEN;
 	lastGameState = TITLE_SCREEN;
-
-	startTimer.Reset();
 
 	Score = Config.START_SCORE;
 	std::wstring current_score = std::to_wstring(Score);

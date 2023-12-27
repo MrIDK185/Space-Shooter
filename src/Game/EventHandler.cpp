@@ -1,4 +1,6 @@
 #include "Game/EventHandler.hpp"
+#include "Game/EventType.hpp"
+#include "Game/EventCode.hpp"
 #include "Game/Game.hpp"
 #include "Sprite/Text.hpp"
 #include "Sprite/Gem.hpp"
@@ -124,13 +126,30 @@ bool EventHandler::Handle_M()
 	return true;
 }
 
-bool EventHandler::Handle_TimerDecrement()
+bool EventHandler::Handle_TimerEvent()
 {
-	if (currentGame->currentGameState == GAME_PAUSED)
+	bool retval = false;
+
+	switch (Event.user.code)
 	{
-		return false;
+	case COUNTDOWN_DECREMENT:
+		retval = Handle_CountdownDecrement();
+		break;
+
+	case GAME_START:
+		retval = Handle_GameStart();
+		break;
+
+	case NO_EVENT:
+	default:
+		break;
 	}
 
+	return retval;
+}
+
+bool EventHandler::Handle_CountdownDecrement()
+{
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
 	Text &startText = currentGame->objectsTitleScreen.Texts.at("startText");
 
@@ -140,7 +159,7 @@ bool EventHandler::Handle_TimerDecrement()
 	return true;
 }
 
-bool EventHandler::Handle_TimerStop()
+bool EventHandler::Handle_GameStart()
 {
 	if (currentGame->currentGameState == GAME_PAUSED)
 	{
@@ -199,13 +218,10 @@ void EventHandler::HandleEvents()
 			break;
 
 		case SDL_USEREVENT:
-			switch (Event.user.code)
+			switch (Event.user.type)
 			{
-			case TIMER_DECREMENT:
-				Handle_TimerDecrement();
-				break;
-			case TIMER_STOP:
-				Handle_TimerStop();
+			case USEREVENT_TIMER:
+				Handle_TimerEvent();
 				break;
 			default:
 				break;

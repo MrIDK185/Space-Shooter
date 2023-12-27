@@ -5,6 +5,11 @@ static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 {
 	Timer *timer = static_cast<Timer *>(param);
 
+	if (*timer->currentGameState == GAME_PAUSED)
+	{
+		return interval_milliseconds;
+	}
+
 	if (timer->counterMilliseconds >= interval_milliseconds)
 	{
 		timer->counterMilliseconds -= interval_milliseconds;
@@ -45,8 +50,9 @@ Timer::Timer()
 
 Timer::Timer(EventCode tick_event, EventCode end_event,
 			 unsigned int duration_milliseconds, unsigned int interval_milliseconds,
-			 void *custom_data /*nullptr*/)
+			 gameState *game_state, void *custom_data /*nullptr*/)
 	: Callback(TimerCallback),
+	  currentGameState(game_state),
 	  tickEvent(tick_event),
 	  endEvent(end_event),
 	  customData(custom_data),

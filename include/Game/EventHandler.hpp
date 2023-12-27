@@ -23,8 +23,9 @@ private:
 	bool Handle_KP_Minus();
 	bool Handle_M();
 
-	bool Handle_TimerDecrement();
-	bool Handle_TimerStop();
+	bool Handle_TimerEvent();
+	bool Handle_CountdownDecrement();
+	bool Handle_GameStart();
 
 public:
 	//* non-static

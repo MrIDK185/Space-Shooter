@@ -4,8 +4,9 @@
 #include "Game/Configuration.hpp"
 #include "Game/EventHandler.hpp"
 #include "Game/objectStorage.hpp"
+#include "Game/gameState.hpp"
 #include "Time/Clock.hpp"
-#include "Time/SecondTimer.hpp"
+#include "Time/Timer.hpp"
 #include "Sound/soundChunk.hpp"
 #include "Sound/soundMusic.hpp"
 #include "Sound/volumeControl.hpp"
@@ -13,14 +14,6 @@
 #include "Sprite/Player.hpp"
 #include "Sprite/Gem.hpp"
 #include "Sprite/Asteroid.hpp"
-
-typedef enum gameState
-{
-	TITLE_SCREEN,
-	GAME_STARTED,
-	GAME_PAUSED,
-	GAME_OVER
-} gameState;
 
 struct Game
 {
@@ -40,7 +33,7 @@ public:
 	EventHandler gameEvents;
 
 	Clock gameClock;
-	SecondTimer startTimer;
+	Timer startTimer;
 	Uint64 currentTicks = 0;
 	Uint64 pausedTicks = 0;
 	Uint64 totalTimePaused = 0;
