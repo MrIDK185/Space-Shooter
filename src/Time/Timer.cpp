@@ -1,0 +1,102 @@
+#include "Time/Timer.hpp"
+
+static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
+{
+	Timer *timer = static_cast<Timer *>(param);
+
+	if (timer->counterMilliseconds >= interval_milliseconds)
+	{
+		timer->counterMilliseconds -= interval_milliseconds;
+	}
+	else
+	{
+		timer->counterMilliseconds = 0;
+	}
+
+	if (timer->counterMilliseconds > 0)
+	{
+		SDL_Event event;
+		event.type = SDL_USEREVENT;
+		event.user.type = SDL_USEREVENT;
+		event.user.code = timer->tickEvent;
+		event.user.data1 = timer;
+		event.user.data2 = timer->customData;
+		SDL_PushEvent(&event);
+
+		return interval_milliseconds;
+	}
+
+	SDL_Event event;
+	event.type = SDL_USEREVENT;
+	event.user.type = SDL_USEREVENT;
+	event.user.code = timer->endEvent;
+	event.user.data1 = timer;
+	event.user.data2 = timer->customData;
+	SDL_PushEvent(&event);
+
+	return 0;
+}
+
+Timer::Timer()
+	: Callback(TimerCallback)
+{
+}
+
+Timer::Timer(CustomEvent tick_event, CustomEvent end_event,
+			 unsigned int duration_milliseconds, unsigned int interval_milliseconds,
+			 void *custom_data /*nullptr*/)
+	: Callback(TimerCallback),
+	  tickEvent(tick_event),
+	  endEvent(end_event),
+	  customData(custom_data),
+	  durationMilliseconds(duration_milliseconds),
+	  intervalMilliseconds(interval_milliseconds),
+	  counterMilliseconds(duration_milliseconds)
+{
+}
+
+Timer::~Timer()
+{
+	Callback = nullptr;
+
+	return;
+}
+
+void Timer::Start()
+{
+	if (Started)
+	{
+		return;
+	}
+
+	timerID = SDL_AddTimer(intervalMilliseconds, Callback, this);
+	if (timerID > 0)
+	{
+		Started = true;
+	}
+
+	return;
+}
+
+void Timer::Stop()
+{
+	if (!Started)
+	{
+		return;
+	}
+
+	SDL_RemoveTimer(timerID);
+	timerID = 0;
+	Started = false;
+
+	return;
+}
+
+void Timer::Reset()
+{
+	timerID = 0;
+	counterMilliseconds = durationMilliseconds;
+	Started = false;
+
+	return;
+}

@@ -1,0 +1,17 @@
+#ifndef CUSTOM_EVENT_HPP
+#define CUSTOM_EVENT_HPP
+
+#include <SDL2/SDL.h>
+
+typedef enum
+{
+	NO_EVENT,
+	COUNTDOWN_DECREMENT,
+	GAME_START,
+	GEM_BLINK,
+	GEM_DISAPPEAR,
+	PLAYER_EFFECT_STOP,
+	NUM_EVENTS
+} CustomEvent;
+
+#endif // !CUSTOM_EVENT_HPP
