@@ -79,6 +79,25 @@ void Timer::Start()
 	return;
 }
 
+void Timer::Pause()
+{
+	if (!Started)
+	{
+		return;
+	}
+
+	SDL_RemoveTimer(timerID);
+	timerID = 0;
+	Started = false;
+}
+
+void Timer::Resume()
+{
+	Start();
+
+	return;
+}
+
 void Timer::Stop()
 {
 	if (!Started)
@@ -89,15 +108,7 @@ void Timer::Stop()
 	SDL_RemoveTimer(timerID);
 	timerID = 0;
 	Started = false;
-
-	return;
-}
-
-void Timer::Reset()
-{
-	timerID = 0;
 	counterMilliseconds = durationMilliseconds;
-	Started = false;
 
 	return;
 }

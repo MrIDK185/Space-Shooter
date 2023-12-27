@@ -35,9 +35,11 @@ public:
 
 	void Start();
 
-	void Stop();
+	void Pause();
 
-	void Reset();
+	void Resume();
+
+	void Stop();
 };
 
 #endif //! SECOND_TIMER_HPP
