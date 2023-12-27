@@ -43,7 +43,7 @@ bool EventHandler::Handle_Escape()
 
 bool EventHandler::Handle_Return()
 {
-	if (currentGame->currentGameState == GAME_STARTED || currentGame->currentGameState == GAME_PAUSED || currentGame->startTimer.Started)
+	if (currentGame->currentGameState == GAME_STARTED || currentGame->startTimer.Started)
 	{
 		return false;
 	}
@@ -70,11 +70,6 @@ bool EventHandler::Handle_Return()
 
 bool EventHandler::Handle_F11()
 {
-	if (currentGame->currentGameState == GAME_PAUSED)
-	{
-		return false;
-	}
-
 	Uint32 window_flags = SDL_GetWindowFlags(currentGame->Window);
 	if ((window_flags & SDL_WINDOW_FULLSCREEN) != SDL_WINDOW_FULLSCREEN)
 	{
@@ -92,11 +87,6 @@ bool EventHandler::Handle_F11()
 
 bool EventHandler::Handle_KP_Plus()
 {
-	if (currentGame->currentGameState == GAME_PAUSED)
-	{
-		return false;
-	}
-
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume + 10);
 
 	return true;
@@ -104,11 +94,6 @@ bool EventHandler::Handle_KP_Plus()
 
 bool EventHandler::Handle_KP_Minus()
 {
-	if (currentGame->currentGameState == GAME_PAUSED)
-	{
-		return false;
-	}
-
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume - 10);
 
 	return true;
@@ -116,11 +101,6 @@ bool EventHandler::Handle_KP_Minus()
 
 bool EventHandler::Handle_M()
 {
-	if (currentGame->currentGameState == GAME_PAUSED)
-	{
-		return false;
-	}
-
 	currentGame->volumeController.toggleMute();
 
 	return true;
@@ -161,11 +141,6 @@ bool EventHandler::Handle_CountdownDecrement()
 
 bool EventHandler::Handle_GameStart()
 {
-	if (currentGame->currentGameState == GAME_PAUSED)
-	{
-		return false;
-	}
-
 	currentGame->startTimer.Stop();
 
 	currentGame->currentGameState = GAME_STARTED;
@@ -173,34 +148,15 @@ bool EventHandler::Handle_GameStart()
 	for (auto &gem : currentGame->objectsGameRunning.Gems)
 	{
 		gem.UpdateTicks(currentGame->currentTicks);
+		gem.Randomize(currentGame->screenWidth, currentGame->screenHeight, currentGame->currentTicks);
 	}
 
-	currentGame->objectsTitleScreen.Chunks.at("startSound").Stop();
 	currentGame->objectsGameRunning.Musics.at("backgroundMusic").Play();
 
 	return true;
 }
 
-//* non-static(public)
-
-EventHandler::EventHandler()
-	: currentGame(nullptr)
-{
-}
-
-EventHandler::EventHandler(Game *current_game)
-	: currentGame(current_game)
-{
-}
-
-EventHandler::~EventHandler()
-{
-	currentGame = nullptr;
-
-	return;
-}
-
-void EventHandler::HandleEvents()
+void EventHandler::HandleGameStarted()
 {
 	while (SDL_PollEvent(&Event))
 	{
@@ -261,6 +217,72 @@ void EventHandler::HandleEvents()
 			break;
 		}
 	}
+
+	return;
+}
+
+void EventHandler::HandleGamePaused()
+{
+	while (SDL_PollEvent(&Event))
+	{
+		if (Event.window.event == SDL_WINDOWEVENT_CLOSE)
+		{
+			Handle_WindowQuit();
+			return;
+		}
+
+		if (Event.type != SDL_KEYDOWN)
+		{
+			return;
+		}
+
+		switch (Event.key.keysym.sym)
+		{
+		case SDLK_q:
+			Handle_Q();
+			return;
+		case SDLK_ESCAPE:
+			Handle_Escape();
+			break;
+		case SDLK_F11:
+			Handle_F11();
+			break;
+		default:
+			break;
+		}
+	}
+
+	return;
+}
+
+//* non-static(public)
+
+EventHandler::EventHandler()
+	: currentGame(nullptr)
+{
+}
+
+EventHandler::EventHandler(Game *current_game)
+	: currentGame(current_game)
+{
+}
+
+EventHandler::~EventHandler()
+{
+	currentGame = nullptr;
+
+	return;
+}
+
+void EventHandler::HandleEvents()
+{
+	if (currentGame->currentGameState == GAME_PAUSED)
+	{
+		HandleGamePaused();
+		return;
+	}
+
+	HandleGameStarted();
 
 	return;
 }

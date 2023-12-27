@@ -27,6 +27,9 @@ private:
 	bool Handle_CountdownDecrement();
 	bool Handle_GameStart();
 
+	void HandleGameStarted();
+	void HandleGamePaused();
+
 public:
 	//* non-static
 
