@@ -1,4 +1,5 @@
 #include "Time/Timer.hpp"
+#include "Game/EventType.hpp"
 
 static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 {
@@ -17,7 +18,7 @@ static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 	{
 		SDL_Event event;
 		event.type = SDL_USEREVENT;
-		event.user.type = SDL_USEREVENT;
+		event.user.type = USEREVENT_TIMER;
 		event.user.code = timer->tickEvent;
 		event.user.data1 = timer;
 		event.user.data2 = timer->customData;
@@ -28,7 +29,7 @@ static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 
 	SDL_Event event;
 	event.type = SDL_USEREVENT;
-	event.user.type = SDL_USEREVENT;
+	event.user.type = USEREVENT_TIMER;
 	event.user.code = timer->endEvent;
 	event.user.data1 = timer;
 	event.user.data2 = timer->customData;
@@ -42,7 +43,7 @@ Timer::Timer()
 {
 }
 
-Timer::Timer(CustomEvent tick_event, CustomEvent end_event,
+Timer::Timer(EventCode tick_event, EventCode end_event,
 			 unsigned int duration_milliseconds, unsigned int interval_milliseconds,
 			 void *custom_data /*nullptr*/)
 	: Callback(TimerCallback),

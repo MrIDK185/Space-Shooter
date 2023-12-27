@@ -3,6 +3,7 @@
 
 typedef enum
 {
+	NO_EVENT,
 	COUNTDOWN_DECREMENT,
 	GAME_START,
 	GEM_BLINK,

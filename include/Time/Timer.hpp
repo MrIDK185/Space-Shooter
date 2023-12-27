@@ -3,8 +3,7 @@
 
 #include <SDL2/SDL.h>
 
-#include "Time/timerEvent.hpp"
-#include "Game/customEvent.hpp"
+#include "Game/EventCode.hpp"
 
 struct Timer
 {
@@ -16,8 +15,8 @@ private:
 public:
 	bool Started = false;
 
-	CustomEvent tickEvent;
-	CustomEvent endEvent;
+	EventCode tickEvent;
+	EventCode endEvent;
 
 	void *customData = nullptr;
 
@@ -28,7 +27,7 @@ public:
 
 	explicit Timer();
 
-	Timer(CustomEvent tick_event, CustomEvent end_event,
+	Timer(EventCode tick_event, EventCode end_event,
 		  unsigned int duration_milliseconds, unsigned int interval_milliseconds,
 		  void *custom_data = nullptr);
 
