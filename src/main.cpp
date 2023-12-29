@@ -73,8 +73,6 @@ int InitializeSubsystems()
 //* Cleanup
 void QuitSubsystems()
 {
-	std::cout << "\n------------- Cleanup -------------\n\n";
-
 	std::cout << "Closing audio device...\n";
 	Mix_CloseAudio();
 	std::cout << "Quitting Mixer...\n";

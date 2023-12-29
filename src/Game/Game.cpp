@@ -30,7 +30,7 @@ int Game::Run()
 {
 	SetupGame();
 
-	std::cout << "------- Startup successful --------\n\n";
+	std::cout << "\n------- Startup successful --------\n\n";
 
 	while (Running)
 	{
@@ -72,6 +72,8 @@ int Game::Run()
 //* Cleanup
 void Game::Cleanup()
 {
+	std::cout << "\n------------- Cleanup -------------\n\n";
+
 	std::cout << "Clearing objectsGameOver...\n";
 	objectsGameOver.ClearAll();
 	std::cout << "Clearing objectsGamePaused...\n";

@@ -3,7 +3,7 @@
 Window Width = 1440
 Window Height = 810
 
-Countdown Duration Milliseconds = 0000
+Countdown Duration Milliseconds = 3000
 Countdown Interval Milliseconds = 1000
 
 Start Score = 0
