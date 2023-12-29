@@ -64,6 +64,10 @@ Player::Player(SpriteData sprite_data, AnimationData animation_data, PlayerData 
 	  effectDuration(player_data.effectDuration * 1000),
 	  rotationSpeed(player_data.rotationSpeed)
 {
+	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDuration, effectDuration,
+						player_data.gameState, this);
+
+	return;
 }
 
 Player::Player(const Player &obj)
@@ -73,11 +77,14 @@ Player::Player(const Player &obj)
 	  maxVelocity(obj.maxVelocity),
 	  Angle(obj.Angle),
 	  Friction(obj.Friction),
-	  effectDuration(obj.effectDuration * 1000),
+	  effectDuration(obj.effectDuration),
 	  rotationSpeed(obj.rotationSpeed),
-	  collectionTicks(obj.collectionTicks),
 	  gemCollected(obj.gemCollected)
 {
+	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDuration, effectDuration,
+						obj.effectTimer.currentGameState, this);
+
+	return;
 }
 
 Player::Player(Player &&obj)
@@ -87,11 +94,14 @@ Player::Player(Player &&obj)
 	  maxVelocity(obj.maxVelocity),
 	  Angle(obj.Angle),
 	  Friction(obj.Friction),
-	  effectDuration(obj.effectDuration * 1000),
+	  effectDuration(obj.effectDuration),
 	  rotationSpeed(obj.rotationSpeed),
-	  collectionTicks(obj.collectionTicks),
 	  gemCollected(obj.gemCollected)
 {
+	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDuration, effectDuration,
+						obj.effectTimer.currentGameState, this);
+
+	return;
 }
 
 float Player::GetAcceleration() const
@@ -190,24 +200,18 @@ void Player::SetGemCollected(bool new_status)
 	return;
 }
 
-Uint64 Player::GetCollectionTicks() const
+void Player::StartEffect()
 {
-	return collectionTicks;
-}
-
-void Player::SetCollectionTicks(Uint64 current_ticks)
-{
-	collectionTicks = current_ticks + effectDuration;
+	gemCollected = true;
+	effectTimer.Restart();
 
 	return;
 }
 
-void Player::UpdateGemCollected(Uint64 current_ticks)
+void Player::StopEffect()
 {
-	if (gemCollected && current_ticks >= collectionTicks)
-	{
-		gemCollected = false;
-	}
+	gemCollected = false;
+	effectTimer.Stop();
 
 	return;
 }
@@ -242,8 +246,7 @@ void Player::HandleInput(int screen_width, int screen_height, float delta_time_s
 
 void Player::Reset(float acceleration, float max_velocity, float friction)
 {
-	SetGemCollected(false);
-	SetCollectionTicks(0);
+	StopEffect();
 	SetAngle(0);
 	SetVelocity(0);
 	SetAcceleration(acceleration);

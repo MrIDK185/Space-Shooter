@@ -3,6 +3,7 @@
 
 #include "Sprite/AnimatedSprite.hpp"
 #include "Sprite/PlayerData.hpp"
+#include "Time/Timer.hpp"
 
 class Player : public AnimatedSprite
 {
@@ -20,8 +21,9 @@ private:
 		effectDuration,
 		rotationSpeed;
 
-	Uint64 collectionTicks = 0;
 	bool gemCollected = false;
+
+	Timer effectTimer;
 
 	void UpdateAngle(float delta_time_seconds, const Uint8 *keyboard);
 
@@ -70,11 +72,9 @@ public:
 
 	void SetGemCollected(bool new_status);
 
-	Uint64 GetCollectionTicks() const;
+	void StartEffect();
 
-	void SetCollectionTicks(Uint64 current_ticks);
-
-	void UpdateGemCollected(Uint64 current_ticks);
+	void StopEffect();
 
 	void HandleInput(int screen_width, int screen_height, float delta_time_seconds, const Uint8 *keyboard);
 
