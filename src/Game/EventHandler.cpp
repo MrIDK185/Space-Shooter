@@ -185,7 +185,6 @@ bool EventHandler::Handle_GemDisappear()
 
 bool EventHandler::Handle_PlayerEffectStop()
 {
-	printf("Player stop effect detected\n");
 	static_cast<Player *>(Event.user.data2)->StopEffect();
 
 	return true;

@@ -365,7 +365,6 @@ void Game::GameStarted()
 	HandleGems();
 	HandleAsteroids();
 	CheckCollisions();
-
 	AnimateObjects(&objectsGameRunning);
 
 	SDL_RenderClear(Renderer);
@@ -429,10 +428,13 @@ void Game::UpdateScore(int amount)
 	}
 
 	Score += amount;
+	if (Score > Highscore)
+	{
+		Highscore = Score;
+	}
 
 	std::wstring current_score = std::to_wstring(Score);
 	Text &scoreText = objectsGameRunning.Texts.at("scoreText");
-
 	scoreText.SetMessage(current_score);
 	scoreText.SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
@@ -510,11 +512,6 @@ void Game::HandleGameOver()
 
 	std::wstring current_score = std::to_wstring(Score);
 	std::wstring high_score = std::to_wstring(Highscore);
-	if (Score > Highscore)
-	{
-		Highscore = Score;
-		high_score = current_score;
-	}
 
 	Text &game_over = objectsGameOver.Texts.at("gameOver");
 	std::wstring game_over_text = Config.GAME_OVER_TEXT;

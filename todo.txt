@@ -5,4 +5,5 @@ Asteroid functionality
 
 Sprites
  -> Check data types
+ -> Check naming of variables
  -> Check const, etc for Data structs
