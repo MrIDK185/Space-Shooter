@@ -7,15 +7,15 @@
 
 Gem::Gem(SpriteData sprite_data, AnimationData animation_data, GemData gem_data)
 	: AnimatedSprite(sprite_data, animation_data),
-	  blinkDuration(gem_data.blinkDuration),
-	  lifetimeDuration(gem_data.lifetimeDuration),
+	  blinkDurationMilliseconds(gem_data.blinkDurationMilliseconds),
+	  lifetimeDurationMilliseconds(gem_data.lifetimeDurationMilliseconds),
 	  minimumBrightness(gem_data.minimumBrightness),
 	  maximumBrightness(gem_data.maximumBrightness),
 	  blinkFactor(gem_data.blinkFactor)
 {
-	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDuration, blinkDuration,
+	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDurationMilliseconds, blinkDurationMilliseconds,
 					   gem_data.game_state, this);
-	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDuration, lifetimeDuration,
+	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDurationMilliseconds, lifetimeDurationMilliseconds,
 						  gem_data.game_state, this);
 
 	return;
@@ -25,15 +25,15 @@ Gem::Gem(const Gem &obj)
 	: AnimatedSprite(obj),
 	  Blinking(obj.Blinking),
 	  blinkAngle(obj.blinkAngle),
-	  blinkDuration(obj.blinkDuration),
-	  lifetimeDuration(obj.lifetimeDuration),
+	  blinkDurationMilliseconds(obj.blinkDurationMilliseconds),
+	  lifetimeDurationMilliseconds(obj.lifetimeDurationMilliseconds),
 	  minimumBrightness(obj.minimumBrightness),
 	  maximumBrightness(obj.maximumBrightness),
 	  blinkFactor(obj.blinkFactor)
 {
-	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDuration, blinkDuration,
+	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDurationMilliseconds, blinkDurationMilliseconds,
 					   obj.blinkTimer.currentGameState, this);
-	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDuration, lifetimeDuration,
+	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDurationMilliseconds, lifetimeDurationMilliseconds,
 						  obj.lifetimeTimer.currentGameState, this);
 
 	return;
@@ -43,15 +43,15 @@ Gem::Gem(Gem &&obj)
 	: AnimatedSprite(std::move(obj)),
 	  Blinking(obj.Blinking),
 	  blinkAngle(obj.blinkAngle),
-	  blinkDuration(obj.blinkDuration),
-	  lifetimeDuration(obj.lifetimeDuration),
+	  blinkDurationMilliseconds(obj.blinkDurationMilliseconds),
+	  lifetimeDurationMilliseconds(obj.lifetimeDurationMilliseconds),
 	  minimumBrightness(obj.minimumBrightness),
 	  maximumBrightness(obj.maximumBrightness),
 	  blinkFactor(obj.blinkFactor)
 {
-	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDuration, blinkDuration,
+	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDurationMilliseconds, blinkDurationMilliseconds,
 					   obj.blinkTimer.currentGameState, this);
-	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDuration, lifetimeDuration,
+	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDurationMilliseconds, lifetimeDurationMilliseconds,
 						  obj.lifetimeTimer.currentGameState, this);
 
 	return;
@@ -83,24 +83,24 @@ void Gem::SetBlinkAngle(float new_angle)
 
 unsigned int Gem::GetBlinkDuration() const
 {
-	return blinkDuration;
+	return blinkDurationMilliseconds;
 }
 
-void Gem::SetBlinkDuration(unsigned int new_duration)
+void Gem::SetBlinkDuration(unsigned int new_duration_milliseconds)
 {
-	blinkDuration = new_duration;
+	blinkDurationMilliseconds = new_duration_milliseconds;
 
 	return;
 }
 
 unsigned int Gem::GetLifetimeDuration() const
 {
-	return lifetimeDuration;
+	return lifetimeDurationMilliseconds;
 }
 
-void Gem::SetLifetimeDuration(unsigned int new_duration)
+void Gem::SetLifetimeDuration(unsigned int new_duration_milliseconds)
 {
-	lifetimeDuration = new_duration;
+	lifetimeDurationMilliseconds = new_duration_milliseconds;
 
 	return;
 }
@@ -153,7 +153,7 @@ void Gem::Blink(float delta_time_seconds)
 
 	SDL_SetTextureColorMod(Texture.get(), brightness, brightness, brightness);
 
-	blinkAngle += blinkFactor * M_PI * delta_time_seconds;
+	blinkAngle += (blinkFactor / 10) * M_PI * delta_time_seconds;
 
 	return;
 }

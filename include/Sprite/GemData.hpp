@@ -6,8 +6,8 @@
 typedef struct
 {
 	unsigned int
-		blinkDuration,
-		lifetimeDuration,
+		blinkDurationMilliseconds,
+		lifetimeDurationMilliseconds,
 		minimumBrightness,
 		maximumBrightness,
 		blinkFactor;

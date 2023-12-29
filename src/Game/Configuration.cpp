@@ -5,8 +5,6 @@
 #include <codecvt>
 #include <boost/algorithm/string.hpp>
 
-//* private
-
 std::pair<std::string, std::string> Configuration::SplitKeyValue(const std::string &string)
 {
 	std::string key;
@@ -23,10 +21,10 @@ std::pair<std::string, std::string> Configuration::SplitKeyValue(const std::stri
 	return std::pair<std::string, std::string>(key, value);
 }
 
-void Configuration::ApplySetting(const std::string &key, const std::string &value)
+void Configuration::ApplySetting(const std::string &key, std::string &value)
 {
-	auto itUint = UIntMap.find(key);
-	if (itUint != UIntMap.end())
+	auto intPair = UIntMap.find(key);
+	if (intPair != UIntMap.end())
 	{
 		std::cout << "Initializing " << key << " ... \n";
 		if (value.find('-') != std::string::npos)
@@ -35,12 +33,37 @@ void Configuration::ApplySetting(const std::string &key, const std::string &valu
 			return;
 		}
 
-		*(itUint->second) = static_cast<unsigned int>(std::stoul(value));
+		*(intPair->second) = static_cast<unsigned int>(std::stoul(value));
 		return;
 	}
 
-	auto itColor = colorMap.find(key);
-	if (itColor != colorMap.end())
+	auto floatPair = floatMap.find(key);
+	if (floatPair != floatMap.end())
+	{
+		std::cout << "Initializing " << key << " ... \n";
+		*(floatPair->second) = std::stof(value);
+		return;
+	}
+
+	auto stringPair = stringMap.find(key);
+	if (stringPair != stringMap.end())
+	{
+		std::cout << "Initializing " << key << "...\n";
+		*(stringPair->second) = value;
+		return;
+	}
+
+	auto wstringPair = wstringMap.find(key);
+	if (wstringPair != wstringMap.end())
+	{
+		std::cout << "Initializing " << key << "...\n";
+		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+		*(wstringPair->second) = converter.from_bytes(value);
+		return;
+	}
+
+	auto colorPair = colorMap.find(key);
+	if (colorPair != colorMap.end())
 	{
 		std::cout << "Initializing " << key << " ... \n";
 		if (value.find('-') != std::string::npos)
@@ -49,44 +72,18 @@ void Configuration::ApplySetting(const std::string &key, const std::string &valu
 			return;
 		}
 
-		std::cout << "Initializing " << key << "...\n";
-		int start_pos = (value[0] == '#' ? 1 : 0);
-		unsigned int hex_value = std::stoul(value.substr(start_pos), nullptr, 16);
+		boost::replace_first(value, "#", "");
+		unsigned int hex_value = std::stoul(value, nullptr, 16);
 
 		Uint8 r = ((hex_value >> 16) & 0xFF);
 		Uint8 g = ((hex_value >> 8) & 0xFF);
 		Uint8 b = (hex_value & 0xFF);
-		*(itColor->second) = {r, g, b, 255};
+		*(colorPair->second) = {r, g, b, 255};
 		return;
 	}
 
-	auto itFloat = floatMap.find(key);
-	if (itFloat != floatMap.end())
-	{
-		std::cout << "Initializing " << key << " ... \n";
-		*(itFloat->second) = std::stof(value);
-		return;
-	}
-
-	auto itString = stringMap.find(key);
-	if (itString != stringMap.end())
-	{
-		std::cout << "Initializing " << key << "...\n";
-		*(itString->second) = value;
-		return;
-	}
-
-	auto itWString = wstringMap.find(key);
-	if (itWString != wstringMap.end())
-	{
-		std::cout << "Initializing " << key << "...\n";
-		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		*(itWString->second) = converter.from_bytes(value);
-		return;
-	}
+	return;
 }
-
-//* public
 
 Configuration::Configuration()
 {
@@ -96,47 +93,52 @@ Configuration::Configuration()
 	UIntMap["Countdown Duration Milliseconds"] = &COUNTDOWN_DURATION_MILLISECONDS;
 	UIntMap["Countdown Interval Milliseconds"] = &COUNTDOWN_INTERVAL_MILLISECONDS;
 
+	UIntMap["Start Score"] = &START_SCORE;
+
 	UIntMap["Start Text Size"] = &START_TEXT_SIZE;
 	UIntMap["Game Over Text Size"] = &GAME_OVER_TEXT_SIZE;
 	UIntMap["Ingame Text Size"] = &INGAME_TEXT_SIZE;
-	UIntMap["Start Score"] = &START_SCORE;
+
+	UIntMap["Player Radius"] = &PLAYER_RADIUS;
+
+	UIntMap["Player Friction"] = &PLAYER_FRICTION;
+	UIntMap["Player Max Velocity"] = &PLAYER_MAX_VELOCITY;
+	UIntMap["Player Max Velocity Boost"] = &PLAYER_MAX_VELOCITY_BOOST;
+	UIntMap["Player Acceleration"] = &PLAYER_ACCELEARION;
+	UIntMap["Player Acceleration Boost"] = &PLAYER_ACCELEARION_BOOST;
+	UIntMap["Player Rotation Speed"] = &PLAYER_ROTATION_SPEED;
+
 	UIntMap["Player Frame Width"] = &PLAYER_FRAME_WIDTH;
 	UIntMap["Player Frame Height"] = &PLAYER_FRAME_HEIGHT;
 	UIntMap["Player IMG Frames"] = &PLAYER_IMG_FRAMES;
 	UIntMap["Player IMG Types"] = &PLAYER_IMG_TYPES;
 	UIntMap["Player Animations Per Second"] = &PLAYER_ANIMATIONS_PER_SECOND;
-	UIntMap["Player Effect Duration Seconds"] = &PLAYER_EFFECT_DURATION_SECONDS;
-	UIntMap["Player Rotation Speed"] = &PLAYER_ROTATION_SPEED;
+	UIntMap["Player Effect Duration Milliseconds"] = &PLAYER_EFFECT_DURATION_MILLISECONDS;
+
+	UIntMap["Gem Radius"] = &GEM_RADIUS;
+
+	UIntMap["Gem Blink Duration Milliseconds"] = &GEM_BLINK_DURATION_MILLISECONDS;
+	UIntMap["Gem Lifetime Duration Milliseconds"] = &GEM_LIFETIME_DURATION_MILLISECONDS;
+	UIntMap["Gem Blink Factor"] = &GEM_BLINK_FACTOR;
+	UIntMap["Gem Minimum Brightness"] = &GEM_MINIMUM_BRIGHTNESS;
+	UIntMap["Gem Maximum Brightness"] = &GEM_MAXIMUM_BRIGHTNESS;
 
 	UIntMap["Gem Frame Width"] = &GEM_FRAME_WIDTH;
 	UIntMap["Gem Frame Height"] = &GEM_FRAME_HEIGHT;
 	UIntMap["Gem IMG Frames"] = &GEM_IMG_FRAMES;
 	UIntMap["Gem IMG Types"] = &GEM_IMG_TYPES;
-	UIntMap["Gem Blink Factor"] = &GEM_BLINK_FACTOR;
-	UIntMap["Gem Blink Duration"] = &GEM_BLINK_DURATION;
-	UIntMap["Gem Lifetime Duration"] = &GEM_LIFETIME_DURATION;
-	UIntMap["Gem Maximum Brightness"] = &GEM_MAXIMUM_BRIGHTNESS;
-	UIntMap["Gem Minimum Brightness"] = &GEM_MINIMUM_BRIGHTNESS;
-
-	colorMap["Start Text Color"] = &START_TEXT_COLOR;
-	colorMap["Game Over Text Color"] = &GAME_OVER_TEXT_COLOR;
-	colorMap["Ingame Text Color"] = &INGAME_TEXT_COLOR;
-
-	floatMap["Player Max Velocity Boost"] = &PLAYER_MAX_VELOCITY_BOOST;
-	floatMap["Player Acceleration Boost"] = &PLAYER_ACCELEARION_BOOST;
-	floatMap["Player Acceleration"] = &PLAYER_ACCELEARION;
-	floatMap["Player Max Velocity"] = &PLAYER_MAX_VELOCITY;
-	floatMap["Player Friction"] = &PLAYER_FRICTION;
-	floatMap["Player Scale"] = &PLAYER_SCALE;
-	floatMap["Player Radius"] = &PLAYER_RADIUS;
 
 	floatMap["Gem Scale"] = &GEM_SCALE;
-	floatMap["Gem Radius"] = &GEM_RADIUS;
+	floatMap["Player Scale"] = &PLAYER_SCALE;
 
 	stringMap["Font Path"] = &FONT_PATH;
 
 	wstringMap["Start Text"] = &START_TEXT;
 	wstringMap["Game Over Text"] = &GAME_OVER_TEXT;
+
+	colorMap["Start Text Color"] = &START_TEXT_COLOR;
+	colorMap["Game Over Text Color"] = &GAME_OVER_TEXT_COLOR;
+	colorMap["Ingame Text Color"] = &INGAME_TEXT_COLOR;
 
 	return;
 }
@@ -144,10 +146,10 @@ Configuration::Configuration()
 Configuration::~Configuration()
 {
 	UIntMap.clear();
-	colorMap.clear();
 	floatMap.clear();
 	stringMap.clear();
 	wstringMap.clear();
+	colorMap.clear();
 
 	return;
 }
@@ -173,13 +175,12 @@ void Configuration::ImportSettings()
 			continue;
 		}
 
-		const auto [key, value] = SplitKeyValue(line);
+		auto [key, value] = SplitKeyValue(line);
 
 		try
 		{
 			ApplySetting(key, value);
 		}
-
 		catch (const std::invalid_argument &error)
 		{
 			std::cerr << "Error: Invalid argument at: " << error.what() << "\n";

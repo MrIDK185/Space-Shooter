@@ -2,8 +2,10 @@
 
 Window Width = 1440
 Window Height = 810
+
 Countdown Duration Milliseconds = 0000
 Countdown Interval Milliseconds = 1000
+
 Start Score = 0
 
 ------------ Text ------------
@@ -25,29 +27,33 @@ Ingame Text Color = #00FF64
 
 Player Scale = 1
 Player Radius = 30
+
+Player Friction = 150
+Player Max Velocity = 600
+Player Max Velocity Boost = 20
+Player Acceleration = 200
+Player Acceleration Boost = 20
+Player Rotation Speed = 144
+
 Player Frame Width = 68
 Player Frame Height = 80
 Player IMG Frames = 6
 Player IMG Types = 4
 Player Animations Per Second = 15
-Player Acceleration = 200
-Player Max Velocity = 600
-Player Friction = 150
-Player Effect Duration Seconds = 2
-Player Rotation Speed = 144
-Player Max Velocity Boost = 20
-Player Acceleration Boost = 20
+Player Effect Duration Milliseconds = 2000
 
 ------------ Gem ------------
 
 Gem Scale = 1
 Gem Radius = 30
+
+Gem Blink Duration Milliseconds = 2000
+Gem Lifetime Duration Milliseconds = 4500
+Gem Blink Factor = 30
+Gem Maximum Brightness = 255
+Gem Minimum Brightness = 150
+
 Gem Frame Width = 52
 Gem Frame Height = 64
 Gem IMG Frames = 16
 Gem IMG Types = 8
-Gem Blink Duration = 2000
-Gem Lifetime Duration = 4500
-Gem Blink Factor = 3
-Gem Maximum Brightness = 255
-Gem Minimum Brightness = 150

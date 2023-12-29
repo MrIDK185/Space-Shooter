@@ -152,8 +152,8 @@ void Game::InitializeDefaultObjectData()
 							.IMG_FRAMES = Config.GEM_IMG_FRAMES,
 							.IMG_TYPES = Config.GEM_IMG_TYPES,
 							.ANIMATIONS_PER_SECOND = 0};
-	gemDataDefault.second = {.blinkDuration = Config.GEM_BLINK_DURATION,
-							 .lifetimeDuration = Config.GEM_LIFETIME_DURATION,
+	gemDataDefault.second = {.blinkDurationMilliseconds = Config.GEM_BLINK_DURATION_MILLISECONDS,
+							 .lifetimeDurationMilliseconds = Config.GEM_LIFETIME_DURATION_MILLISECONDS,
 							 .minimumBrightness = Config.GEM_MINIMUM_BRIGHTNESS,
 							 .maximumBrightness = Config.GEM_MAXIMUM_BRIGHTNESS,
 							 .blinkFactor = Config.GEM_BLINK_FACTOR,
@@ -167,7 +167,7 @@ void Game::InitializeDefaultObjectData()
 	playerDataDefault.second = {.Acceleration = Config.PLAYER_ACCELEARION,
 								.maxVelocity = Config.PLAYER_MAX_VELOCITY,
 								.Friction = Config.PLAYER_FRICTION,
-								.effectDuration = Config.PLAYER_EFFECT_DURATION_SECONDS,
+								.effectDurationMilliseconds = Config.PLAYER_EFFECT_DURATION_MILLISECONDS,
 								.rotationSpeed = Config.PLAYER_ROTATION_SPEED,
 								.gameState = &currentGameState};
 

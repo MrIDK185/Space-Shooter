@@ -11,9 +11,9 @@ typedef struct
 
 	std::string IMGPath;
 
-	float
-		Scale,
-		Radius;
+	float Scale;
+
+	unsigned int Radius;
 } SpriteData;
 
 #endif //! SPRITE_DATA_HPP

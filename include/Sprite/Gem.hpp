@@ -14,8 +14,8 @@ private:
 	float blinkAngle = 0;
 
 	unsigned int
-		blinkDuration,
-		lifetimeDuration,
+		blinkDurationMilliseconds,
+		lifetimeDurationMilliseconds,
 		minimumBrightness,
 		maximumBrightness,
 		blinkFactor;
@@ -45,11 +45,11 @@ public:
 
 	unsigned int GetBlinkDuration() const;
 
-	void SetBlinkDuration(unsigned int new_duration);
+	void SetBlinkDuration(unsigned int new_duration_milliseconds);
 
 	unsigned int GetLifetimeDuration() const;
 
-	void SetLifetimeDuration(unsigned int new_duration);
+	void SetLifetimeDuration(unsigned int new_duration_milliseconds);
 
 	unsigned int GetMinimumBrightness() const;
 

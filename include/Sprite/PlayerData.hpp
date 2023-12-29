@@ -5,13 +5,11 @@
 
 typedef struct
 {
-	float
+	unsigned int
 		Acceleration,
 		maxVelocity,
-		Friction;
-
-	unsigned int
-		effectDuration,
+		Friction,
+		effectDurationMilliseconds,
 		rotationSpeed;
 
 	gameState *gameState;

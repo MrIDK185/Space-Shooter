@@ -61,10 +61,10 @@ Player::Player(SpriteData sprite_data, AnimationData animation_data, PlayerData 
 	  Acceleration(player_data.Acceleration),
 	  maxVelocity(player_data.maxVelocity),
 	  Friction(player_data.Friction),
-	  effectDuration(player_data.effectDuration * 1000),
+	  effectDurationMilliseconds(player_data.effectDurationMilliseconds),
 	  rotationSpeed(player_data.rotationSpeed)
 {
-	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDuration, effectDuration,
+	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDurationMilliseconds, effectDurationMilliseconds,
 						player_data.gameState, this);
 
 	return;
@@ -77,11 +77,11 @@ Player::Player(const Player &obj)
 	  maxVelocity(obj.maxVelocity),
 	  Angle(obj.Angle),
 	  Friction(obj.Friction),
-	  effectDuration(obj.effectDuration),
+	  effectDurationMilliseconds(obj.effectDurationMilliseconds),
 	  rotationSpeed(obj.rotationSpeed),
 	  gemCollected(obj.gemCollected)
 {
-	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDuration, effectDuration,
+	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDurationMilliseconds, effectDurationMilliseconds,
 						obj.effectTimer.currentGameState, this);
 
 	return;
@@ -94,11 +94,11 @@ Player::Player(Player &&obj)
 	  maxVelocity(obj.maxVelocity),
 	  Angle(obj.Angle),
 	  Friction(obj.Friction),
-	  effectDuration(obj.effectDuration),
+	  effectDurationMilliseconds(obj.effectDurationMilliseconds),
 	  rotationSpeed(obj.rotationSpeed),
 	  gemCollected(obj.gemCollected)
 {
-	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDuration, effectDuration,
+	effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDurationMilliseconds, effectDurationMilliseconds,
 						obj.effectTimer.currentGameState, this);
 
 	return;
@@ -166,12 +166,12 @@ void Player::SetFriction(float friction)
 
 unsigned int Player::GetEffectDuration() const
 {
-	return effectDuration;
+	return effectDurationMilliseconds;
 }
 
-void Player::SetEffectDuration(unsigned int effect_duration)
+void Player::SetEffectDuration(unsigned int effect_duration_milliseconds)
 {
-	effectDuration = effect_duration;
+	effectDurationMilliseconds = effect_duration_milliseconds;
 
 	return;
 }

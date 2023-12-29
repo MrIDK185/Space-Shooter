@@ -11,9 +11,8 @@ protected:
 
 	std::string IMGPath;
 
-	float
-		Scale,
-		Radius;
+	float Scale;
+	unsigned int Radius;
 
 	void LoadImage(float scale = 1);
 

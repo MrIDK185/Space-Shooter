@@ -18,7 +18,7 @@ private:
 		Friction;
 
 	unsigned int
-		effectDuration,
+		effectDurationMilliseconds,
 		rotationSpeed;
 
 	bool gemCollected = false;
@@ -62,7 +62,7 @@ public:
 
 	unsigned int GetEffectDuration() const;
 
-	void SetEffectDuration(unsigned int effect_duration);
+	void SetEffectDuration(unsigned int effect_duration_milliseconds);
 
 	unsigned int GetRotationSpeed() const;
 
