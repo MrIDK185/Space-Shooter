@@ -26,6 +26,8 @@ private:
 	bool Handle_TimerEvent();
 	bool Handle_CountdownDecrement();
 	bool Handle_GameStart();
+	bool Handle_GemBlink();
+	bool Handle_GemDisappear();
 
 	void HandleGameStarted();
 	void HandleGamePaused();

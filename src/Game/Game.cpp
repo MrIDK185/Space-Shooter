@@ -156,7 +156,8 @@ void Game::InitializeDefaultObjectData()
 							 .lifetimeDuration = Config.GEM_LIFETIME_DURATION,
 							 .minimumBrightness = Config.GEM_MINIMUM_BRIGHTNESS,
 							 .maximumBrightness = Config.GEM_MAXIMUM_BRIGHTNESS,
-							 .blinkFactor = Config.GEM_BLINK_FACTOR};
+							 .blinkFactor = Config.GEM_BLINK_FACTOR,
+							 .game_state = &currentGameState};
 
 	playerDataDefault.first = {.FRAME_WIDTH = Config.PLAYER_FRAME_WIDTH,
 							   .FRAME_HEIGHT = Config.PLAYER_FRAME_HEIGHT,
@@ -331,7 +332,7 @@ void Game::Reset()
 
 	for (auto &gem : objectsGameRunning.Gems)
 	{
-		gem.Randomize(screenWidth, screenHeight, GetCurrentTime());
+		gem.Randomize(screenWidth, screenHeight);
 	}
 
 	for (auto &asteroid : objectsGameRunning.Asteroids)
@@ -462,16 +463,7 @@ void Game::HandleGems()
 {
 	for (auto &gem : objectsGameRunning.Gems)
 	{
-		if (currentTicks >= gem.GetBlinkTicks())
-		{
-			gem.Blink(gameClock.deltaTimeSeconds);
-		}
-		if (currentTicks >= gem.GetLifetimeTicks())
-		{
-			UpdateScore(-1);
-			objectsGameRunning.Chunks.at("gemMissed").Play();
-			gem.Randomize(screenWidth, screenHeight, currentTicks);
-		}
+		gem.Blink(gameClock.deltaTimeSeconds);
 	}
 
 	return;
@@ -491,7 +483,7 @@ void Game::CheckCollisions()
 			UpdateScore(1);
 			objectsGameRunning.Chunks.at("gemCollected").Play();
 
-			gem.Randomize(screenWidth, screenHeight, currentTicks);
+			gem.Randomize(screenWidth, screenHeight);
 
 			if (!player.GetGemCollected())
 			{

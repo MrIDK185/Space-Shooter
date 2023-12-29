@@ -120,6 +120,14 @@ bool EventHandler::Handle_TimerEvent()
 		retval = Handle_GameStart();
 		break;
 
+	case GEM_BLINK:
+		retval = Handle_GemBlink();
+		break;
+
+	case GEM_DISAPPEAR:
+		retval = Handle_GemDisappear();
+		break;
+
 	case NO_EVENT:
 	default:
 		break;
@@ -147,11 +155,26 @@ bool EventHandler::Handle_GameStart()
 
 	for (auto &gem : currentGame->objectsGameRunning.Gems)
 	{
-		gem.UpdateTicks(currentGame->currentTicks);
-		gem.Randomize(currentGame->screenWidth, currentGame->screenHeight, currentGame->currentTicks);
+		gem.Randomize(currentGame->screenWidth, currentGame->screenHeight);
 	}
 
 	currentGame->objectsGameRunning.Musics.at("backgroundMusic").Play();
+
+	return true;
+}
+
+bool EventHandler::Handle_GemBlink()
+{
+	static_cast<Gem *>(Event.user.data2)->SetBlinking(true);
+
+	return true;
+}
+
+bool EventHandler::Handle_GemDisappear()
+{
+	currentGame->UpdateScore(-1);
+	static_cast<Gem *>(Event.user.data2)->Randomize(currentGame->screenWidth, currentGame->screenHeight);
+	currentGame->objectsGameRunning.Chunks.at("gemMissed").Play();
 
 	return true;
 }
