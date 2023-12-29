@@ -17,7 +17,7 @@ Game Over Text = GAME OVER\nScore: {S} Punkte\nHighscore: {HS} Punkte
 
 Start Text Size = 100
 Game Over Text Size = 100
-Score Text Size = 70
+Ingame Text Size = 70
 
 Start Text Color = #00FF64
 Game Over Text Color = #FF0000
