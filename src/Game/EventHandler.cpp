@@ -113,22 +113,27 @@ bool EventHandler::Handle_TimerEvent()
 	switch (Event.user.code)
 	{
 	case COUNTDOWN_DECREMENT:
+		printf("EVENT: Countdown Decrement\n");
 		retval = Handle_CountdownDecrement();
 		break;
 
 	case GAME_START:
+		printf("EVENT: Game Start\n");
 		retval = Handle_GameStart();
 		break;
 
 	case GEM_BLINK:
+		printf("EVENT: Gem Blink\n");
 		retval = Handle_GemBlink();
 		break;
 
 	case GEM_DISAPPEAR:
+		printf("EVENT: Gem Disappear\n");
 		retval = Handle_GemDisappear();
 		break;
 
 	case PLAYER_EFFECT_STOP:
+		printf("EVENT: Player Effect Stop\n");
 		retval = Handle_PlayerEffectStop();
 		break;
 
@@ -176,9 +181,9 @@ bool EventHandler::Handle_GemBlink()
 
 bool EventHandler::Handle_GemDisappear()
 {
-	currentGame->UpdateScore(-1);
 	static_cast<Gem *>(Event.user.data2)->Randomize(currentGame->screenWidth, currentGame->screenHeight);
 	currentGame->objectsGameRunning.Chunks.at("gemMissed").Play();
+	currentGame->UpdateScore(-1);
 
 	return true;
 }
