@@ -128,6 +128,10 @@ bool EventHandler::Handle_TimerEvent()
 		retval = Handle_GemDisappear();
 		break;
 
+	case PLAYER_EFFECT_STOP:
+		retval = Handle_PlayerEffectStop();
+		break;
+
 	case NO_EVENT:
 	default:
 		break;
@@ -175,6 +179,14 @@ bool EventHandler::Handle_GemDisappear()
 	currentGame->UpdateScore(-1);
 	static_cast<Gem *>(Event.user.data2)->Randomize(currentGame->screenWidth, currentGame->screenHeight);
 	currentGame->objectsGameRunning.Chunks.at("gemMissed").Play();
+
+	return true;
+}
+
+bool EventHandler::Handle_PlayerEffectStop()
+{
+	printf("Player stop effect detected\n");
+	static_cast<Player *>(Event.user.data2)->StopEffect();
 
 	return true;
 }

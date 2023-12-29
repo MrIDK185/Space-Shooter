@@ -168,7 +168,8 @@ void Game::InitializeDefaultObjectData()
 								.maxVelocity = Config.PLAYER_MAX_VELOCITY,
 								.Friction = Config.PLAYER_FRICTION,
 								.effectDuration = Config.PLAYER_EFFECT_DURATION_SECONDS,
-								.rotationSpeed = Config.PLAYER_ROTATION_SPEED};
+								.rotationSpeed = Config.PLAYER_ROTATION_SPEED,
+								.gameState = &currentGameState};
 
 	return;
 }
@@ -442,7 +443,6 @@ void Game::HandlePlayers()
 {
 	for (auto &[name, player] : objectsGameRunning.Players)
 	{
-		player.UpdateGemCollected(currentTicks);
 		player.HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
 	}
 
@@ -485,14 +485,9 @@ void Game::CheckCollisions()
 
 			gem.Randomize(screenWidth, screenHeight);
 
-			if (!player.GetGemCollected())
-			{
-				player.SetMaxVelocity(player.GetMaxVelocity() + Config.PLAYER_MAX_VELOCITY_BOOST);
-				player.SetAcceleration(player.GetAcceleration() + Config.PLAYER_ACCELEARION_BOOST);
-				player.SetGemCollected(true);
-			}
-
-			player.SetCollectionTicks(currentTicks);
+			player.SetMaxVelocity(player.GetMaxVelocity() + Config.PLAYER_MAX_VELOCITY_BOOST);
+			player.SetAcceleration(player.GetAcceleration() + Config.PLAYER_ACCELEARION_BOOST);
+			player.StartEffect();
 		}
 
 		for (const auto &asteroid : objectsGameRunning.Asteroids)

@@ -6,7 +6,3 @@ Asteroid functionality
 Sprites
  -> Check data types
  -> Check const, etc for Data structs
- -> Handle Durations with timers
-
-Events:
- -> Create and Register user events (custom codes, data, etc)

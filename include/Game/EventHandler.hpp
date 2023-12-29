@@ -28,6 +28,7 @@ private:
 	bool Handle_GameStart();
 	bool Handle_GemBlink();
 	bool Handle_GemDisappear();
+	bool Handle_PlayerEffectStop();
 
 	void HandleGameStarted();
 	void HandleGamePaused();
