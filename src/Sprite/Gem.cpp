@@ -1,4 +1,5 @@
 #include <random>
+#include <cmath>
 
 #include "Sprite/Gem.hpp"
 
@@ -12,54 +13,70 @@ Gem::Gem(SpriteData sprite_data, AnimationData animation_data, GemData gem_data)
 	  maximumBrightness(gem_data.maximumBrightness),
 	  blinkFactor(gem_data.blinkFactor)
 {
-}
-
-Gem::Gem(const Gem &obj)
-	: AnimatedSprite(obj),
-	  blinkTicks(obj.blinkTicks),
-	  lifetimeTicks(obj.lifetimeTicks),
-	  blinkDuration(obj.blinkDuration),
-	  lifetimeDuration(obj.lifetimeDuration),
-	  minimumBrightness(obj.minimumBrightness),
-	  maximumBrightness(obj.maximumBrightness),
-	  blinkFactor(obj.blinkFactor),
-	  signedFactor(obj.signedFactor)
-{
-}
-
-Gem::Gem(Gem &&obj)
-	: AnimatedSprite(std::move(obj)),
-	  blinkTicks(obj.blinkTicks),
-	  lifetimeTicks(obj.lifetimeTicks),
-	  blinkDuration(obj.blinkDuration),
-	  lifetimeDuration(obj.lifetimeDuration),
-	  minimumBrightness(obj.minimumBrightness),
-	  maximumBrightness(obj.maximumBrightness),
-	  blinkFactor(obj.blinkFactor),
-	  signedFactor(obj.signedFactor)
-{
-}
-
-Uint64 Gem::GetBlinkTicks() const
-{
-	return blinkTicks;
-}
-
-void Gem::SetBlinkTicks(Uint64 new_blink_ticks)
-{
-	blinkTicks = new_blink_ticks;
+	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDuration, blinkDuration,
+					   gem_data.game_state, this);
+	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDuration, lifetimeDuration,
+						  gem_data.game_state, this);
 
 	return;
 }
 
-Uint64 Gem::GetLifetimeTicks() const
+Gem::Gem(const Gem &obj)
+	: AnimatedSprite(obj),
+	  Blinking(obj.Blinking),
+	  blinkAngle(obj.blinkAngle),
+	  blinkDuration(obj.blinkDuration),
+	  lifetimeDuration(obj.lifetimeDuration),
+	  minimumBrightness(obj.minimumBrightness),
+	  maximumBrightness(obj.maximumBrightness),
+	  blinkFactor(obj.blinkFactor)
 {
-	return lifetimeTicks;
+	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDuration, blinkDuration,
+					   obj.blinkTimer.currentGameState, this);
+	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDuration, lifetimeDuration,
+						  obj.lifetimeTimer.currentGameState, this);
+
+	return;
 }
 
-void Gem::SetLifetimeTicks(Uint64 new_lifetime_ticks)
+Gem::Gem(Gem &&obj)
+	: AnimatedSprite(std::move(obj)),
+	  Blinking(obj.Blinking),
+	  blinkAngle(obj.blinkAngle),
+	  blinkDuration(obj.blinkDuration),
+	  lifetimeDuration(obj.lifetimeDuration),
+	  minimumBrightness(obj.minimumBrightness),
+	  maximumBrightness(obj.maximumBrightness),
+	  blinkFactor(obj.blinkFactor)
 {
-	lifetimeTicks = new_lifetime_ticks;
+	blinkTimer = Timer(NO_EVENT, GEM_BLINK, blinkDuration, blinkDuration,
+					   obj.blinkTimer.currentGameState, this);
+	lifetimeTimer = Timer(NO_EVENT, GEM_DISAPPEAR, lifetimeDuration, lifetimeDuration,
+						  obj.lifetimeTimer.currentGameState, this);
+
+	return;
+}
+
+bool Gem::GetBlinking() const
+{
+	return Blinking;
+}
+
+void Gem::SetBlinking(bool blinking)
+{
+	Blinking = blinking;
+
+	return;
+}
+
+float Gem::GetBlinkAngle() const
+{
+	return blinkAngle;
+}
+
+void Gem::SetBlinkAngle(float new_angle)
+{
+	blinkAngle = new_angle;
 
 	return;
 }
@@ -124,51 +141,24 @@ void Gem::SetBlinkFactor(unsigned int blink_factor)
 	return;
 }
 
-Sign Gem::GetSignedFactor() const
-{
-	return signedFactor;
-}
-
-void Gem::SetSignedFactor(Sign new_sign)
-{
-	signedFactor = new_sign;
-
-	return;
-}
-
-void Gem::UpdateTicks(Uint64 current_ticks)
-{
-	blinkTicks = current_ticks + blinkDuration;
-	lifetimeTicks = current_ticks + lifetimeDuration;
-
-	return;
-}
-
 void Gem::Blink(float delta_time_seconds)
 {
-	Uint8 brightness_value;
-	SDL_GetTextureColorMod(Texture.get(), &brightness_value, nullptr, nullptr);
-	float next_brightness_value = static_cast<float>(brightness_value);
-
-	next_brightness_value += static_cast<float>(blinkFactor) * static_cast<float>(signedFactor) * delta_time_seconds;
-
-	if (next_brightness_value >= maximumBrightness)
+	if (!Blinking)
 	{
-		next_brightness_value = maximumBrightness;
-		signedFactor = DECREMENT;
-	}
-	if (next_brightness_value <= minimumBrightness)
-	{
-		next_brightness_value = minimumBrightness;
-		signedFactor = INCREMENT;
+		return;
 	}
 
-	SDL_SetTextureColorMod(Texture.get(), next_brightness_value, next_brightness_value, next_brightness_value);
+	float amplitude = (maximumBrightness - minimumBrightness) / 2;
+	float brightness = amplitude * std::cos(blinkAngle) + minimumBrightness + amplitude;
+
+	SDL_SetTextureColorMod(Texture.get(), brightness, brightness, brightness);
+
+	blinkAngle += blinkFactor * M_PI * delta_time_seconds;
 
 	return;
 }
 
-void Gem::Randomize(int screen_width, int screen_height, Uint64 current_ticks)
+void Gem::Randomize(int screen_width, int screen_height)
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -180,10 +170,17 @@ void Gem::Randomize(int screen_width, int screen_height, Uint64 current_ticks)
 
 	SetAnimationType(random_type(gen));
 	SetAnimationFrame(random_frame(gen));
-	SetRectPos(random_x(gen), random_y(gen));
+	SetRectPos(random_x(gen), random_y(gen), NW);
 
-	UpdateTicks(current_ticks);
 	SDL_SetTextureColorMod(Texture.get(), 255, 255, 255);
+
+	blinkTimer.Stop();
+	blinkTimer.Start();
+	lifetimeTimer.Stop();
+	lifetimeTimer.Start();
+
+	Blinking = false;
+	blinkAngle = 0;
 
 	return;
 }

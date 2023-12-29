@@ -3,16 +3,15 @@
 
 #include "Sprite/AnimatedSprite.hpp"
 #include "Sprite/GemData.hpp"
-#include "Sprite/Sign.hpp"
+#include "Time/Timer.hpp"
 
 class Gem : public AnimatedSprite
 {
 private:
 	//* non-static
 
-	Uint64
-		blinkTicks = 0,
-		lifetimeTicks = 0;
+	bool Blinking = false;
+	float blinkAngle = 0;
 
 	unsigned int
 		blinkDuration,
@@ -21,7 +20,9 @@ private:
 		maximumBrightness,
 		blinkFactor;
 
-	Sign signedFactor = DECREMENT;
+	Timer
+		blinkTimer,
+		lifetimeTimer;
 
 public:
 	//* non-static
@@ -34,13 +35,13 @@ public:
 
 	~Gem() override = default;
 
-	Uint64 GetBlinkTicks() const;
+	bool GetBlinking() const;
 
-	void SetBlinkTicks(Uint64 new_blink_ticks);
+	void SetBlinking(bool blinking);
 
-	Uint64 GetLifetimeTicks() const;
+	float GetBlinkAngle() const;
 
-	void SetLifetimeTicks(Uint64 new_lifetime_ticks);
+	void SetBlinkAngle(float new_angle);
 
 	unsigned int GetBlinkDuration() const;
 
@@ -62,15 +63,9 @@ public:
 
 	void SetBlinkFactor(unsigned int blink_factor);
 
-	Sign GetSignedFactor() const;
-
-	void SetSignedFactor(Sign new_sign);
-
-	void UpdateTicks(Uint64 current_ticks);
-
 	void Blink(float delta_time_seconds);
 
-	void Randomize(int screen_width, int screen_height, Uint64 current_ticks = 0);
+	void Randomize(int screen_width, int screen_height);
 };
 
 #endif //! GEM_HPP
