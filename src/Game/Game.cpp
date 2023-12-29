@@ -510,6 +510,11 @@ void Game::HandleGameOver()
 {
 	currentGameState = GAME_OVER;
 
+	for (auto &gem : objectsGameRunning.Gems)
+	{
+		gem.StopTimers();
+	}
+
 	std::wstring current_score = std::to_wstring(Score);
 	std::wstring high_score = std::to_wstring(Highscore);
 

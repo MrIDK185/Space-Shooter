@@ -158,6 +158,14 @@ void Gem::Blink(float delta_time_seconds)
 	return;
 }
 
+void Gem::StopTimers()
+{
+	blinkTimer.Stop();
+	lifetimeTimer.Stop();
+
+	return;
+}
+
 void Gem::Randomize(int screen_width, int screen_height)
 {
 	std::random_device rd;

@@ -65,6 +65,8 @@ public:
 
 	void Blink(float delta_time_seconds);
 
+	void StopTimers();
+
 	void Randomize(int screen_width, int screen_height);
 };
 
