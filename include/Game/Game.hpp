@@ -7,18 +7,14 @@
 #include "Game/gameState.hpp"
 #include "Time/Clock.hpp"
 #include "Time/Timer.hpp"
-#include "Sound/soundChunk.hpp"
-#include "Sound/soundMusic.hpp"
 #include "Sound/volumeControl.hpp"
 #include "Sound/channelControl.hpp"
-#include "Sprite/Player.hpp"
-#include "Sprite/Gem.hpp"
-#include "Sprite/Asteroid.hpp"
 
 struct Game
 {
 public:
 	//* Variables
+
 	SDL_Window *Window = nullptr;
 	SDL_Renderer *Renderer = nullptr;
 	const Uint8 *Keyboard = nullptr;
@@ -57,13 +53,15 @@ public:
 	std::pair<AnimationData, PlayerData> playerDataDefault;
 
 	//* Main loop
-	int
-	Run();
+
+	int Run();
 
 	//* Cleanup
+
 	void Cleanup();
 
 	//* Initialization
+
 	void SetupGame();
 	void InitializeDefaultObjectData();
 	void CreateObjectsTitleScreen();
@@ -74,12 +72,14 @@ public:
 	void Reset();
 
 	//* Game modes
+
 	void GameTitleScreen();
 	void GameStarted();
 	void GamePaused();
 	void GameOver();
 
 	//* Game handling
+
 	Uint64 GetCurrentTime();
 	void UpdateScore(int amount);
 	void HandlePlayers();
@@ -89,11 +89,13 @@ public:
 	void HandleGameOver();
 
 	//* Rendering
+
 	void UpdateRenderScale();
 	void RenderObjects(objectStorage *storage);
 	void AnimateObjects(objectStorage *storage);
 
 	//* Constructor/Destructor
+
 	Game() = default;
 	~Game() = default;
 };

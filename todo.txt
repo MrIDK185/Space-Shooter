@@ -2,8 +2,3 @@ Asteroid functionality
  -> movement
  -> breaking
  -> collision, damage
-
-Sprites
- -> Check data types
- -> Check naming of variables
- -> Check const, etc for Data structs

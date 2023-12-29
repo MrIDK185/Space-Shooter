@@ -3,17 +3,20 @@
 
 #include "Sprite/Text.hpp"
 
-std::unique_ptr<Uint16[]> to_uint16(std::wstring message)
+namespace
 {
-	size_t array_size = message.length() + 1;
-	std::unique_ptr<Uint16[]> unicodeMessage(new Uint16[array_size]);
-
-	for (unsigned int idx = 0; idx < array_size; ++idx)
+	std::unique_ptr<Uint16[]> to_uint16(std::wstring message)
 	{
-		unicodeMessage[idx] = static_cast<Uint16>(message[idx]);
-	}
+		size_t array_size = message.length() + 1;
+		std::unique_ptr<Uint16[]> unicodeMessage(new Uint16[array_size]);
 
-	return unicodeMessage;
+		for (unsigned int idx = 0; idx < array_size; ++idx)
+		{
+			unicodeMessage[idx] = static_cast<Uint16>(message[idx]);
+		}
+
+		return unicodeMessage;
+	}
 }
 
 //* non-static(private)

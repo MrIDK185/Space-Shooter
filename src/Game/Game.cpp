@@ -9,24 +9,21 @@
 #include <iostream>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
-
-static channelControl *channelControllerInstance = nullptr;
-
-static void channelFinishedCallback(int channel)
+namespace
 {
-	channelControllerInstance->channelFinished(channel);
+	channelControl *channelControllerInstance = nullptr;
 
-	return;
-}
+	void channelFinishedCallback(int channel)
+	{
+		channelControllerInstance->channelFinished(channel);
+		return;
+	}
 
-static void musicFinishedCallback()
-{
-	channelControllerInstance->musicFinished();
-
-	return;
+	void musicFinishedCallback()
+	{
+		channelControllerInstance->musicFinished();
+		return;
+	}
 }
 
 int Game::Run()

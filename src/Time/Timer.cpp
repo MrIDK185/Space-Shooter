@@ -1,46 +1,49 @@
 #include "Time/Timer.hpp"
 #include "Game/EventType.hpp"
 
-static Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
+namespace
 {
-	Timer *timer = static_cast<Timer *>(param);
+	Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
+	{
+		Timer *timer = static_cast<Timer *>(param);
 
-	if (*timer->currentGameState == GAME_PAUSED)
-	{
-		return interval_milliseconds;
-	}
+		if (*timer->currentGameState == GAME_PAUSED)
+		{
+			return interval_milliseconds;
+		}
 
-	if (timer->counterMilliseconds >= interval_milliseconds)
-	{
-		timer->counterMilliseconds -= interval_milliseconds;
-	}
-	else
-	{
-		timer->counterMilliseconds = 0;
-	}
+		if (timer->counterMilliseconds >= interval_milliseconds)
+		{
+			timer->counterMilliseconds -= interval_milliseconds;
+		}
+		else
+		{
+			timer->counterMilliseconds = 0;
+		}
 
-	if (timer->counterMilliseconds > 0)
-	{
+		if (timer->counterMilliseconds > 0)
+		{
+			SDL_Event event;
+			event.type = SDL_USEREVENT;
+			event.user.type = USEREVENT_TIMER;
+			event.user.code = timer->tickEvent;
+			event.user.data1 = timer;
+			event.user.data2 = timer->customData;
+			SDL_PushEvent(&event);
+
+			return interval_milliseconds;
+		}
+
 		SDL_Event event;
 		event.type = SDL_USEREVENT;
 		event.user.type = USEREVENT_TIMER;
-		event.user.code = timer->tickEvent;
+		event.user.code = timer->endEvent;
 		event.user.data1 = timer;
 		event.user.data2 = timer->customData;
 		SDL_PushEvent(&event);
 
-		return interval_milliseconds;
+		return 0;
 	}
-
-	SDL_Event event;
-	event.type = SDL_USEREVENT;
-	event.user.type = USEREVENT_TIMER;
-	event.user.code = timer->endEvent;
-	event.user.data1 = timer;
-	event.user.data2 = timer->customData;
-	SDL_PushEvent(&event);
-
-	return 0;
 }
 
 Timer::Timer()
