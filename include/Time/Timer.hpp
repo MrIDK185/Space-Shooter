@@ -42,6 +42,8 @@ public:
 	void Resume();
 
 	void Stop();
+
+	void Restart();
 };
 
 #endif //! SECOND_TIMER_HPP

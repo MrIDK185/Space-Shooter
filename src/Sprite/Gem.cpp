@@ -174,10 +174,8 @@ void Gem::Randomize(int screen_width, int screen_height)
 
 	SDL_SetTextureColorMod(Texture.get(), 255, 255, 255);
 
-	blinkTimer.Stop();
-	blinkTimer.Start();
-	lifetimeTimer.Stop();
-	lifetimeTimer.Start();
+	blinkTimer.Restart();
+	lifetimeTimer.Restart();
 
 	Blinking = false;
 	blinkAngle = 0;

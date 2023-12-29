@@ -118,3 +118,11 @@ void Timer::Stop()
 
 	return;
 }
+
+void Timer::Restart()
+{
+	Stop();
+	Start();
+
+	return;
+}
