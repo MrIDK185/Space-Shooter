@@ -5,7 +5,7 @@ namespace
 {
 	Uint32 TimerCallback(Uint32 interval_milliseconds, void *param)
 	{
-		Timer *timer = static_cast<Timer *>(param);
+		Timer *const timer = static_cast<Timer *>(param);
 
 		if (*timer->currentGameState == GAME_PAUSED)
 		{
@@ -67,9 +67,6 @@ Timer::Timer(EventCode tick_event, EventCode end_event,
 
 Timer::~Timer()
 {
-	Callback = nullptr;
-
-	return;
 }
 
 void Timer::Start()

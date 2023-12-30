@@ -9,13 +9,13 @@
 struct Timer
 {
 private:
-	SDL_TimerCallback Callback = nullptr;
+	SDL_TimerCallback const Callback;
 
 	Uint32 timerID = 0;
 
 public:
 	bool Started = false;
-	gameState *currentGameState = nullptr;
+	gameState *currentGameState;
 
 	EventCode tickEvent;
 	EventCode endEvent;
