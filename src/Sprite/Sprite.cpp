@@ -33,7 +33,7 @@ Sprite::~Sprite()
 	return;
 }
 
-SDL_Renderer *const Sprite::GetRenderer() const
+SDL_Renderer *Sprite::GetRenderer() const
 {
 	return destRenderer;
 }

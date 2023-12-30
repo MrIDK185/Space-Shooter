@@ -35,7 +35,7 @@ public:
 
 	virtual ~Sprite();
 
-	SDL_Renderer *const GetRenderer() const;
+	SDL_Renderer *GetRenderer() const;
 
 	unique_ptr_deleter<SDL_Surface> GetSurface();
 
