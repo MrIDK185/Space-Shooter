@@ -10,10 +10,14 @@ Start Score = 0
 
 ------------ Text ------------
 
-Font Path = /usr/share/fonts/msttcore/comicbd.ttf
+##Font Path = /home/hendrik/Downloads/ModernWarfare.ttf
+##Font Path = /home/hendrik/Downloads/SpaceMission.otf
+##Font Path = /home/hendrik/Downloads/TechnoRaceItalic.otf
+##Font Path = /home/hendrik/Downloads/VeniteAdoremus.ttf
+Font Path = /home/hendrik/Downloads/VeniteAdoremusStraight.ttf
 
 Start Text = Starten: "Enter"\nSchließen: "Q"
-Game Over Text = GAME OVER\nScore: {S} Punkte\nHighscore: {HS} Punkte
+Game Over Text = GAME OVER\n----------------------------\n|              Score: {S} Punkte   |\n|   Highscore: {HS} Punkte   |\n----------------------------
 
 Start Text Size = 100
 Game Over Text Size = 100
