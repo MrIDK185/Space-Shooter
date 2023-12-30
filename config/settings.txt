@@ -40,7 +40,7 @@ Player Frame Height = 80
 Player IMG Frames = 6
 Player IMG Types = 4
 Player Animations Per Second = 15
-Player Effect Duration Milliseconds = 2000
+Player Effect Duration Milliseconds = 1000
 
 ------------ Gem ------------
 

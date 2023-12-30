@@ -3,7 +3,7 @@
 
 #include "Game/gameState.hpp"
 
-typedef struct
+struct PlayerData
 {
 	unsigned int
 		Acceleration,
@@ -13,6 +13,6 @@ typedef struct
 		rotationSpeed;
 
 	gameState *gameState;
-} PlayerData;
+};
 
 #endif //! PLAYER_DATA_HPP

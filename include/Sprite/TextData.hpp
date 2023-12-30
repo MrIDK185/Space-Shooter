@@ -5,7 +5,7 @@
 
 #include <SDL2/SDL.h>
 
-typedef struct
+struct TextData
 {
 	SDL_Renderer *destRenderer;
 
@@ -16,6 +16,6 @@ typedef struct
 	SDL_Color fontColor;
 
 	unsigned int fontSize;
-} TextData;
+};
 
 #endif // !TEXT_DATA_HPP

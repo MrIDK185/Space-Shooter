@@ -3,10 +3,10 @@
 
 #include <SDL2/SDL.h>
 
-typedef enum
+enum EventType
 {
 	USEREVENT_TIMER = SDL_USEREVENT,
 	NUM_EVENTS = USEREVENT_TIMER - (SDL_USEREVENT - 1)
-} EventType;
+};
 
 #endif //! EVENT_TYPE_HPP

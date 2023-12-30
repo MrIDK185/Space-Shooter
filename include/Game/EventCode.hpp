@@ -1,7 +1,7 @@
 #ifndef EVENT_CODE_HPP
 #define EVENT_CODE_HPP
 
-typedef enum
+enum EventCode
 {
 	NO_EVENT,
 	COUNTDOWN_DECREMENT,
@@ -9,6 +9,6 @@ typedef enum
 	GEM_BLINK,
 	GEM_DISAPPEAR,
 	PLAYER_EFFECT_STOP
-} EventCode;
+};
 
 #endif // !EVENT_CODE_HPP

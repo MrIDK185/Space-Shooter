@@ -1,7 +1,7 @@
 #ifndef ANIMATION_DATA_HPP
 #define ANIMATION_DATA_HPP
 
-typedef struct
+struct AnimationData
 {
 	unsigned int
 		FRAME_WIDTH,
@@ -9,6 +9,6 @@ typedef struct
 		IMG_FRAMES,
 		IMG_TYPES,
 		ANIMATIONS_PER_SECOND;
-} AnimationData;
+};
 
 #endif //! ANIMATION_DATA_HPP

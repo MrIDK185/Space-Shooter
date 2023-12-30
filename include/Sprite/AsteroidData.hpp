@@ -1,9 +1,9 @@
 #ifndef ASTEROID_DATA_HPP
 #define ASTEROID_DATA_HPP
 
-typedef struct
+struct AsteroidData
 {
 	float Velocity;
-} AsteroidData;
+};
 
 #endif //! ASTEROID_DATA_HPP

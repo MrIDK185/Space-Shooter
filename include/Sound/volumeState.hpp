@@ -1,10 +1,10 @@
 #ifndef VOLUME_STATE_HPP
 #define VOLUME_STATE_HPP
 
-typedef enum
+enum volumeState
 {
 	UNMUTED,
 	MUTED
-} volumeState;
+};
 
 #endif //! VOLUME_STATE_HPP

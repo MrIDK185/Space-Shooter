@@ -5,7 +5,7 @@
 
 #include <SDL2/SDL.h>
 
-typedef struct
+struct SpriteData
 {
 	SDL_Renderer *destRenderer;
 
@@ -14,6 +14,6 @@ typedef struct
 	float Scale;
 
 	unsigned int Radius;
-} SpriteData;
+};
 
 #endif //! SPRITE_DATA_HPP

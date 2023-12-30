@@ -3,7 +3,7 @@
 
 #include "Game/gameState.hpp"
 
-typedef struct
+struct GemData
 {
 	unsigned int
 		blinkDurationMilliseconds,
@@ -13,6 +13,6 @@ typedef struct
 		blinkFactor;
 
 	gameState *game_state;
-} GemData;
+};
 
 #endif //! GEM_DATA_HPP
