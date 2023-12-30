@@ -97,8 +97,8 @@ int main()
 	}
 
 	Game game;
-	int retval = game.Run();
+	game.Run();
 	QuitSubsystems();
 
-	return retval;
+	return 0;
 }

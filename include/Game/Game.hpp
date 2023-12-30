@@ -54,7 +54,7 @@ public:
 
 	//* Main loop
 
-	int Run();
+	void Run();
 
 	//* Cleanup
 

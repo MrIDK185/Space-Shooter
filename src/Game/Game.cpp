@@ -26,7 +26,7 @@ namespace
 	}
 }
 
-int Game::Run()
+void Game::Run()
 {
 	SetupGame();
 
@@ -66,7 +66,7 @@ int Game::Run()
 	}
 
 	Cleanup();
-	return 0;
+	return;
 }
 
 //* Cleanup

@@ -17,7 +17,7 @@ protected:
 
 	//* non-static
 
-	SDL_Renderer *destRenderer;
+	SDL_Renderer *const destRenderer;
 
 	unique_ptr_deleter<SDL_Surface> Surface = {nullptr, surfaceDestructor};
 	unique_ptr_deleter<SDL_Texture> Texture = {nullptr, textureDestructor};
@@ -35,9 +35,7 @@ public:
 
 	virtual ~Sprite();
 
-	SDL_Renderer *GetRenderer() const;
-
-	void SetRenderer(SDL_Renderer *renderer);
+	SDL_Renderer *const GetRenderer() const;
 
 	unique_ptr_deleter<SDL_Surface> GetSurface();
 

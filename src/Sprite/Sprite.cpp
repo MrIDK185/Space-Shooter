@@ -27,23 +27,15 @@ Sprite::Sprite(Sprite &&obj)
 
 Sprite::~Sprite()
 {
-	destRenderer = nullptr;
 	Surface = nullptr;
 	Texture = nullptr;
 
 	return;
 }
 
-SDL_Renderer *Sprite::GetRenderer() const
+SDL_Renderer *const Sprite::GetRenderer() const
 {
 	return destRenderer;
-}
-
-void Sprite::SetRenderer(SDL_Renderer *renderer)
-{
-	destRenderer = renderer;
-
-	return;
 }
 
 unique_ptr_deleter<SDL_Surface> Sprite::GetSurface()
