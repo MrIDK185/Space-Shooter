@@ -9,21 +9,21 @@
 
 //* non-static(private)
 
-bool EventHandler::Handle_WindowQuit()
+void EventHandler::Handle_WindowQuit()
 {
 	currentGame->Running = false;
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_Q()
+void EventHandler::Handle_Q()
 {
 	currentGame->Running = false;
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_Escape()
+void EventHandler::Handle_Escape()
 {
 	if (currentGame->currentGameState != GAME_PAUSED)
 	{
@@ -31,27 +31,27 @@ bool EventHandler::Handle_Escape()
 		currentGame->volumeController.Mute();
 		currentGame->lastGameState = currentGame->currentGameState;
 		currentGame->currentGameState = GAME_PAUSED;
-		return true;
+		return;
 	}
 
 	currentGame->totalTimePaused += SDL_GetTicks64() - currentGame->pausedTicks;
 	currentGame->volumeController.Unmute();
 	currentGame->currentGameState = currentGame->lastGameState;
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_Return()
+void EventHandler::Handle_Return()
 {
 	if (currentGame->currentGameState == GAME_STARTED || currentGame->startTimer.Started)
 	{
-		return false;
+		return;
 	}
 
 	if (currentGame->currentGameState == GAME_OVER)
 	{
 		currentGame->Reset();
-		return true;
+		return;
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
@@ -65,10 +65,10 @@ bool EventHandler::Handle_Return()
 
 	currentGame->startTimer.Start();
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_F11()
+void EventHandler::Handle_F11()
 {
 	Uint32 window_flags = SDL_GetWindowFlags(currentGame->Window);
 	if ((window_flags & SDL_WINDOW_FULLSCREEN) != SDL_WINDOW_FULLSCREEN)
@@ -76,65 +76,63 @@ bool EventHandler::Handle_F11()
 		SDL_SetWindowFullscreen(currentGame->Window, SDL_WINDOW_FULLSCREEN);
 		SDL_ShowCursor(SDL_DISABLE);
 
-		return true;
+		return;
 	}
 
 	SDL_SetWindowFullscreen(currentGame->Window, 0);
 	SDL_ShowCursor(SDL_ENABLE);
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_KP_Plus()
+void EventHandler::Handle_KP_Plus()
 {
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume + 10);
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_KP_Minus()
+void EventHandler::Handle_KP_Minus()
 {
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume - 10);
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_M()
+void EventHandler::Handle_M()
 {
 	currentGame->volumeController.toggleMute();
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_TimerEvent()
+void EventHandler::Handle_TimerEvent()
 {
-	bool retval = false;
-
 	switch (Event.user.code)
 	{
 	case COUNTDOWN_DECREMENT:
 		printf("EVENT: Countdown Decrement\n");
-		retval = Handle_CountdownDecrement();
+		Handle_CountdownDecrement();
 		break;
 
 	case GAME_START:
 		printf("EVENT: Game Start\n");
-		retval = Handle_GameStart();
+		Handle_GameStart();
 		break;
 
 	case GEM_BLINK:
 		printf("EVENT: Gem Blink\n");
-		retval = Handle_GemBlink();
+		Handle_GemBlink();
 		break;
 
 	case GEM_DISAPPEAR:
 		printf("EVENT: Gem Disappear\n");
-		retval = Handle_GemDisappear();
+		Handle_GemDisappear();
 		break;
 
 	case PLAYER_EFFECT_STOP:
 		printf("EVENT: Player Effect Stop\n");
-		retval = Handle_PlayerEffectStop();
+		Handle_PlayerEffectStop();
 		break;
 
 	case NO_EVENT:
@@ -142,10 +140,10 @@ bool EventHandler::Handle_TimerEvent()
 		break;
 	}
 
-	return retval;
+	return;
 }
 
-bool EventHandler::Handle_CountdownDecrement()
+void EventHandler::Handle_CountdownDecrement()
 {
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
 	Text &startText = currentGame->objectsTitleScreen.Texts.at("startText");
@@ -153,10 +151,10 @@ bool EventHandler::Handle_CountdownDecrement()
 	startText.SetMessage(countdown_str);
 	startText.SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_GameStart()
+void EventHandler::Handle_GameStart()
 {
 	currentGame->startTimer.Stop();
 
@@ -169,30 +167,30 @@ bool EventHandler::Handle_GameStart()
 
 	currentGame->objectsGameRunning.Musics.at("backgroundMusic").Play();
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_GemBlink()
+void EventHandler::Handle_GemBlink()
 {
 	static_cast<Gem *>(Event.user.data2)->SetBlinking(true);
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_GemDisappear()
+void EventHandler::Handle_GemDisappear()
 {
 	static_cast<Gem *>(Event.user.data2)->Randomize(currentGame->screenWidth, currentGame->screenHeight);
 	currentGame->objectsGameRunning.Chunks.at("gemMissed").Play();
 	currentGame->UpdateScore(-1);
 
-	return true;
+	return;
 }
 
-bool EventHandler::Handle_PlayerEffectStop()
+void EventHandler::Handle_PlayerEffectStop()
 {
 	static_cast<Player *>(Event.user.data2)->StopEffect();
 
-	return true;
+	return;
 }
 
 void EventHandler::HandleGameStarted()
