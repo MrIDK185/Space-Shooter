@@ -69,6 +69,21 @@ Timer::~Timer()
 {
 }
 
+void Timer::operator=(const Timer &obj)
+{
+	timerID = obj.timerID;
+	Started = obj.Started;
+	currentGameState = obj.currentGameState;
+	tickEvent = obj.tickEvent;
+	endEvent = obj.endEvent;
+	customData = obj.customData;
+	durationMilliseconds = obj.durationMilliseconds;
+	intervalMilliseconds = obj.intervalMilliseconds;
+	counterMilliseconds = obj.counterMilliseconds;
+
+	return;
+}
+
 void Timer::Start()
 {
 	if (Started)

@@ -35,6 +35,8 @@ public:
 
 	~Timer();
 
+	void operator=(const Timer &obj);
+
 	void Start();
 
 	void Pause();
