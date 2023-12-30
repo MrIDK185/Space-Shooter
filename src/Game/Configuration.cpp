@@ -23,7 +23,7 @@ std::pair<std::string, std::string> Configuration::SplitKeyValue(const std::stri
 
 void Configuration::ApplySetting(const std::string &key, std::string &value)
 {
-	auto intPair = UIntMap.find(key);
+	const auto intPair = UIntMap.find(key);
 	if (intPair != UIntMap.end())
 	{
 		std::cout << "Initializing " << key << " ... \n";
@@ -37,7 +37,7 @@ void Configuration::ApplySetting(const std::string &key, std::string &value)
 		return;
 	}
 
-	auto floatPair = floatMap.find(key);
+	const auto floatPair = floatMap.find(key);
 	if (floatPair != floatMap.end())
 	{
 		std::cout << "Initializing " << key << " ... \n";
@@ -45,7 +45,7 @@ void Configuration::ApplySetting(const std::string &key, std::string &value)
 		return;
 	}
 
-	auto stringPair = stringMap.find(key);
+	const auto stringPair = stringMap.find(key);
 	if (stringPair != stringMap.end())
 	{
 		std::cout << "Initializing " << key << "...\n";
@@ -53,7 +53,7 @@ void Configuration::ApplySetting(const std::string &key, std::string &value)
 		return;
 	}
 
-	auto wstringPair = wstringMap.find(key);
+	const auto wstringPair = wstringMap.find(key);
 	if (wstringPair != wstringMap.end())
 	{
 		std::cout << "Initializing " << key << "...\n";
@@ -62,7 +62,7 @@ void Configuration::ApplySetting(const std::string &key, std::string &value)
 		return;
 	}
 
-	auto colorPair = colorMap.find(key);
+	const auto colorPair = colorMap.find(key);
 	if (colorPair != colorMap.end())
 	{
 		std::cout << "Initializing " << key << " ... \n";
