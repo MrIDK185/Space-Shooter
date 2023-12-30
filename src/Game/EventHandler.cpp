@@ -9,21 +9,21 @@
 
 //* non-static(private)
 
-void EventHandler::Handle_WindowQuit()
+void EventHandler::Handle_WindowQuit() const
 {
 	currentGame->Running = false;
 
 	return;
 }
 
-void EventHandler::Handle_Q()
+void EventHandler::Handle_Q() const
 {
 	currentGame->Running = false;
 
 	return;
 }
 
-void EventHandler::Handle_Escape()
+void EventHandler::Handle_Escape() const
 {
 	if (currentGame->currentGameState != GAME_PAUSED)
 	{
@@ -41,7 +41,7 @@ void EventHandler::Handle_Escape()
 	return;
 }
 
-void EventHandler::Handle_Return()
+void EventHandler::Handle_Return() const
 {
 	if (currentGame->currentGameState == GAME_STARTED || currentGame->startTimer.Started)
 	{
@@ -68,7 +68,7 @@ void EventHandler::Handle_Return()
 	return;
 }
 
-void EventHandler::Handle_F11()
+void EventHandler::Handle_F11() const
 {
 	Uint32 window_flags = SDL_GetWindowFlags(currentGame->Window);
 	if ((window_flags & SDL_WINDOW_FULLSCREEN) != SDL_WINDOW_FULLSCREEN)
@@ -85,28 +85,28 @@ void EventHandler::Handle_F11()
 	return;
 }
 
-void EventHandler::Handle_KP_Plus()
+void EventHandler::Handle_KP_Plus() const
 {
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume + 10);
 
 	return;
 }
 
-void EventHandler::Handle_KP_Minus()
+void EventHandler::Handle_KP_Minus() const
 {
 	currentGame->volumeController.changeMasterVolume(currentGame->volumeController.masterVolume - 10);
 
 	return;
 }
 
-void EventHandler::Handle_M()
+void EventHandler::Handle_M() const
 {
 	currentGame->volumeController.toggleMute();
 
 	return;
 }
 
-void EventHandler::Handle_TimerEvent()
+void EventHandler::Handle_TimerEvent() const
 {
 	switch (Event.user.code)
 	{
@@ -143,7 +143,7 @@ void EventHandler::Handle_TimerEvent()
 	return;
 }
 
-void EventHandler::Handle_CountdownDecrement()
+void EventHandler::Handle_CountdownDecrement() const
 {
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
 	Text &startText = currentGame->objectsTitleScreen.Texts.at("startText");
@@ -154,7 +154,7 @@ void EventHandler::Handle_CountdownDecrement()
 	return;
 }
 
-void EventHandler::Handle_GameStart()
+void EventHandler::Handle_GameStart() const
 {
 	currentGame->startTimer.Stop();
 
@@ -170,14 +170,14 @@ void EventHandler::Handle_GameStart()
 	return;
 }
 
-void EventHandler::Handle_GemBlink()
+void EventHandler::Handle_GemBlink() const
 {
 	static_cast<Gem *>(Event.user.data2)->SetBlinking(true);
 
 	return;
 }
 
-void EventHandler::Handle_GemDisappear()
+void EventHandler::Handle_GemDisappear() const
 {
 	static_cast<Gem *>(Event.user.data2)->Randomize(currentGame->screenWidth, currentGame->screenHeight);
 	currentGame->objectsGameRunning.Chunks.at("gemMissed").Play();
@@ -186,7 +186,7 @@ void EventHandler::Handle_GemDisappear()
 	return;
 }
 
-void EventHandler::Handle_PlayerEffectStop()
+void EventHandler::Handle_PlayerEffectStop() const
 {
 	static_cast<Player *>(Event.user.data2)->StopEffect();
 

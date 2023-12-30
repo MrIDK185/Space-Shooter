@@ -13,22 +13,22 @@ private:
 	SDL_Event Event;
 	Game *currentGame;
 
-	void Handle_WindowQuit();
+	void Handle_WindowQuit() const;
 
-	void Handle_Q();
-	void Handle_Escape();
-	void Handle_Return();
-	void Handle_F11();
-	void Handle_KP_Plus();
-	void Handle_KP_Minus();
-	void Handle_M();
+	void Handle_Q() const;
+	void Handle_Escape() const;
+	void Handle_Return() const;
+	void Handle_F11() const;
+	void Handle_KP_Plus() const;
+	void Handle_KP_Minus() const;
+	void Handle_M() const;
 
-	void Handle_TimerEvent();
-	void Handle_CountdownDecrement();
-	void Handle_GameStart();
-	void Handle_GemBlink();
-	void Handle_GemDisappear();
-	void Handle_PlayerEffectStop();
+	void Handle_TimerEvent() const;
+	void Handle_CountdownDecrement() const;
+	void Handle_GameStart() const;
+	void Handle_GemBlink() const;
+	void Handle_GemDisappear() const;
+	void Handle_PlayerEffectStop() const;
 
 	void HandleGameStarted();
 	void HandleGamePaused();
