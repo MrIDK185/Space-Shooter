@@ -1,4 +1,28 @@
-Asteroid functionality
- -> movement
- -> breaking
- -> collision, damage
+General
+ -> Saving/reloading of a running game (when paused?)
+
+ -> Multiple Users, each with own highscore and settings
+ -> User selection screen (option to create new one?)
+ -> Leaderboard with all users showing highscore
+
+ -> New settings/config format?
+
+Design
+ -> Top bar outside of game area for score/lives, etc.
+
+ -> Introducing multiple lives
+ -> Game over at 0 lives
+ -> Respawning and blinking after a collision (center of screen)
+ -> Invincibility period
+
+Sprites
+ -> Icon for lives
+ -> Collision with gem/asteroid reduces lives
+
+	Asteroid
+	-> random movement
+	-> random/increasing(?) speed
+
+	-> breaking into smaller pieces
+	-> wait after new round until spawn
+	-> don't spawn inside/near player: always outside of screen?
