@@ -162,7 +162,7 @@ void EventHandler::Handle_GameStart() const
 
 	for (auto &gem : currentGame->objectsGameRunning.Gems)
 	{
-		gem.Randomize(currentGame->screenWidth, currentGame->screenHeight);
+		gem.RestartTimers();
 	}
 
 	currentGame->objectsGameRunning.Musics.at("backgroundMusic").Play();
@@ -179,7 +179,10 @@ void EventHandler::Handle_GemBlink() const
 
 void EventHandler::Handle_GemDisappear() const
 {
-	static_cast<Gem *>(Event.user.data2)->Randomize(currentGame->screenWidth, currentGame->screenHeight);
+	Gem *gem = static_cast<Gem *>(Event.user.data2);
+	gem->Randomize(currentGame->screenWidth, currentGame->screenHeight);
+	gem->RestartTimers();
+
 	currentGame->objectsGameRunning.Chunks.at("gemMissed").Play();
 	currentGame->UpdateScore(-1);
 

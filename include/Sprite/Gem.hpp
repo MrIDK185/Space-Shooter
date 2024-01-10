@@ -67,6 +67,8 @@ public:
 
 	void StopTimers();
 
+	void RestartTimers();
+
 	void Randomize(int screen_width, int screen_height);
 };
 

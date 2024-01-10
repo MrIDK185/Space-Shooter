@@ -166,6 +166,14 @@ void Gem::StopTimers()
 	return;
 }
 
+void Gem::RestartTimers()
+{
+	blinkTimer.Restart();
+	lifetimeTimer.Restart();
+
+	return;
+}
+
 void Gem::Randomize(int screen_width, int screen_height)
 {
 	std::random_device rd;
@@ -181,9 +189,6 @@ void Gem::Randomize(int screen_width, int screen_height)
 	SetRectPos(random_x(gen), random_y(gen), NW);
 
 	SDL_SetTextureColorMod(Texture.get(), 255, 255, 255);
-
-	blinkTimer.Restart();
-	lifetimeTimer.Restart();
 
 	Blinking = false;
 	blinkAngle = 0;

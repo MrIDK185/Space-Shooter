@@ -222,7 +222,8 @@ void Game::CreateObjectsGameRunning()
 				   .IMGPath = "assets/images/gems.png",
 				   .Scale = Config.GEM_SCALE,
 				   .Radius = Config.GEM_RADIUS};
-	objectsGameRunning.Gems.emplace_back(Gem(sprite_data, gemDataDefault.first, gemDataDefault.second));
+	Gem &gem = objectsGameRunning.Gems.emplace_back(Gem(sprite_data, gemDataDefault.first, gemDataDefault.second));
+	gem.Randomize(screenWidth, screenHeight);
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/player.png",
@@ -485,6 +486,7 @@ void Game::CheckCollisions()
 			objectsGameRunning.Chunks.at("gemCollected").Play();
 
 			gem.Randomize(screenWidth, screenHeight);
+			gem.RestartTimers();
 
 			player.SetMaxVelocity(player.GetMaxVelocity() + Config.PLAYER_MAX_VELOCITY_BOOST);
 			player.SetAcceleration(player.GetAcceleration() + Config.PLAYER_ACCELEARION_BOOST);
