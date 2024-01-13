@@ -10,11 +10,11 @@ protected:
 	//* non-static
 
 	const unsigned int
-		FRAME_WIDTH,
-		FRAME_HEIGHT,
-		IMG_FRAMES,
-		IMG_TYPES,
-		ANIMATIONS_PER_SECOND;
+		FRAME_WIDTH = 0,
+		FRAME_HEIGHT = 0,
+		IMG_FRAMES = 0,
+		IMG_TYPES = 0,
+		ANIMATIONS_PER_SECOND = 0;
 
 	unsigned int
 		animationFrame = 1,
