@@ -7,7 +7,7 @@
 void IMGSprite::LoadImage(float scale /*1*/)
 {
 	SetSurface(IMG_Load(IMGPath.c_str()));
-	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
+	SetTexture(SDL_CreateTextureFromSurface(*destRenderer, Surface.get()));
 
 	int width, height;
 	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);

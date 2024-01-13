@@ -258,7 +258,7 @@ void Player::Reset(float acceleration, float max_velocity, float friction)
 
 void Player::Render() const
 {
-	SDL_RenderCopyExF(destRenderer, Texture.get(), &IMGPartRect, &Rect, Angle, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyExF(*destRenderer, Texture.get(), &IMGPartRect, &Rect, Angle, nullptr, SDL_FLIP_NONE);
 
 	return;
 }

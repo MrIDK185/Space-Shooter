@@ -12,7 +12,7 @@ Sprite::Sprite(const Sprite &obj)
 	  Surface(new SDL_Surface(*obj.Surface), surfaceDestructor),
 	  Rect(obj.Rect)
 {
-	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
+	SetTexture(SDL_CreateTextureFromSurface(*destRenderer, Surface.get()));
 
 	return;
 }
@@ -33,7 +33,7 @@ Sprite::~Sprite()
 	return;
 }
 
-SDL_Renderer *Sprite::GetRenderer() const
+std::optional<SDL_Renderer *const> Sprite::GetRenderer() const
 {
 	return destRenderer;
 }
@@ -107,7 +107,7 @@ void Sprite::SetRectPos(float pos_x, float pos_y, Alignments align)
 
 void Sprite::Render() const
 {
-	SDL_RenderCopyF(destRenderer, Texture.get(), nullptr, &Rect);
+	SDL_RenderCopyF(*destRenderer, Texture.get(), nullptr, &Rect);
 
 	return;
 }

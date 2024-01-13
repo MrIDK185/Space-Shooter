@@ -33,7 +33,7 @@ void Text::SetText()
 	std::unique_ptr<Uint16[]> unicodeMessage = to_uint16(Message);
 
 	SetSurface(TTF_RenderUNICODE_Blended_Wrapped(Font.get(), unicodeMessage.get(), fontColor, 0));
-	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
+	SetTexture(SDL_CreateTextureFromSurface(*destRenderer, Surface.get()));
 
 	int width, height;
 	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
@@ -103,7 +103,7 @@ void Text::SetTextCentered()
 		yPosition += lineHeight;
 	}
 
-	SetTexture(SDL_CreateTextureFromSurface(destRenderer, Surface.get()));
+	SetTexture(SDL_CreateTextureFromSurface(*destRenderer, Surface.get()));
 
 	int width, height;
 	SDL_QueryTexture(Texture.get(), nullptr, nullptr, &width, &height);
@@ -219,7 +219,7 @@ void Text::SetFontSize(unsigned int font_size)
 
 void Text::Render() const
 {
-	SDL_RenderCopyF(destRenderer, Texture.get(), nullptr, &Rect);
+	SDL_RenderCopyF(*destRenderer, Texture.get(), nullptr, &Rect);
 
 	return;
 }

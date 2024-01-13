@@ -68,7 +68,7 @@ void Asteroid::Randomize(int screen_width, int screen_height)
 
 void Asteroid::Render() const
 {
-	SDL_RenderCopyExF(destRenderer, Texture.get(), nullptr, &Rect, Angle, nullptr, SDL_FLIP_NONE);
+	SDL_RenderCopyExF(*destRenderer, Texture.get(), nullptr, &Rect, Angle, nullptr, SDL_FLIP_NONE);
 
 	return;
 }
