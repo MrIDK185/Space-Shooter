@@ -42,11 +42,7 @@ public:
 
 	bool Running = true;
 
-	objectStorage
-		objectsTitleScreen,
-		objectsGameRunning,
-		objectsGamePaused,
-		objectsGameOver;
+	objectStorage objects;
 
 	std::pair<SpriteData, AsteroidData> asteroidDataDefault;
 	std::pair<AnimationData, GemData> gemDataDefault;
