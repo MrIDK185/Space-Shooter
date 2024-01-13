@@ -33,6 +33,8 @@ public:
 
 	explicit AnimatedSprite(AnimatedSprite &&obj);
 
+	explicit AnimatedSprite() = default;
+
 	~AnimatedSprite() override = default;
 
 	unsigned int GetFrameWidth() const;

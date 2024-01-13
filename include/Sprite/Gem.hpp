@@ -33,6 +33,8 @@ public:
 
 	explicit Gem(Gem &&obj);
 
+	explicit Gem() = default;
+
 	~Gem() override = default;
 
 	bool GetBlinking() const;

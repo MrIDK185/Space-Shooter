@@ -19,11 +19,13 @@ protected:
 public:
 	//* non-static
 
-	IMGSprite(SpriteData sprite_data);
+	explicit IMGSprite(SpriteData sprite_data);
 
 	explicit IMGSprite(const IMGSprite &obj);
 
 	explicit IMGSprite(IMGSprite &&obj);
+
+	explicit IMGSprite() = default;
 
 	~IMGSprite() override = default;
 

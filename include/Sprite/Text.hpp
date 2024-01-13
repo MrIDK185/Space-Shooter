@@ -35,6 +35,10 @@ public:
 
 	explicit Text(Text &&obj);
 
+	explicit Text() = default;
+
+	explicit Text();
+
 	~Text() override;
 
 	std::wstring GetMessage() const;

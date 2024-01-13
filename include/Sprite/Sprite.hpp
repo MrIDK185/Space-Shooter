@@ -1,6 +1,8 @@
 #ifndef SPRITE_HPP
 #define SPRITE_HPP
 
+#include <optional>
+
 #include <SDL2/SDL.h>
 
 #include "Sprite/Alignments.hpp"
@@ -17,7 +19,7 @@ protected:
 
 	//* non-static
 
-	SDL_Renderer *const destRenderer;
+	std::optional<SDL_Renderer *> destRenderer = std::nullopt;
 
 	unique_ptr_deleter<SDL_Surface> Surface = {nullptr, surfaceDestructor};
 	unique_ptr_deleter<SDL_Texture> Texture = {nullptr, textureDestructor};
@@ -33,9 +35,11 @@ public:
 
 	explicit Sprite(Sprite &&obj);
 
+	explicit Sprite() = default;
+
 	virtual ~Sprite();
 
-	SDL_Renderer *GetRenderer() const;
+	std::optional<SDL_Renderer *const> GetRenderer() const;
 
 	unique_ptr_deleter<SDL_Surface> GetSurface();
 

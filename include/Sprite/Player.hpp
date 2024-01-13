@@ -38,6 +38,8 @@ public:
 
 	explicit Player(Player &&obj);
 
+	explicit Player() = default;
+
 	~Player() override = default;
 
 	float GetAcceleration() const;

@@ -22,6 +22,8 @@ public:
 
 	explicit Asteroid(Asteroid &&obj);
 
+	explicit Asteroid() = default;
+
 	~Asteroid() override = default;
 
 	void Move(int screen_width, int screen_height, float delta_time_seconds);
