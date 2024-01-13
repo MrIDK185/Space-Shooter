@@ -6,7 +6,8 @@ typedef enum gameState
 	TITLE_SCREEN,
 	GAME_STARTED,
 	GAME_PAUSED,
-	GAME_OVER
+	GAME_OVER,
+	NUM_GAME_STATES
 } gameState;
 
 #endif //! GAME_STATE_HPP
