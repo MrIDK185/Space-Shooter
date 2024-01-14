@@ -75,13 +75,10 @@ void Game::Cleanup()
 	std::cout << "\n------------- Cleanup -------------\n\n";
 
 	std::cout << "Clearing objectsGameOver...\n";
-	objectsGameOver.ClearAll();
 	std::cout << "Clearing objectsGamePaused...\n";
-	objectsGamePaused.ClearAll();
-	std::cout << "Clearing objectsGameRunning...\n";
-	objectsGameRunning.ClearAll();
+	std::cout << "Clearing objects...\n";
 	std::cout << "Clearing objectsTitleScreen...\n";
-	objectsTitleScreen.ClearAll();
+	objects.ClearAll();
 
 	std::cout << "Destroying renderer...\n";
 	SDL_DestroyRenderer(Renderer);
@@ -175,6 +172,9 @@ void Game::InitializeDefaultObjectData()
 
 void Game::CreateObjectsTitleScreen()
 {
+	std::vector<Text> &Texts = objects.gameModes[TITLE_SCREEN].first;
+	std::vector<IMGSprite> &IMGSprites = objects.gameModes[TITLE_SCREEN].second;
+
 	SpriteData sprite_data;
 	TextData text_data;
 
@@ -182,23 +182,21 @@ void Game::CreateObjectsTitleScreen()
 				   .IMGPath = "assets/images/background_blurred.png",
 				   .Scale = 1,
 				   .Radius = 0};
-	objectsTitleScreen.IMGSprites.emplace("startBackground",
-										  IMGSprite(sprite_data));
+	IMGSprites.emplace_back(IMGSprite(sprite_data));
 
 	text_data = {.destRenderer = Renderer,
 				 .Message = Config.START_TEXT,
 				 .fontPath = Config.FONT_PATH,
 				 .fontColor = Config.START_TEXT_COLOR,
 				 .fontSize = Config.START_TEXT_SIZE};
-	auto start_text = objectsTitleScreen.Texts.emplace("startText",
-													   Text(text_data));
-	start_text.first->second.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	Text &start_text = Texts.emplace_back(Text(text_data));
+	start_text.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
-	objectsTitleScreen.Chunks.emplace("startSound",
-									  soundChunk("assets/sounds/game_start.mp3", &channelController));
+	objects.Chunks.emplace("startSound",
+						   soundChunk("assets/sounds/game_start.mp3", &channelController));
 
-	auto menu_music = objectsTitleScreen.Musics.emplace("menuMusic",
-														soundMusic("assets/sounds/menu_music.mp3", &channelController));
+	auto menu_music = objects.Musics.emplace("menuMusic",
+											 soundMusic("assets/sounds/menu_music.mp3", &channelController));
 	menu_music.first->second.Play();
 
 	return;
@@ -206,33 +204,35 @@ void Game::CreateObjectsTitleScreen()
 
 void Game::CreateObjectsGameRunning()
 {
+	std::vector<Text> &Texts = objects.gameModes[GAME_STARTED].first;
+	std::vector<IMGSprite> &IMGSprites = objects.gameModes[GAME_STARTED].second;
+
 	SpriteData sprite_data;
 	TextData text_data;
+	TextData score_text_data;
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/background.png",
 				   .Scale = 1,
 				   .Radius = 0};
-	objectsGameRunning.IMGSprites.emplace("gameBackground",
-										  IMGSprite(sprite_data));
+	IMGSprites.emplace_back(IMGSprite(sprite_data));
 
-	objectsGameRunning.Asteroids.emplace_back(Asteroid(asteroidDataDefault.first, asteroidDataDefault.second));
+	objects.Asteroids.emplace_back(Asteroid(asteroidDataDefault.first, asteroidDataDefault.second));
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/gems.png",
 				   .Scale = Config.GEM_SCALE,
 				   .Radius = Config.GEM_RADIUS};
-	Gem &gem = objectsGameRunning.Gems.emplace_back(Gem(sprite_data, gemDataDefault.first, gemDataDefault.second));
+	Gem &gem = objects.Gems.emplace_back(Gem(sprite_data, gemDataDefault.first, gemDataDefault.second));
 	gem.Randomize(screenWidth, screenHeight);
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/player.png",
 				   .Scale = Config.PLAYER_SCALE,
 				   .Radius = Config.PLAYER_RADIUS};
-	auto player = objectsGameRunning.Players.emplace("Player1",
-													 Player(sprite_data, playerDataDefault.first, playerDataDefault.second));
-	player.first->second.SetRectPos(static_cast<float>(screenWidth / 2),
-									static_cast<float>(screenHeight / 2));
+	objects.Player = Player(sprite_data, playerDataDefault.first, playerDataDefault.second);
+	objects.Player.SetRectPos(static_cast<float>(screenWidth / 2),
+							  static_cast<float>(screenHeight / 2));
 
 	std::wstring current_score = std::to_wstring(Score);
 	text_data = {.destRenderer = Renderer,
@@ -240,45 +240,47 @@ void Game::CreateObjectsGameRunning()
 				 .fontPath = Config.FONT_PATH,
 				 .fontColor = Config.INGAME_TEXT_COLOR,
 				 .fontSize = Config.INGAME_TEXT_SIZE};
-	auto score_text = objectsGameRunning.Texts.emplace("scoreText",
-													   Text(text_data));
-	score_text.first->second.SetRectPos(static_cast<float>(screenWidth), 0, NE);
+	Text &score_text = Texts.emplace_back(Text(text_data));
+	score_text.SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
-	objectsGameRunning.Chunks.emplace("gemCollected",
-									  soundChunk("assets/sounds/gem_collected.mp3", &channelController));
+	objects.Chunks.emplace("gemCollected",
+						   soundChunk("assets/sounds/gem_collected.mp3", &channelController));
 
-	objectsGameRunning.Chunks.emplace("gemMissed",
-									  soundChunk("assets/sounds/gem_missed.wav", &channelController));
+	objects.Chunks.emplace("gemMissed",
+						   soundChunk("assets/sounds/gem_missed.wav", &channelController));
 
-	objectsGameRunning.Musics.emplace("backgroundMusic",
-									  soundMusic("assets/sounds/background_music.mp3", &channelController));
+	objects.Musics.emplace("backgroundMusic",
+						   soundMusic("assets/sounds/background_music.mp3", &channelController));
 
 	return;
 }
 
 void Game::CreateObjectsGamePaused()
 {
+	std::vector<IMGSprite> &IMGSprites = objects.gameModes[GAME_PAUSED].second;
+
 	SpriteData sprite_data;
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/pause-button.png",
 				   .Scale = 0.3,
 				   .Radius = 0};
-	objectsGamePaused.IMGSprites.emplace("pauseIcon",
-										 IMGSprite(sprite_data));
+	IMGSprites.emplace_back(IMGSprite(sprite_data));
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/Overlay.png",
 				   .Scale = 1,
 				   .Radius = 0};
-	objectsGamePaused.IMGSprites.emplace("darkenOverlay",
-										 IMGSprite(sprite_data));
+	IMGSprites.emplace_back(IMGSprite(sprite_data));
 
 	return;
 }
 
 void Game::CreateObjectsGameOver()
 {
+	std::vector<Text> &Texts = objects.gameModes[GAME_OVER].first;
+	std::vector<IMGSprite> &IMGSprites = objects.gameModes[GAME_OVER].second;
+
 	SpriteData sprite_data;
 	TextData text_data;
 
@@ -286,17 +288,15 @@ void Game::CreateObjectsGameOver()
 				   .IMGPath = "assets/images/background_blurred.png",
 				   .Scale = 1,
 				   .Radius = 0};
-	objectsGameOver.IMGSprites.emplace("endBackground",
-									   IMGSprite(sprite_data));
+	IMGSprites.emplace_back(IMGSprite(sprite_data));
 
 	text_data = {.destRenderer = Renderer,
 				 .Message = Config.GAME_OVER_TEXT,
 				 .fontPath = Config.FONT_PATH,
 				 .fontColor = Config.GAME_OVER_TEXT_COLOR,
 				 .fontSize = Config.GAME_OVER_TEXT_SIZE};
-	auto game_over = objectsGameOver.Texts.emplace("gameOver",
-												   Text(text_data));
-	game_over.first->second.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	Text &game_over = Texts.emplace_back(Text(text_data));
+	game_over.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	return;
 }
@@ -318,31 +318,28 @@ void Game::Reset()
 
 	Score = Config.START_SCORE;
 	std::wstring current_score = std::to_wstring(Score);
-	objectsGameRunning.Texts.at("scoreText").SetMessage(current_score);
-	objectsGameRunning.Texts.at("scoreText").SetRectPos(static_cast<float>(screenWidth), 0, NE);
+	objects.GetText("scoreText").SetMessage(current_score);
+	objects.GetText("scoreText").SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
-	objectsTitleScreen.Texts.at("startText").SetMessage(Config.START_TEXT);
-	objectsTitleScreen.Texts.at("startText").SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
+	objects.GetText("startText").SetMessage(Config.START_TEXT);
+	objects.GetText("startText").SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
-	for (auto &[name, player] : objectsGameRunning.Players)
-	{
-		player.SetRectPos(static_cast<float>(screenWidth / 2),
-						  static_cast<float>(screenHeight / 2));
-		player.Reset(Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION);
-	}
+	objects.Player.SetRectPos(static_cast<float>(screenWidth / 2),
+							  static_cast<float>(screenHeight / 2));
+	objects.Player.Reset(Config.PLAYER_ACCELEARION, Config.PLAYER_MAX_VELOCITY, Config.PLAYER_FRICTION);
 
-	for (auto &gem : objectsGameRunning.Gems)
+	for (auto &gem : objects.Gems)
 	{
 		gem.Randomize(screenWidth, screenHeight);
 	}
 
-	for (auto &asteroid : objectsGameRunning.Asteroids)
+	for (auto &asteroid : objects.Asteroids)
 	{
 		asteroid.Randomize(screenWidth, screenHeight);
 	}
 
-	objectsGameRunning.Musics.at("backgroundMusic").Stop();
-	objectsTitleScreen.Musics.at("menuMusic").Play();
+	objects.Musics.at("backgroundMusic").Stop();
+	objects.Musics.at("menuMusic").Play();
 
 	return;
 }
@@ -352,7 +349,7 @@ void Game::GameTitleScreen()
 {
 	SDL_RenderClear(Renderer);
 
-	RenderObjects(&objectsTitleScreen);
+	RenderObjects(currentGameState);
 
 	SDL_RenderPresent(Renderer);
 
@@ -365,11 +362,11 @@ void Game::GameStarted()
 	HandleGems();
 	HandleAsteroids();
 	CheckCollisions();
-	AnimateObjects(&objectsGameRunning);
+	AnimateObjects();
 
 	SDL_RenderClear(Renderer);
 
-	RenderObjects(&objectsGameRunning);
+	RenderObjects(currentGameState);
 
 	SDL_RenderPresent(Renderer);
 
@@ -380,22 +377,8 @@ void Game::GamePaused()
 {
 	SDL_RenderClear(Renderer);
 
-	switch (lastGameState)
-	{
-	case TITLE_SCREEN:
-		RenderObjects(&objectsTitleScreen);
-		break;
-	case GAME_STARTED:
-		RenderObjects(&objectsGameRunning);
-		break;
-	case GAME_OVER:
-		RenderObjects(&objectsGameOver);
-		break;
-	default:
-		break;
-	};
-
-	RenderObjects(&objectsGamePaused);
+	RenderObjects(lastGameState);
+	RenderObjects(currentGameState);
 
 	SDL_RenderPresent(Renderer);
 
@@ -406,7 +389,7 @@ void Game::GameOver()
 {
 	SDL_RenderClear(Renderer);
 
-	RenderObjects(&objectsGameOver);
+	RenderObjects(currentGameState);
 
 	SDL_RenderPresent(Renderer);
 
@@ -434,7 +417,7 @@ void Game::UpdateScore(int amount)
 	}
 
 	std::wstring current_score = std::to_wstring(Score);
-	Text &scoreText = objectsGameRunning.Texts.at("scoreText");
+	Text &scoreText = objects.GetText("scoreText");
 	scoreText.SetMessage(current_score);
 	scoreText.SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
@@ -443,17 +426,14 @@ void Game::UpdateScore(int amount)
 
 void Game::HandlePlayers()
 {
-	for (auto &[name, player] : objectsGameRunning.Players)
-	{
-		player.HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
-	}
+	objects.Player.HandleInput(screenWidth, screenHeight, gameClock.deltaTimeSeconds, Keyboard);
 
 	return;
 }
 
 void Game::HandleAsteroids()
 {
-	for (auto &asteroid : objectsGameRunning.Asteroids)
+	for (auto &asteroid : objects.Asteroids)
 	{
 		asteroid.Move(screenWidth, screenHeight, gameClock.deltaTimeSeconds);
 	}
@@ -463,7 +443,7 @@ void Game::HandleAsteroids()
 
 void Game::HandleGems()
 {
-	for (auto &gem : objectsGameRunning.Gems)
+	for (auto &gem : objects.Gems)
 	{
 		gem.Blink(gameClock.deltaTimeSeconds);
 	}
@@ -473,35 +453,32 @@ void Game::HandleGems()
 
 void Game::CheckCollisions()
 {
-	for (auto &[name, player] : objectsGameRunning.Players)
+	for (auto &gem : objects.Gems)
 	{
-		for (auto &gem : objectsGameRunning.Gems)
+		if (!gem.Collideswith(objects.Player))
 		{
-			if (!gem.Collideswith(player))
-			{
-				continue;
-			}
-
-			UpdateScore(1);
-			objectsGameRunning.Chunks.at("gemCollected").Play();
-
-			gem.Randomize(screenWidth, screenHeight);
-			gem.RestartTimers();
-
-			player.SetMaxVelocity(player.GetMaxVelocity() + Config.PLAYER_MAX_VELOCITY_BOOST);
-			player.SetAcceleration(player.GetAcceleration() + Config.PLAYER_ACCELEARION_BOOST);
-			player.StartEffect();
+			continue;
 		}
 
-		for (const auto &asteroid : objectsGameRunning.Asteroids)
-		{
-			if (!asteroid.Collideswith(player))
-			{
-				continue;
-			}
+		UpdateScore(1);
+		objects.Chunks.at("gemCollected").Play();
 
-			HandleGameOver();
+		gem.Randomize(screenWidth, screenHeight);
+		gem.RestartTimers();
+
+		objects.Player.SetMaxVelocity(objects.Player.GetMaxVelocity() + Config.PLAYER_MAX_VELOCITY_BOOST);
+		objects.Player.SetAcceleration(objects.Player.GetAcceleration() + Config.PLAYER_ACCELEARION_BOOST);
+		objects.Player.StartEffect();
+	}
+
+	for (const auto &asteroid : objects.Asteroids)
+	{
+		if (!asteroid.Collideswith(objects.Player))
+		{
+			continue;
 		}
+
+		HandleGameOver();
 	}
 
 	return;
@@ -511,7 +488,7 @@ void Game::HandleGameOver()
 {
 	currentGameState = GAME_OVER;
 
-	for (auto &gem : objectsGameRunning.Gems)
+	for (auto &gem : objects.Gems)
 	{
 		gem.StopTimers();
 	}
@@ -519,7 +496,7 @@ void Game::HandleGameOver()
 	std::wstring current_score = std::to_wstring(Score);
 	std::wstring high_score = std::to_wstring(Highscore);
 
-	Text &game_over = objectsGameOver.Texts.at("gameOver");
+	Text &game_over = objects.GetText("gameOver");
 	std::wstring game_over_text = Config.GAME_OVER_TEXT;
 	boost::algorithm::replace_all(game_over_text, L"{S}", current_score);
 	boost::algorithm::replace_all(game_over_text, L"{HS}", high_score);
@@ -542,25 +519,31 @@ void Game::UpdateRenderScale()
 	return;
 }
 
-void Game::RenderObjects(objectStorage *storage)
+void Game::RenderObjects(gameState game_state)
 {
-	for (const auto &[name, element] : storage->IMGSprites)
+	std::vector<Text> &Texts = objects.gameModes[game_state].first;
+	std::vector<IMGSprite> &IMGSprites = objects.gameModes[game_state].second;
+
+	for (const auto &element : IMGSprites)
 	{
 		element.Render();
 	}
-	for (const auto &element : storage->Asteroids)
+
+	if (game_state == GAME_STARTED)
 	{
-		element.Render();
+		for (const auto &element : objects.Asteroids)
+		{
+			element.Render();
+		}
+		for (const auto &element : objects.Gems)
+		{
+			element.Render();
+		}
+
+		objects.Player.Render();
 	}
-	for (const auto &element : storage->Gems)
-	{
-		element.Render();
-	}
-	for (const auto &[name, element] : storage->Players)
-	{
-		element.Render();
-	}
-	for (const auto &[name, element] : storage->Texts)
+
+	for (const auto &element : Texts)
 	{
 		element.Render();
 	}
@@ -568,13 +551,12 @@ void Game::RenderObjects(objectStorage *storage)
 	return;
 }
 
-void Game::AnimateObjects(objectStorage *storage)
+void Game::AnimateObjects()
 {
-	for (auto &[name, element] : storage->Players)
-	{
-		element.Animate(currentTicks);
-	}
-	for (auto &element : storage->Gems)
+
+	objects.Player.Animate(currentTicks);
+
+	for (auto &element : objects.Gems)
 	{
 		element.Animate(currentTicks);
 	}

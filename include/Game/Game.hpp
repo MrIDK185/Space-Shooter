@@ -87,8 +87,8 @@ public:
 	//* Rendering
 
 	void UpdateRenderScale();
-	void RenderObjects(objectStorage *storage);
-	void AnimateObjects(objectStorage *storage);
+	void RenderObjects(gameState game_state);
+	void AnimateObjects();
 
 	//* Constructor/Destructor
 
