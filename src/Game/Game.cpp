@@ -190,6 +190,7 @@ void Game::CreateObjectsTitleScreen()
 				 .fontColor = Config.START_TEXT_COLOR,
 				 .fontSize = Config.START_TEXT_SIZE};
 	Text &start_text = Texts.emplace_back(Text(text_data));
+	objects.SetText("startText", start_text);
 	start_text.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	objects.Chunks.emplace("startSound",
@@ -209,7 +210,6 @@ void Game::CreateObjectsGameRunning()
 
 	SpriteData sprite_data;
 	TextData text_data;
-	TextData score_text_data;
 
 	sprite_data = {.destRenderer = Renderer,
 				   .IMGPath = "assets/images/background.png",
@@ -241,6 +241,7 @@ void Game::CreateObjectsGameRunning()
 				 .fontColor = Config.INGAME_TEXT_COLOR,
 				 .fontSize = Config.INGAME_TEXT_SIZE};
 	Text &score_text = Texts.emplace_back(Text(text_data));
+	objects.SetText("scoreText", score_text);
 	score_text.SetRectPos(static_cast<float>(screenWidth), 0, NE);
 
 	objects.Chunks.emplace("gemCollected",
@@ -296,6 +297,7 @@ void Game::CreateObjectsGameOver()
 				 .fontColor = Config.GAME_OVER_TEXT_COLOR,
 				 .fontSize = Config.GAME_OVER_TEXT_SIZE};
 	Text &game_over = Texts.emplace_back(Text(text_data));
+	objects.SetText("gameOver", game_over);
 	game_over.SetRectPos(static_cast<float>(screenWidth / 2), static_cast<float>(screenHeight / 2));
 
 	return;

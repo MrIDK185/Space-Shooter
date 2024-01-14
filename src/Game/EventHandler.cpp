@@ -55,13 +55,13 @@ void EventHandler::Handle_Return() const
 	}
 
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	Text &startText = currentGame->objectsTitleScreen.Texts.at("startText");
+	Text &startText = currentGame->objects.GetText("startText");
 
 	startText.SetMessage(countdown_str.c_str());
 	startText.SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
 
-	currentGame->objectsTitleScreen.Musics.at("menuMusic").Stop();
-	currentGame->objectsTitleScreen.Chunks.at("startSound").Play();
+	currentGame->objects.Musics.at("menuMusic").Stop();
+	currentGame->objects.Chunks.at("startSound").Play();
 
 	currentGame->startTimer.Start();
 
@@ -146,7 +146,7 @@ void EventHandler::Handle_TimerEvent() const
 void EventHandler::Handle_CountdownDecrement() const
 {
 	std::wstring countdown_str = std::to_wstring(currentGame->startTimer.counterMilliseconds / 1000);
-	Text &startText = currentGame->objectsTitleScreen.Texts.at("startText");
+	Text &startText = currentGame->objects.GetText("startText");
 
 	startText.SetMessage(countdown_str);
 	startText.SetRectPos(currentGame->screenWidth / 2, currentGame->screenHeight / 2);
@@ -160,12 +160,12 @@ void EventHandler::Handle_GameStart() const
 
 	currentGame->currentGameState = GAME_STARTED;
 
-	for (auto &gem : currentGame->objectsGameRunning.Gems)
+	for (auto &gem : currentGame->objects.Gems)
 	{
 		gem.RestartTimers();
 	}
 
-	currentGame->objectsGameRunning.Musics.at("backgroundMusic").Play();
+	currentGame->objects.Musics.at("backgroundMusic").Play();
 
 	return;
 }
@@ -183,7 +183,7 @@ void EventHandler::Handle_GemDisappear() const
 	gem->Randomize(currentGame->screenWidth, currentGame->screenHeight);
 	gem->RestartTimers();
 
-	currentGame->objectsGameRunning.Chunks.at("gemMissed").Play();
+	currentGame->objects.Chunks.at("gemMissed").Play();
 	currentGame->UpdateScore(-1);
 
 	return;
