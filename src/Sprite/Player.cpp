@@ -104,6 +104,24 @@ Player::Player(Player &&obj)
 	return;
 }
 
+constexpr Player &Player::operator=(const Player &obj)
+{
+	Acceleration = obj.Acceleration;
+	Velocity = obj.Velocity;
+	maxVelocity = obj.maxVelocity;
+	Angle = obj.Angle;
+	Friction = obj.Friction;
+
+	effectDurationMilliseconds = obj.effectDurationMilliseconds;
+	rotationSpeed = obj.rotationSpeed;
+
+	gemCollected = obj.gemCollected;
+	// effectTimer = Timer(NO_EVENT, PLAYER_EFFECT_STOP, effectDurationMilliseconds, effectDurationMilliseconds,
+	// obj.effectTimer.currentGameState, this);
+
+	return *this;
+}
+
 float Player::GetAcceleration() const
 {
 	return Acceleration;

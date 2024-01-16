@@ -42,6 +42,8 @@ public:
 
 	~Player() override = default;
 
+	constexpr Player &operator=(const Player &obj);
+
 	float GetAcceleration() const;
 
 	void SetAcceleration(float acceleration);
